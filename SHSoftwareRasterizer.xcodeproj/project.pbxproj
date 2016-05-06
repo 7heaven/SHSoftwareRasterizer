@@ -1,0 +1,512 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F67743091CDCF89C00082AAC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F67743081CDCF89C00082AAC /* AppDelegate.m */; };
+		F677430C1CDCF89C00082AAC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F677430B1CDCF89C00082AAC /* main.m */; };
+		F677430F1CDCF89C00082AAC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F677430E1CDCF89C00082AAC /* ViewController.m */; };
+		F67743111CDCF89C00082AAC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F67743101CDCF89C00082AAC /* Assets.xcassets */; };
+		F67743141CDCF89C00082AAC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F67743121CDCF89C00082AAC /* Main.storyboard */; };
+		F677431F1CDCF89C00082AAC /* SHSoftwareRasterizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F677431E1CDCF89C00082AAC /* SHSoftwareRasterizerTests.m */; };
+		F677432A1CDCF89C00082AAC /* SHSoftwareRasterizerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F67743291CDCF89C00082AAC /* SHSoftwareRasterizerUITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F677431B1CDCF89C00082AAC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F67742FC1CDCF89C00082AAC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F67743031CDCF89C00082AAC;
+			remoteInfo = SHSoftwareRasterizer;
+		};
+		F67743261CDCF89C00082AAC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F67742FC1CDCF89C00082AAC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F67743031CDCF89C00082AAC;
+			remoteInfo = SHSoftwareRasterizer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F67743041CDCF89C00082AAC /* SHSoftwareRasterizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SHSoftwareRasterizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F67743071CDCF89C00082AAC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F67743081CDCF89C00082AAC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F677430B1CDCF89C00082AAC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F677430D1CDCF89C00082AAC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		F677430E1CDCF89C00082AAC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		F67743101CDCF89C00082AAC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F67743131CDCF89C00082AAC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F67743151CDCF89C00082AAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F677431A1CDCF89C00082AAC /* SHSoftwareRasterizerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SHSoftwareRasterizerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F677431E1CDCF89C00082AAC /* SHSoftwareRasterizerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHSoftwareRasterizerTests.m; sourceTree = "<group>"; };
+		F67743201CDCF89C00082AAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F67743251CDCF89C00082AAC /* SHSoftwareRasterizerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SHSoftwareRasterizerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F67743291CDCF89C00082AAC /* SHSoftwareRasterizerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHSoftwareRasterizerUITests.m; sourceTree = "<group>"; };
+		F677432B1CDCF89C00082AAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F67743011CDCF89C00082AAC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F67743171CDCF89C00082AAC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F67743221CDCF89C00082AAC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F67742FB1CDCF89C00082AAC = {
+			isa = PBXGroup;
+			children = (
+				F67743061CDCF89C00082AAC /* SHSoftwareRasterizer */,
+				F677431D1CDCF89C00082AAC /* SHSoftwareRasterizerTests */,
+				F67743281CDCF89C00082AAC /* SHSoftwareRasterizerUITests */,
+				F67743051CDCF89C00082AAC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F67743051CDCF89C00082AAC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F67743041CDCF89C00082AAC /* SHSoftwareRasterizer.app */,
+				F677431A1CDCF89C00082AAC /* SHSoftwareRasterizerTests.xctest */,
+				F67743251CDCF89C00082AAC /* SHSoftwareRasterizerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F67743061CDCF89C00082AAC /* SHSoftwareRasterizer */ = {
+			isa = PBXGroup;
+			children = (
+				F67743071CDCF89C00082AAC /* AppDelegate.h */,
+				F67743081CDCF89C00082AAC /* AppDelegate.m */,
+				F677430D1CDCF89C00082AAC /* ViewController.h */,
+				F677430E1CDCF89C00082AAC /* ViewController.m */,
+				F67743101CDCF89C00082AAC /* Assets.xcassets */,
+				F67743121CDCF89C00082AAC /* Main.storyboard */,
+				F67743151CDCF89C00082AAC /* Info.plist */,
+				F677430A1CDCF89C00082AAC /* Supporting Files */,
+			);
+			path = SHSoftwareRasterizer;
+			sourceTree = "<group>";
+		};
+		F677430A1CDCF89C00082AAC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F677430B1CDCF89C00082AAC /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F677431D1CDCF89C00082AAC /* SHSoftwareRasterizerTests */ = {
+			isa = PBXGroup;
+			children = (
+				F677431E1CDCF89C00082AAC /* SHSoftwareRasterizerTests.m */,
+				F67743201CDCF89C00082AAC /* Info.plist */,
+			);
+			path = SHSoftwareRasterizerTests;
+			sourceTree = "<group>";
+		};
+		F67743281CDCF89C00082AAC /* SHSoftwareRasterizerUITests */ = {
+			isa = PBXGroup;
+			children = (
+				F67743291CDCF89C00082AAC /* SHSoftwareRasterizerUITests.m */,
+				F677432B1CDCF89C00082AAC /* Info.plist */,
+			);
+			path = SHSoftwareRasterizerUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F67743031CDCF89C00082AAC /* SHSoftwareRasterizer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F677432E1CDCF89C00082AAC /* Build configuration list for PBXNativeTarget "SHSoftwareRasterizer" */;
+			buildPhases = (
+				F67743001CDCF89C00082AAC /* Sources */,
+				F67743011CDCF89C00082AAC /* Frameworks */,
+				F67743021CDCF89C00082AAC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SHSoftwareRasterizer;
+			productName = SHSoftwareRasterizer;
+			productReference = F67743041CDCF89C00082AAC /* SHSoftwareRasterizer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F67743191CDCF89C00082AAC /* SHSoftwareRasterizerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F67743311CDCF89C00082AAC /* Build configuration list for PBXNativeTarget "SHSoftwareRasterizerTests" */;
+			buildPhases = (
+				F67743161CDCF89C00082AAC /* Sources */,
+				F67743171CDCF89C00082AAC /* Frameworks */,
+				F67743181CDCF89C00082AAC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F677431C1CDCF89C00082AAC /* PBXTargetDependency */,
+			);
+			name = SHSoftwareRasterizerTests;
+			productName = SHSoftwareRasterizerTests;
+			productReference = F677431A1CDCF89C00082AAC /* SHSoftwareRasterizerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F67743241CDCF89C00082AAC /* SHSoftwareRasterizerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F67743341CDCF89C00082AAC /* Build configuration list for PBXNativeTarget "SHSoftwareRasterizerUITests" */;
+			buildPhases = (
+				F67743211CDCF89C00082AAC /* Sources */,
+				F67743221CDCF89C00082AAC /* Frameworks */,
+				F67743231CDCF89C00082AAC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F67743271CDCF89C00082AAC /* PBXTargetDependency */,
+			);
+			name = SHSoftwareRasterizerUITests;
+			productName = SHSoftwareRasterizerUITests;
+			productReference = F67743251CDCF89C00082AAC /* SHSoftwareRasterizerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F67742FC1CDCF89C00082AAC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = 7heaven;
+				TargetAttributes = {
+					F67743031CDCF89C00082AAC = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					F67743191CDCF89C00082AAC = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = F67743031CDCF89C00082AAC;
+					};
+					F67743241CDCF89C00082AAC = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = F67743031CDCF89C00082AAC;
+					};
+				};
+			};
+			buildConfigurationList = F67742FF1CDCF89C00082AAC /* Build configuration list for PBXProject "SHSoftwareRasterizer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F67742FB1CDCF89C00082AAC;
+			productRefGroup = F67743051CDCF89C00082AAC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F67743031CDCF89C00082AAC /* SHSoftwareRasterizer */,
+				F67743191CDCF89C00082AAC /* SHSoftwareRasterizerTests */,
+				F67743241CDCF89C00082AAC /* SHSoftwareRasterizerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F67743021CDCF89C00082AAC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F67743111CDCF89C00082AAC /* Assets.xcassets in Resources */,
+				F67743141CDCF89C00082AAC /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F67743181CDCF89C00082AAC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F67743231CDCF89C00082AAC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F67743001CDCF89C00082AAC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F677430F1CDCF89C00082AAC /* ViewController.m in Sources */,
+				F677430C1CDCF89C00082AAC /* main.m in Sources */,
+				F67743091CDCF89C00082AAC /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F67743161CDCF89C00082AAC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F677431F1CDCF89C00082AAC /* SHSoftwareRasterizerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F67743211CDCF89C00082AAC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F677432A1CDCF89C00082AAC /* SHSoftwareRasterizerUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F677431C1CDCF89C00082AAC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F67743031CDCF89C00082AAC /* SHSoftwareRasterizer */;
+			targetProxy = F677431B1CDCF89C00082AAC /* PBXContainerItemProxy */;
+		};
+		F67743271CDCF89C00082AAC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F67743031CDCF89C00082AAC /* SHSoftwareRasterizer */;
+			targetProxy = F67743261CDCF89C00082AAC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F67743121CDCF89C00082AAC /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F67743131CDCF89C00082AAC /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F677432C1CDCF89C00082AAC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F677432D1CDCF89C00082AAC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F677432F1CDCF89C00082AAC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SHSoftwareRasterizer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenheaven.SHSoftwareRasterizer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F67743301CDCF89C00082AAC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SHSoftwareRasterizer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenheaven.SHSoftwareRasterizer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		F67743321CDCF89C00082AAC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SHSoftwareRasterizerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenheaven.SHSoftwareRasterizerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SHSoftwareRasterizer.app/Contents/MacOS/SHSoftwareRasterizer";
+			};
+			name = Debug;
+		};
+		F67743331CDCF89C00082AAC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SHSoftwareRasterizerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenheaven.SHSoftwareRasterizerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SHSoftwareRasterizer.app/Contents/MacOS/SHSoftwareRasterizer";
+			};
+			name = Release;
+		};
+		F67743351CDCF89C00082AAC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SHSoftwareRasterizerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenheaven.SHSoftwareRasterizerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SHSoftwareRasterizer;
+			};
+			name = Debug;
+		};
+		F67743361CDCF89C00082AAC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SHSoftwareRasterizerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenheaven.SHSoftwareRasterizerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SHSoftwareRasterizer;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F67742FF1CDCF89C00082AAC /* Build configuration list for PBXProject "SHSoftwareRasterizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F677432C1CDCF89C00082AAC /* Debug */,
+				F677432D1CDCF89C00082AAC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F677432E1CDCF89C00082AAC /* Build configuration list for PBXNativeTarget "SHSoftwareRasterizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F677432F1CDCF89C00082AAC /* Debug */,
+				F67743301CDCF89C00082AAC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		F67743311CDCF89C00082AAC /* Build configuration list for PBXNativeTarget "SHSoftwareRasterizerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F67743321CDCF89C00082AAC /* Debug */,
+				F67743331CDCF89C00082AAC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		F67743341CDCF89C00082AAC /* Build configuration list for PBXNativeTarget "SHSoftwareRasterizerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F67743351CDCF89C00082AAC /* Debug */,
+				F67743361CDCF89C00082AAC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F67742FC1CDCF89C00082AAC /* Project object */;
+}
