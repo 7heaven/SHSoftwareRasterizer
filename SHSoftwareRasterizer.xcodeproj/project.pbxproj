@@ -49,6 +49,7 @@
 		F67743251CDCF89C00082AAC /* SHSoftwareRasterizerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SHSoftwareRasterizerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67743291CDCF89C00082AAC /* SHSoftwareRasterizerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHSoftwareRasterizerUITests.m; sourceTree = "<group>"; };
 		F677432B1CDCF89C00082AAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F695014B1CE3330100ED464E /* IDecoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IDecoder.h; path = decoders/IDecoder.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +100,7 @@
 		F67743061CDCF89C00082AAC /* SHSoftwareRasterizer */ = {
 			isa = PBXGroup;
 			children = (
+				F695014A1CE332E200ED464E /* decoders */,
 				F67743071CDCF89C00082AAC /* AppDelegate.h */,
 				F67743081CDCF89C00082AAC /* AppDelegate.m */,
 				F677430D1CDCF89C00082AAC /* ViewController.h */,
@@ -135,6 +137,14 @@
 				F677432B1CDCF89C00082AAC /* Info.plist */,
 			);
 			path = SHSoftwareRasterizerUITests;
+			sourceTree = "<group>";
+		};
+		F695014A1CE332E200ED464E /* decoders */ = {
+			isa = PBXGroup;
+			children = (
+				F695014B1CE3330100ED464E /* IDecoder.h */,
+			);
+			name = decoders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -489,6 +499,7 @@
 				F67743301CDCF89C00082AAC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F67743311CDCF89C00082AAC /* Build configuration list for PBXNativeTarget "SHSoftwareRasterizerTests" */ = {
 			isa = XCConfigurationList;
@@ -497,6 +508,7 @@
 				F67743331CDCF89C00082AAC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F67743341CDCF89C00082AAC /* Build configuration list for PBXNativeTarget "SHSoftwareRasterizerUITests" */ = {
 			isa = XCConfigurationList;
@@ -505,6 +517,7 @@
 				F67743361CDCF89C00082AAC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
