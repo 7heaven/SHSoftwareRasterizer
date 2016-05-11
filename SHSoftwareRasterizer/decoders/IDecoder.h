@@ -14,7 +14,7 @@
 namespace sh{
 class IDecoder{
 public:
-    virtual std::string getFileType() = 0;
+    virtual std::string getFormat() = 0;
     
     virtual ~IDecoder();
 }
