@@ -23,12 +23,32 @@
     
     [self.view addSubview:canvas];
     
+    NSTrackingAreaOptions options = (NSTrackingActiveAlways | NSTrackingInVisibleRect |
+                                     NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved);
+    
+    NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:self.view.bounds
+                                                        options:options
+                                                          owner:self
+                                                       userInfo:nil];
+    
+    [self.view addTrackingArea:area];
+    
     [canvas setPixel:(SHPoint){20, 20} color:(SHColor){0xFF, 0xFF, 0x99, 0xCC}];
-    [canvas drawLineFrom:(SHPoint){50, 50} to:(SHPoint){150, 85} color:(SHColor){0xFF, 0x00, 0x99, 0xCC}];
+    [canvas drawLineFrom:(SHPoint){50, 50} to:(SHPoint){150, 150} color:(SHColor){0xFF, 0x00, 0x99, 0xCC}];
     
     
 //    timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(setPixels) userInfo:nil repeats:YES];
 //    [timer fire];
+}
+
+- (void) mouseMoved:(NSEvent *)theEvent{
+    CGPoint location = theEvent.locationInWindow;
+    
+    NSLog(@"mouseMove:%@", NSStringFromPoint(location));
+    
+    [canvas flushWithColor:(SHColor){0, 0, 0, 0}];
+    [canvas drawLineFrom:(SHPoint){150, 150} to:(SHPoint){location.x, self.view.bounds.size.height - location.y} color:(SHColor){0xFF, 0x00, 0x99, 0xCC}];
+    [canvas update];
 }
 
 - (void) setPixels{

@@ -64,20 +64,24 @@
     self.image = [[NSImage alloc] initWithCGImage:_imageBackend size:size];
 }
 
+
+
 - (void) drawLineFrom:(SHPoint) p0 to:(SHPoint) p1 color:(SHColor) color{
-    int dx = p1.x - p0.x;
-    int dy = p1.y - p0.y;
+    float x, y;
+    float x0 = p0.x;
+    float y0 = p0.y;
+    float x1 = p1.x;
+    float y1 = p1.y;
+    int dx = fabsf(x1-x0), sx = x0<x1 ? 1 : -1;
+    int dy = fabsf(y1-y0), sy = y0<y1 ? 1 : -1;
+    int err = (dx>dy ? dx : -dy)/2, e2;
     
-    float d = (float) dy / (float) dx;
-    for(int i = 0; i <= dx; i++){
-        float aproximateY = (float) i * d;
-        int top = (int) aproximateY;
-        int bottom = ((int) aproximateY) + 1;
-        if(aproximateY - top > aproximateY - bottom){
-            [self setPixel:(SHPoint){p0.x + i, p0.y + bottom} color:color];
-        }else{
-            [self setPixel:(SHPoint){p0.x + i, p0.y + top} color:color];
-        }
+    for(;;){
+        [self setPixel:(SHPoint){x0, y0} color:color];
+        if (x0==x1 && y0==y1) break;
+        e2 = err;
+        if (e2 >-dx) { err -= dy; x0 += sx; }
+        if (e2 < dy) { err += dx; y0 += sy; }
     }
     
 }
@@ -85,6 +89,8 @@
 - (void) setPixel:(SHPoint) position color:(SHColor) color{
     
     int positionOffset = (self.bounds.size.width * position.y + position.x) * 3;
+    
+    if(positionOffset < 0 || positionOffset > _rawDataSize) return;
     
     _rawData[positionOffset] = color.r;
     _rawData[positionOffset + 1] = color.g;
