@@ -24,13 +24,20 @@ typedef struct{
     SHPoint a;
     SHPoint b;
     SHPoint c;
-};
+}SHTriangle;
 
 typedef struct{
     SHPoint3D a;
     SHPoint3D b;
     SHPoint3D c;
 }SHTriangle3D;
+
+typedef struct{
+    unsigned char a;
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+}SHColor;
 
 
 #endif /* BasicGeometry_h */

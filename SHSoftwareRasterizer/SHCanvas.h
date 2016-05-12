@@ -7,9 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "BasicGeometry.h"
 
 @interface SHCanvas : NSView
 
-- (void) setPixel(SHPoint position, SHColor color);
+- (instancetype) initWithBackgroundColor:(SHColor) color;
+
+- (void) setPixel:(SHPoint) position color:(SHColor) color;
 
 @end
