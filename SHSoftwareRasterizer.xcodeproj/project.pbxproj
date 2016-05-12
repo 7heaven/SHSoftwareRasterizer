@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F66C93B71CE390F8003E9811 /* SHCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = F66C93B61CE390F8003E9811 /* SHCanvas.m */; };
+		F66C93B71CE390F8003E9811 /* SHSoftwareCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = F66C93B61CE390F8003E9811 /* SHSoftwareCanvas.m */; };
 		F66C93BD1CE397F9003E9811 /* Matrix44.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66C93BB1CE397F9003E9811 /* Matrix44.cpp */; };
+		F66C93C01CE494A7003E9811 /* SHHardwareCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = F66C93BF1CE494A7003E9811 /* SHHardwareCanvas.m */; };
 		F67743091CDCF89C00082AAC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F67743081CDCF89C00082AAC /* AppDelegate.m */; };
 		F677430C1CDCF89C00082AAC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F677430B1CDCF89C00082AAC /* main.m */; };
 		F677430F1CDCF89C00082AAC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F677430E1CDCF89C00082AAC /* ViewController.m */; };
@@ -36,11 +37,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F66C93B51CE390F8003E9811 /* SHCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCanvas.h; sourceTree = "<group>"; };
-		F66C93B61CE390F8003E9811 /* SHCanvas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHCanvas.m; sourceTree = "<group>"; };
+		F66C93B51CE390F8003E9811 /* SHSoftwareCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHSoftwareCanvas.h; sourceTree = "<group>"; };
+		F66C93B61CE390F8003E9811 /* SHSoftwareCanvas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHSoftwareCanvas.m; sourceTree = "<group>"; };
 		F66C93BA1CE39590003E9811 /* BasicGeometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicGeometry.h; sourceTree = "<group>"; };
 		F66C93BB1CE397F9003E9811 /* Matrix44.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix44.cpp; sourceTree = "<group>"; };
 		F66C93BC1CE397F9003E9811 /* Matrix44.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Matrix44.hpp; sourceTree = "<group>"; };
+		F66C93BE1CE494A7003E9811 /* SHHardwareCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHHardwareCanvas.h; sourceTree = "<group>"; };
+		F66C93BF1CE494A7003E9811 /* SHHardwareCanvas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHHardwareCanvas.m; sourceTree = "<group>"; };
+		F66C93C31CE497AB003E9811 /* IDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDevice.h; sourceTree = "<group>"; };
 		F67743041CDCF89C00082AAC /* SHSoftwareRasterizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SHSoftwareRasterizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67743071CDCF89C00082AAC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F67743081CDCF89C00082AAC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -96,10 +100,9 @@
 		F66C93B11CE39061003E9811 /* engine */ = {
 			isa = PBXGroup;
 			children = (
+				F66C93C21CE49795003E9811 /* device */,
 				F66C93B31CE3908C003E9811 /* math */,
 				F66C93B21CE3907A003E9811 /* geom */,
-				F66C93B51CE390F8003E9811 /* SHCanvas.h */,
-				F66C93B61CE390F8003E9811 /* SHCanvas.m */,
 			);
 			name = engine;
 			sourceTree = "<group>";
@@ -119,6 +122,18 @@
 			children = (
 			);
 			name = math;
+			sourceTree = "<group>";
+		};
+		F66C93C21CE49795003E9811 /* device */ = {
+			isa = PBXGroup;
+			children = (
+				F66C93B51CE390F8003E9811 /* SHSoftwareCanvas.h */,
+				F66C93B61CE390F8003E9811 /* SHSoftwareCanvas.m */,
+				F66C93BE1CE494A7003E9811 /* SHHardwareCanvas.h */,
+				F66C93BF1CE494A7003E9811 /* SHHardwareCanvas.m */,
+				F66C93C31CE497AB003E9811 /* IDevice.h */,
+			);
+			name = device;
 			sourceTree = "<group>";
 		};
 		F67742FB1CDCF89C00082AAC = {
@@ -320,7 +335,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F66C93B71CE390F8003E9811 /* SHCanvas.m in Sources */,
+				F66C93C01CE494A7003E9811 /* SHHardwareCanvas.m in Sources */,
+				F66C93B71CE390F8003E9811 /* SHSoftwareCanvas.m in Sources */,
 				F677430F1CDCF89C00082AAC /* ViewController.m in Sources */,
 				F66C93BD1CE397F9003E9811 /* Matrix44.cpp in Sources */,
 				F677430C1CDCF89C00082AAC /* main.m in Sources */,

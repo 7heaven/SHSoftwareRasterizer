@@ -7,25 +7,54 @@
 //
 
 #import "ViewController.h"
-#import "SHCanvas.h"
+#import "SHSoftwareCanvas.h"
 
-@implementation ViewController
+@implementation ViewController{
+    SHSoftwareCanvas *canvas;
+    NSTimer *timer;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     // Do any additional setup after loading the view.
-    SHCanvas *canvas = [[SHCanvas alloc] init];
+    canvas = [[SHSoftwareCanvas alloc] init];
     canvas.frame = self.view.bounds;
     
     [self.view addSubview:canvas];
     
     [canvas setPixel:(SHPoint){20, 20} color:(SHColor){0xFF, 0xFF, 0x99, 0xCC}];
+    [canvas drawLineFrom:(SHPoint){50, 50} to:(SHPoint){150, 85} color:(SHColor){0xFF, 0x00, 0x99, 0xCC}];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(20 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [canvas setPixel:(SHPoint){50,50} color:(SHColor){0xFF, 0xFF, 0xFF, 0xFF}];
-    });
+    
+//    timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(setPixels) userInfo:nil repeats:YES];
+//    [timer fire];
 }
+
+- (void) setPixels{
+    int x = arc4random() % (int) self.view.frame.size.width;
+    int y = arc4random() % (int) self.view.frame.size.height;
+    
+    NSLog(@"x:%d, y:%d", x, y);
+    
+    [canvas setPixel:(SHPoint){x, y} color:(SHColor){0xFF, 0xFF, 0xFF, 0xFF}];
+    [canvas update];
+}
+
+- (void) viewDidAppear{
+    [super viewDidAppear];
+    
+    NSLog(@"viewDidApper");
+    
+    int x = arc4random() % (int) self.view.frame.size.width;
+    int y = arc4random() % (int) self.view.frame.size.height;
+    
+    NSLog(@"x:%d, y:%d", x, y);
+    
+    [canvas setPixel:(SHPoint){x, y} color:(SHColor){0xFF, 0xFF, 0xFF, 0xFF}];
+}
+
+
 
 - (void)setRepresentedObject:(id)representedObject {
     [super setRepresentedObject:representedObject];
