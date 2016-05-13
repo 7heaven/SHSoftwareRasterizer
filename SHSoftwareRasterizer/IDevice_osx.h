@@ -18,6 +18,6 @@
 
 - (void) update;
 
-- (IDevice *) getNativePtr;
+- (sh::IDevice *) getNativePtr;
 
 @end

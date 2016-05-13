@@ -15,8 +15,6 @@
 
 - (instancetype) initWithBackgroundColor:(SHColor) color;
 
-- (void) drawLineFrom:(SHPoint) p0 to:(SHPoint) p1 color:(SHColor) color;
-
 - (void) setPixel:(SHPoint) position color:(SHColor) color;
 - (void) setPixels:(SHPoint[]) positions color:(SHColor) color;
 
@@ -24,11 +22,11 @@
 
 - (void) update;
 
-- (IDevice *) getNativePtr;
+- (sh::IDevice *) getNativePtr;
 
 @end
 
-class SHSoftwareDevice : public IDevice{
+class SHSoftwareDevice : public sh::IDevice{
 public:
     SHSoftwareDevice(SHSoftwareCanvas *canvas);
     
