@@ -8,9 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 #import "BasicGeometry.h"
+#import "IDevice_osx.h"
 #import "IDevice.h"
 
-@interface SHSoftwareCanvas : NSImageView <IDevice>
+@interface SHSoftwareCanvas : NSImageView <IDevice_osx>
 
 - (instancetype) initWithBackgroundColor:(SHColor) color;
 
@@ -23,4 +24,19 @@
 
 - (void) update;
 
+- (IDevice *) getNativePtr;
+
 @end
+
+class SHSoftwareDevice : public IDevice{
+public:
+    SHSoftwareDevice(SHSoftwareCanvas *canvas);
+    
+    void update();
+    
+    void setPixel(SHPoint position, SHColor color);
+    void setPixels(SHPoint position[], SHColor color);
+    void flush(SHColor color);
+private:
+    SHSoftwareCanvas *_canvas;
+};

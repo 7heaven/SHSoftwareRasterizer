@@ -13,7 +13,6 @@
 
 class IDevice{
 public:
-    IDevice();
     virtual void update() = 0;
     
     virtual void setPixel(SHPoint position, SHColor color) = 0;

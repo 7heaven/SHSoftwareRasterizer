@@ -18,12 +18,14 @@
     unsigned long _canvasPixelSize;
     
     SHColor _backgroundColor;
+    
+    SHSoftwareDevice *_nativePtr;
 }
 
 - (instancetype) initWithBackgroundColor:(SHColor) color{
     if(self = [super init]){
         _backgroundColor = color;
-        [self initImageBackend];
+        [self initProcess];
     }
     
     return self;
@@ -31,7 +33,7 @@
 
 - (instancetype) init{
     if(self = [super init]){
-        [self initImageBackend];
+        [self initProcess];
     }
     
     return self;
@@ -39,10 +41,16 @@
 
 - (instancetype) initWithCoder:(NSCoder *)coder{
     if(self = [super initWithCoder:coder]){
-        [self initImageBackend];
+        [self initProcess];
     }
     
     return self;
+}
+
+- (void) initProcess{
+    _nativePtr = new SHSoftwareDevice(self);
+    
+    [self initImageBackend];
 }
 
 - (void) initImageBackend{
@@ -75,7 +83,7 @@
     int err = (dx>dy ? dx : -dy)/2, e2;
     
     for(;;){
-        [self setPixel:(SHPoint){x0, y0} color:color];
+        [self setPixel:(SHPoint){static_cast<int>(x0), static_cast<int>(y0)} color:color];
         if (x0==x1 && y0==y1) break;
         e2 = err;
         if (e2 >-dx) { err -= dy; x0 += sx; }
@@ -93,6 +101,16 @@
     _rawData[positionOffset] = color.r;
     _rawData[positionOffset + 1] = color.g;
     _rawData[positionOffset + 2] = color.b;
+}
+
+- (void) setPixels:(SHPoint [])positions color:(SHColor)color{
+    size_t length = sizeof(positions) / sizeof(positions[0]);
+    
+    NSLog(@"length:%zu", length);
+    
+    for(int i = 0; i < length; i++){
+        [self setPixel:positions[i] color:color];
+    }
 }
 
 - (void) flushWithColor:(SHColor) color{
@@ -147,10 +165,35 @@
     return image;
 }
 
+- (IDevice *) getNativePtr{
+    return _nativePtr;
+}
+
 - (void) dealloc{
     self.image = nil;
     CFRelease(_imageBackend);
     free(_rawData);
+    delete _nativePtr;
 }
 
 @end
+
+SHSoftwareDevice::SHSoftwareDevice(SHSoftwareCanvas *canvas){
+    this->_canvas = canvas;
+}
+
+void SHSoftwareDevice::update(){
+    [this->_canvas update];
+}
+
+void SHSoftwareDevice::setPixel(SHPoint position, SHColor color){
+    [this->_canvas setPixel:position color:color];
+}
+
+void SHSoftwareDevice::setPixels(SHPoint *position, SHColor color){
+    [this->_canvas setPixels:position color:color];
+}
+
+void SHSoftwareDevice::flush(SHColor color){
+    [this->_canvas flushWithColor:color];
+}

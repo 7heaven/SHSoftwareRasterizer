@@ -11,11 +11,14 @@
 
 #include <stdio.h>
 #include "BasicGeometry.h"
-#include "IDevice.hpp"
+#include "IDevice.h"
 
-extern "C"{
-    
-static void drawLine(IDevice const &device, SHPoint p0, SHPoint p1, SHColor color);
+namespace sh{
+
+    class BasicDraw{
+    public:
+        static void drawLine(IDevice &device, SHPoint p0, SHPoint p1, SHColor color);
+    };
     
 }
 

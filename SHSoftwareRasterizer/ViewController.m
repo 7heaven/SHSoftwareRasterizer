@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "SHSoftwareCanvas.h"
 #import "Matrix44.hpp"
+#import "BasicDraw.hpp"
 
 @implementation ViewController{
     SHSoftwareCanvas *canvas;
@@ -37,7 +38,7 @@
     [canvas setPixel:(SHPoint){20, 20} color:(SHColor){0xFF, 0xFF, 0x99, 0xCC}];
     [canvas drawLineFrom:(SHPoint){50, 50} to:(SHPoint){150, 150} color:(SHColor){0xFF, 0x00, 0x99, 0xCC}];
     
-    Matrix44 *m = Matrix44::identity();
+    sh::Matrix44 *m = sh::Matrix44::identity();
     
     
 //    timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(setPixels) userInfo:nil repeats:YES];
@@ -50,7 +51,10 @@
     NSLog(@"mouseMove:%@", NSStringFromPoint(location));
     
     [canvas flushWithColor:(SHColor){0, 0, 0, 0}];
-    [canvas drawLineFrom:(SHPoint){150, 150} to:(SHPoint){location.x, self.view.bounds.size.height - location.y} color:(SHColor){0xFF, 0x00, 0x99, 0xCC}];
+//    [canvas drawLineFrom:(SHPoint){150, 150} to:(SHPoint){static_cast<int>(location.x), static_cast<int>(self.view.bounds.size.height - location.y)} color:(SHColor){0xFF, 0x00, 0x99, 0xCC}];
+    
+    sh::BasicDraw::drawLine(*[canvas getNativePtr], (SHPoint){150, 150}, (SHPoint){static_cast<int>(location.x), static_cast<int>(self.view.bounds.size.height - location.y)}, (SHColor){0xFF, 0x00, 0x99, 0xCC});
+    
     [canvas update];
 }
 

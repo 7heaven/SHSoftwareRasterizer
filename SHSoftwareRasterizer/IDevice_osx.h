@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IDevice.h"
 
-@protocol IDevice <NSObject>
+@protocol IDevice_osx <NSObject>
 
 - (void) setPixel:(SHPoint) position color:(SHColor) color;
 - (void) setPixels:(SHPoint[]) positions color:(SHColor) color;
@@ -16,5 +17,7 @@
 - (void) flushWithColor:(SHColor) color;
 
 - (void) update;
+
+- (IDevice *) getNativePtr;
 
 @end
