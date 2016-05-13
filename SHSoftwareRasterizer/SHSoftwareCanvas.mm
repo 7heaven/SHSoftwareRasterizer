@@ -7,7 +7,6 @@
 //
 
 #import "SHSoftwareCanvas.h"
-#include <OpenGL/gl.h>
 
 #define INSTINCT_SIZE CGSizeMake(20, 20)
 
@@ -67,7 +66,6 @@
 
 
 - (void) drawLineFrom:(SHPoint) p0 to:(SHPoint) p1 color:(SHColor) color{
-    float x, y;
     float x0 = p0.x;
     float y0 = p0.y;
     float x1 = p1.x;

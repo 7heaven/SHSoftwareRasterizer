@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "SHSoftwareCanvas.h"
+#import "Matrix44.hpp"
 
 @implementation ViewController{
     SHSoftwareCanvas *canvas;
@@ -35,6 +36,8 @@
     
     [canvas setPixel:(SHPoint){20, 20} color:(SHColor){0xFF, 0xFF, 0x99, 0xCC}];
     [canvas drawLineFrom:(SHPoint){50, 50} to:(SHPoint){150, 150} color:(SHColor){0xFF, 0x00, 0x99, 0xCC}];
+    
+    Matrix44 *m = Matrix44::identity();
     
     
 //    timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(setPixels) userInfo:nil repeats:YES];
