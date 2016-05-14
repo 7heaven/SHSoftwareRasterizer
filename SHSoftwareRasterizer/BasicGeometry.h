@@ -15,15 +15,20 @@ typedef struct{
 }SHPoint;
 
 typedef struct{
-    int x;
-    int y;
-    int z;
+    float x;
+    float y;
+}SHPointF;
+
+typedef struct{
+    float x;
+    float y;
+    float z;
 }SHPoint3D;
 
 typedef struct{
-    SHPoint a;
-    SHPoint b;
-    SHPoint c;
+    SHPointF a;
+    SHPointF b;
+    SHPointF c;
 }SHTriangle;
 
 typedef struct{
@@ -33,11 +38,43 @@ typedef struct{
 }SHTriangle3D;
 
 typedef struct{
+    unsigned int a;
+    unsigned int b;
+    unsigned int c;
+}SHSimpleTri;
+
+typedef struct{
+    float x;
+    float y;
+    float z;
+    float w;
+}SHVector3D;
+
+typedef struct{
     unsigned char a;
     unsigned char r;
     unsigned char g;
     unsigned char b;
 }SHColor;
+
+static inline SHPoint SHPointMake(int x, int y){
+    return (SHPoint){x, y};
+}
+
+static inline SHPointF SHPointFMake(float x, float y){
+    return (SHPointF){x, y};
+}
+
+static inline SHPoint3D SHPoint3DMake(float x, float y, float z){
+    return (SHPoint3D){x, y, z};
+}
+
+static inline SHColor SHColorMake(__uint32_t color){
+    return (SHColor){static_cast<unsigned char>((color >> 24) & 0xFF),
+                     static_cast<unsigned char>((color >> 16) & 0xFF),
+                     static_cast<unsigned char>((color >> 8) & 0xFF),
+                     static_cast<unsigned char>(color & 0xFF)};
+}
 
 
 #endif /* BasicGeometry_h */

@@ -13,6 +13,8 @@
 		F66C93DB1CE5B27A003E9811 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F66C93DA1CE5B27A003E9811 /* Foundation.framework */; };
 		F66C93DD1CE5B283003E9811 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F66C93DC1CE5B283003E9811 /* Cocoa.framework */; };
 		F66C93E31CE5B61C003E9811 /* BasicDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66C93E11CE5B61C003E9811 /* BasicDraw.cpp */; };
+		F66C93E61CE75257003E9811 /* Vertex3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66C93E41CE75256003E9811 /* Vertex3D.cpp */; };
+		F66C93E91CE789CF003E9811 /* BoxObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F66C93E81CE789CF003E9811 /* BoxObject.m */; };
 		F67743091CDCF89C00082AAC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F67743081CDCF89C00082AAC /* AppDelegate.m */; };
 		F677430C1CDCF89C00082AAC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F677430B1CDCF89C00082AAC /* main.m */; };
 		F677430F1CDCF89C00082AAC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F677430E1CDCF89C00082AAC /* ViewController.m */; };
@@ -53,6 +55,10 @@
 		F66C93DC1CE5B283003E9811 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F66C93E11CE5B61C003E9811 /* BasicDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BasicDraw.cpp; sourceTree = "<group>"; };
 		F66C93E21CE5B61C003E9811 /* BasicDraw.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BasicDraw.hpp; sourceTree = "<group>"; };
+		F66C93E41CE75256003E9811 /* Vertex3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vertex3D.cpp; sourceTree = "<group>"; };
+		F66C93E51CE75257003E9811 /* Vertex3D.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vertex3D.hpp; sourceTree = "<group>"; };
+		F66C93E71CE789CF003E9811 /* BoxObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoxObject.h; sourceTree = "<group>"; };
+		F66C93E81CE789CF003E9811 /* BoxObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoxObject.m; sourceTree = "<group>"; };
 		F67743041CDCF89C00082AAC /* SHSoftwareRasterizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SHSoftwareRasterizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67743071CDCF89C00082AAC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F67743081CDCF89C00082AAC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -124,6 +130,8 @@
 				F66C93BA1CE39590003E9811 /* BasicGeometry.h */,
 				F66C93BB1CE397F9003E9811 /* Matrix44.cpp */,
 				F66C93BC1CE397F9003E9811 /* Matrix44.hpp */,
+				F66C93E41CE75256003E9811 /* Vertex3D.cpp */,
+				F66C93E51CE75257003E9811 /* Vertex3D.hpp */,
 			);
 			name = geom;
 			sourceTree = "<group>";
@@ -207,6 +215,8 @@
 				F67743121CDCF89C00082AAC /* Main.storyboard */,
 				F67743151CDCF89C00082AAC /* Info.plist */,
 				F677430A1CDCF89C00082AAC /* Supporting Files */,
+				F66C93E71CE789CF003E9811 /* BoxObject.h */,
+				F66C93E81CE789CF003E9811 /* BoxObject.m */,
 			);
 			path = SHSoftwareRasterizer;
 			sourceTree = "<group>";
@@ -381,6 +391,8 @@
 				F66C93BD1CE397F9003E9811 /* Matrix44.cpp in Sources */,
 				F677430C1CDCF89C00082AAC /* main.m in Sources */,
 				F67743091CDCF89C00082AAC /* AppDelegate.m in Sources */,
+				F66C93E91CE789CF003E9811 /* BoxObject.m in Sources */,
+				F66C93E61CE75257003E9811 /* Vertex3D.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

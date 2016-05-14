@@ -83,7 +83,7 @@
 }
 
 - (void) setPixels:(SHPoint [])positions color:(SHColor)color{
-    size_t length = sizeof(positions) / sizeof(positions[0]);
+    size_t length = sizeof(&positions) / sizeof(positions[0]);
     
     NSLog(@"length:%zu", length);
     
@@ -116,7 +116,7 @@
     _backendSize = size;
     
     if(&_backgroundColor == nil){
-        _backgroundColor = (SHColor){0xFF, 0xFF, 0xFF, 0xFF};
+        _backgroundColor = (SHColor){0, 0, 0, 0};
     }
     
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
