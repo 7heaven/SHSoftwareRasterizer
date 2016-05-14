@@ -26,16 +26,16 @@
                               ] mutableCopy];
         
         self.triangleArray = [@[
-                                TSimple3DMake(0, 1, 2),
-                                TSimple3DMake(0, 2, 3),
-                                TSimple3DMake(4, 5, 7),
-                                TSimple3DMake(5, 6, 7),
-                                TSimple3DMake(4, 0, 3),
-                                TSimple3DMake(4, 3, 7),
-                                TSimple3DMake(1, 5, 6),
-                                TSimple3DMake(1, 6, 2),
-                                TSimple3DMake(3, 2, 6),
-                                TSimple3DMake(3, 6, 7),
+                                TSimple3DMake(0, 2, 1),
+                                TSimple3DMake(0, 3, 2),
+                                TSimple3DMake(4, 5, 6),
+                                TSimple3DMake(4, 6, 7),
+                                TSimple3DMake(4, 3, 0),
+                                TSimple3DMake(4, 7, 3),
+                                TSimple3DMake(1, 6, 5),
+                                TSimple3DMake(1, 2, 6),
+                                TSimple3DMake(3, 6, 2),
+                                TSimple3DMake(3, 7, 6),
                                 TSimple3DMake(4, 0, 1),
                                 TSimple3DMake(4, 1, 5)
                                 ] mutableCopy];

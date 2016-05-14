@@ -21,6 +21,7 @@
     float angle;
     
     sh::Matrix44 *_transform;
+    sh::Matrix44 *_projection;
     
     BoxObject *_box;
     
@@ -56,6 +57,7 @@
     [self.view addTrackingArea:area];
     
     _transform = sh::Matrix44::identity();
+    _projection = [self getPerspectiveMatrixWithFovy:3.1415926f * 0.5f aspect:self.view.frame.size.width / self.view.frame.size.height zn:1.0F zf:500.0F];
     
     _box = [[BoxObject alloc] initWithLength:150];
     
@@ -63,26 +65,49 @@
 }
 
 - (void) rotateX:(float) x y:(float) y{
-    _transform->toIdentity();
     
-    float cosX = cosf(x);
-    float sinX = sinf(x);
-    float cosY = cosf(y);
-    float sinY = sinf(y);
+    sh::Matrix44 *xMatrix = [self xRotateMatrix:x];
+    sh::Matrix44 *yMatrix = [self zRotateMatrix:y];
+    
+    *_transform *= *xMatrix;
+    *_transform *= *yMatrix;
+    
+}
+
+- (sh::Matrix44 *) xRotateMatrix:(float) radian{
+    float cosX = cosf(radian);
+    float sinX = sinf(radian);
     
     sh::Matrix44 *xMatrix = new sh::Matrix44(1,    0,     0, 0,
                                              0, cosX, -sinX, 0,
                                              0, sinX,  cosX, 0,
                                              0,    0,     0, 1);
     
+    return xMatrix;
+}
+
+- (sh::Matrix44 *) yRotateMatrix:(float) radian{
+    float cosY = cosf(radian);
+    float sinY = sinf(radian);
+    
     sh::Matrix44 *yMatrix = new sh::Matrix44( cosY, 0, sinY, 0,
                                                  0, 1,    0, 0,
                                              -sinY, 0, cosY, 0,
                                                  0, 0,    0, 1);
     
-    *_transform *= *xMatrix;
-    *_transform *= *yMatrix;
+    return yMatrix;
+}
+
+- (sh::Matrix44 *) zRotateMatrix:(float) radian{
+    float cosZ = cosf(radian);
+    float sinZ = sinf(radian);
     
+    sh::Matrix44 *zMatrix = new sh::Matrix44(cosZ, -sinZ, 0, 0,
+                                             sinZ,  cosZ, 0, 0,
+                                                0,     0, 1, 0,
+                                                0,     0, 0, 1);
+    
+    return zMatrix;
 }
 
 - (void) mouseDown:(NSEvent *)theEvent{
@@ -95,11 +120,22 @@
     _inty = location.y;
 }
 
-- (SHPoint)perspective:(SHVector3D)vector {
-    CGFloat x = N * (vector.x / vector.z) + centerPoint.x;
-    CGFloat y = N * (vector.y / vector.z) + centerPoint.y;
+- (sh::Matrix44 *) getPerspectiveMatrixWithFovy:(float) fovy aspect:(float) aspect zn:(float) zn zf:(float) zf{
+    float fax = 1.0F / (float) tan(fovy * 0.5F);
     
-    return SHPointMake(x, y);
+    sh::Matrix44 *projectMat = new sh::Matrix44((float)(fax / aspect),            0,                    0, 0,
+                                                                    0, (float)(fax),                    0, 0,
+                                                                    0,            0,       zf / (zf - zn), 1,
+                                                                    0,            0, -zn * zf / (zf - zn), 0);
+    
+    return projectMat;
+}
+
+- (SHPoint)perspective:(SHVector3D)vector {
+    CGFloat x = N * (vector.x / vector.z);
+    CGFloat y = N * (vector.y / vector.z);
+    
+    return SHPointMake(x + centerPoint.x, y + centerPoint.y);
 }
 
 - (void) mouseDragged:(NSEvent *)theEvent{
@@ -111,6 +147,7 @@
     _dragPoint = CGPointMake(_dragPoint.x + (_tx - _dragPoint.x) * 0.01, _dragPoint.y + (_ty - _dragPoint.y) * 0.01);
     
     [canvas flushWithColor:(SHColor){0, 0, 0, 0}];
+    _transform->toIdentity();
     [self rotateX:(_ty - centerPoint.y) / 200 + _previousRadianY y:(_tx - centerPoint.x) / 200 + _previousRadianX];
     
     for(int i = 0; i < _box.triangleArray.count; i++){
@@ -128,13 +165,26 @@
         b.z += 600;
         c.z += 600;
         
-        SHPoint a2D = [self perspective:a];
-        SHPoint b2D = [self perspective:b];
-        SHPoint c2D = [self perspective:c];
+        SHPoint pa = [self perspective:a];
+        SHPoint pb = [self perspective:b];
+        SHPoint pc = [self perspective:c];
         
-        sh::BasicDraw::drawLine(*[canvas getNativePtr], a2D, b2D, SHColorMake(0xFF0099CC));
-        sh::BasicDraw::drawLine(*[canvas getNativePtr], b2D, c2D, SHColorMake(0xFF0099CC));
-        sh::BasicDraw::drawLine(*[canvas getNativePtr], c2D, a2D, SHColorMake(0xFF0099CC));
+        BOOL shouldPass = [self crossProductWith:(SHPoint){pb.x - pa.x, pb.y - pa.y}
+                                              p1:(SHPoint){pc.x - pa.x, pc.y - pa.y}];
+        
+        if(!shouldPass) continue;
+        
+//        SHVector3D a2D = *_projection * a;
+//        SHVector3D b2D = *_projection * b;
+//        SHVector3D c2D = *_projection * c;
+//        
+//        SHPoint pa = SHPointMake(a2D.x + centerPoint.x, a2D.y + centerPoint.y);
+//        SHPoint pb = SHPointMake(b2D.x + centerPoint.x, b2D.y + centerPoint.y);
+//        SHPoint pc = SHPointMake(c2D.x + centerPoint.x, c2D.y + centerPoint.y);
+        
+        sh::BasicDraw::drawLine(*[canvas getNativePtr], pa, pb, SHColorMake(0xFF0099CC));
+        sh::BasicDraw::drawLine(*[canvas getNativePtr], pb, pc, SHColorMake(0xFF0099CC));
+        sh::BasicDraw::drawLine(*[canvas getNativePtr], pc, pa, SHColorMake(0xFF0099CC));
         
     }
     
@@ -143,6 +193,25 @@
     [canvas update];
     
     
+}
+
+- (BOOL) crossProductWith:(SHPoint) p0 p1:(SHPoint) p1{
+    int s = p0.x * p1.y - p1.x * p0.y;
+    
+    return s <= 0;
+}
+
+- (NSDictionary *)crossProWithV0:(SHVector3D)v0 v1:(SHVector3D)v1 center:(CGPoint)cPoint {
+    CGFloat t_x = v0.y * v1.z - v0.z * v1.y;
+    CGFloat t_y = v0.z * v1.x - v0.x * v1.z;
+    CGFloat t_z = v0.x * v1.y - v0.y * v1.x;
+    
+    CGFloat m = sqrt(t_x * t_x + t_y * t_y + t_z * t_z);
+    //向量单位化
+    t_x /= m;
+    t_y /= m;
+    //不开方,以减少运算量
+    return @{ @"cross" : @(t_x * t_x + t_y * t_y), @"z" : @(t_z) };
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
