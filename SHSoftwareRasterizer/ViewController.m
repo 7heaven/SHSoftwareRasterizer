@@ -146,13 +146,6 @@
     return projectMat;
 }
 
-- (SHPoint)perspective:(SHVector3D)vector {
-    CGFloat x = N * (vector.x / vector.z);
-    CGFloat y = N * (vector.y / vector.z);
-    
-    return SHPointMake(x + centerPoint.x, y + centerPoint.y);
-}
-
 - (void) mouseDragged:(NSEvent *)theEvent{
     timeval time;
     gettimeofday(&time, NULL);
@@ -183,10 +176,6 @@
         a.z += 550;
         b.z += 550;
         c.z += 550;
-//        
-//        SHPoint pa = [self perspective:a];
-//        SHPoint pb = [self perspective:b];
-//        SHPoint pc = [self perspective:c];
         
         SHVector3D a2D = *_projection * a;
         SHVector3D b2D = *_projection * b;
