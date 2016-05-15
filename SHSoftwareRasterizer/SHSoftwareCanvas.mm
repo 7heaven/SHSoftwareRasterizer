@@ -92,6 +92,18 @@
     }
 }
 
+- (void) flushWithDirtyRect:(SHRect) dirtyRect color:(SHColor) color{
+    
+    for(int i = dirtyRect.y; i < dirtyRect.y + dirtyRect.h; i++){
+        int start = dirtyRect.x + i * self.frame.size.width;
+        for(int j = start; j < start + dirtyRect.w; j++){
+            _rawData[j * 3] = color.r;
+            _rawData[j * 3 + 1] = color.g;
+            _rawData[j * 3 + 2] = color.b;
+        }
+    }
+}
+
 - (void) flushWithColor:(SHColor) color{
     for(int i = 0; i < _canvasPixelSize; i++){
         _rawData[i * 3] = color.r;
@@ -177,6 +189,10 @@ void SHSoftwareDevice::setPixel(SHPoint position, SHColor color){
 
 void SHSoftwareDevice::setPixels(SHPoint *position, SHColor color){
     [this->_canvas setPixels:position color:color];
+}
+
+void SHSoftwareDevice::flush(SHRect dirtyRect, SHColor color){
+    [this->_canvas flushWithDirtyRect:dirtyRect color:color];
 }
 
 void SHSoftwareDevice::flush(SHColor color){

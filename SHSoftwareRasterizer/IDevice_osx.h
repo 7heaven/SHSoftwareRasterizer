@@ -14,6 +14,7 @@
 - (void) setPixel:(SHPoint) position color:(SHColor) color;
 - (void) setPixels:(SHPoint[]) positions color:(SHColor) color;
 
+- (void) flushWithDirtyRect:(SHRect) dirtyRect color:(SHColor) color;
 - (void) flushWithColor:(SHColor) color;
 
 - (void) update;

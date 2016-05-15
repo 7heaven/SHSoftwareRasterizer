@@ -44,6 +44,13 @@ typedef struct{
 }SHSimpleTri;
 
 typedef struct{
+    int x;
+    int y;
+    int w;
+    int h;
+}SHRect;
+
+typedef struct{
     float x;
     float y;
     float z;
@@ -67,6 +74,10 @@ static inline SHPointF SHPointFMake(float x, float y){
 
 static inline SHPoint3D SHPoint3DMake(float x, float y, float z){
     return (SHPoint3D){x, y, z};
+}
+
+static inline SHRect SHRectMake(int x, int y, int w, int h){
+    return (SHRect){x, y, w, h};
 }
 
 static inline SHColor SHColorMake(__uint32_t color){

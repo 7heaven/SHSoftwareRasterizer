@@ -18,6 +18,7 @@
 - (void) setPixel:(SHPoint) position color:(SHColor) color;
 - (void) setPixels:(SHPoint[]) positions color:(SHColor) color;
 
+- (void) flushWithDirtyRect:(SHRect) dirtyRect color:(SHColor) color;
 - (void) flushWithColor:(SHColor) color;
 
 - (void) update;
@@ -34,6 +35,8 @@ public:
     
     void setPixel(SHPoint position, SHColor color);
     void setPixels(SHPoint position[], SHColor color);
+    
+    void flush(SHRect dirtyRect, SHColor color);
     void flush(SHColor color);
 private:
     SHSoftwareCanvas *_canvas;
