@@ -673,7 +673,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="700" height="370"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VMA-Y5-97G">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VMA-Y5-97G">
                                 <rect key="frame" x="4" y="346" width="161" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="GBf-QY-ijr">
                                     <font key="font" metaFont="system"/>
@@ -681,15 +681,30 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aq5-VM-sfh">
+                                <rect key="frame" x="602" y="329" width="88" height="32"/>
+                                <buttonCell key="cell" type="push" title="select..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KUn-ys-dOw">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="fileButtonClick:" target="XfG-lQ-9wD" id="UGI-Y9-Qvu"/>
+                                </connections>
+                            </button>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="VMA-Y5-97G" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="6" id="Fsx-sF-sDI"/>
+                            <constraint firstItem="VMA-Y5-97G" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="7" id="fiy-08-6uR"/>
+                        </constraints>
                     </view>
                     <connections>
+                        <outlet property="fileButton" destination="aq5-VM-sfh" id="7Rp-Nd-6lV"/>
                         <outlet property="fpsLabel" destination="VMA-Y5-97G" id="FKF-wJ-zz2"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="244" y="538"/>
+            <point key="canvasLocation" x="-78" y="539"/>
         </scene>
     </scenes>
 </document>

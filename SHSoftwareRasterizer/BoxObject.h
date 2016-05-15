@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BasicGeometry.h"
+#import "Object3DEntity.h"
 
 inline NSValue *Vector3DMake(float x, float y, float z){
     SHVector3D v = (SHVector3D){x, y, z, 1.0F};
@@ -36,10 +37,7 @@ inline SHSimpleTri getSimpleTri(NSValue *value){
 }
 
 
-@interface BoxObject : NSObject
-
-@property (strong, nonatomic) NSMutableArray *vectorArray;
-@property (strong, nonatomic) NSMutableArray *triangleArray;
+@interface BoxObject : Object3DEntity
 
 - (instancetype) initWithLength:(int) length;
 

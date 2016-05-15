@@ -15,6 +15,7 @@
 		F66C93E31CE5B61C003E9811 /* BasicDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66C93E11CE5B61C003E9811 /* BasicDraw.cpp */; };
 		F66C93E61CE75257003E9811 /* Vertex3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66C93E41CE75256003E9811 /* Vertex3D.cpp */; };
 		F66C93E91CE789CF003E9811 /* BoxObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F66C93E81CE789CF003E9811 /* BoxObject.m */; };
+		F66C93EC1CE8D112003E9811 /* Object3DEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = F66C93EB1CE8D112003E9811 /* Object3DEntity.m */; };
 		F67743091CDCF89C00082AAC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F67743081CDCF89C00082AAC /* AppDelegate.m */; };
 		F677430C1CDCF89C00082AAC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F677430B1CDCF89C00082AAC /* main.m */; };
 		F677430F1CDCF89C00082AAC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F677430E1CDCF89C00082AAC /* ViewController.m */; };
@@ -59,6 +60,8 @@
 		F66C93E51CE75257003E9811 /* Vertex3D.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vertex3D.hpp; sourceTree = "<group>"; };
 		F66C93E71CE789CF003E9811 /* BoxObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoxObject.h; sourceTree = "<group>"; };
 		F66C93E81CE789CF003E9811 /* BoxObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoxObject.m; sourceTree = "<group>"; };
+		F66C93EA1CE8D112003E9811 /* Object3DEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Object3DEntity.h; sourceTree = "<group>"; };
+		F66C93EB1CE8D112003E9811 /* Object3DEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Object3DEntity.m; sourceTree = "<group>"; };
 		F67743041CDCF89C00082AAC /* SHSoftwareRasterizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SHSoftwareRasterizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67743071CDCF89C00082AAC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F67743081CDCF89C00082AAC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -217,6 +220,8 @@
 				F677430A1CDCF89C00082AAC /* Supporting Files */,
 				F66C93E71CE789CF003E9811 /* BoxObject.h */,
 				F66C93E81CE789CF003E9811 /* BoxObject.m */,
+				F66C93EA1CE8D112003E9811 /* Object3DEntity.h */,
+				F66C93EB1CE8D112003E9811 /* Object3DEntity.m */,
 			);
 			path = SHSoftwareRasterizer;
 			sourceTree = "<group>";
@@ -386,6 +391,7 @@
 			files = (
 				F66C93C01CE494A7003E9811 /* SHHardwareCanvas.m in Sources */,
 				F66C93B71CE390F8003E9811 /* SHSoftwareCanvas.mm in Sources */,
+				F66C93EC1CE8D112003E9811 /* Object3DEntity.m in Sources */,
 				F677430F1CDCF89C00082AAC /* ViewController.m in Sources */,
 				F66C93E31CE5B61C003E9811 /* BasicDraw.cpp in Sources */,
 				F66C93BD1CE397F9003E9811 /* Matrix44.cpp in Sources */,

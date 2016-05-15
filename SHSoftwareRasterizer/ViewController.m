@@ -11,9 +11,12 @@
 #import "Matrix44.hpp"
 #import "BasicDraw.hpp"
 #import "BoxObject.h"
+#import "Object3DEntity.h"
 #import <sys/time.h>
 
 #define N 500.0F
+
+#define compareByte(a, b) [a.description isEqualToString:b]
 
 @implementation ViewController{
     SHSoftwareCanvas *canvas;
@@ -24,7 +27,7 @@
     sh::Matrix44 *_transform;
     sh::Matrix44 *_projection;
     
-    BoxObject *_box;
+    Object3DEntity *_box;
     
     int _intx;
     int _inty;
@@ -68,7 +71,12 @@
     
     [self.fpsLabel removeFromSuperview];
     [self.view addSubview:self.fpsLabel];
+    
+    [self.fileButton removeFromSuperview];
+    [self.view addSubview:self.fileButton];
 }
+
+
 
 - (void) rotateX:(float) x y:(float) y{
     
@@ -138,9 +146,9 @@
 }
 
 - (sh::Matrix44 *) getPerspectiveMatrix{
-    sh::Matrix44 *projectMat = new sh::Matrix44(1.0F, 0, 0, 0,
-                                                0, 1.0F, 0, 0,
-                                                0, 0, 1.0F, 0,
+    sh::Matrix44 *projectMat = new sh::Matrix44(10.0F, 0, 0, 0,
+                                                0, 10.0F, 0, 0,
+                                                0, 0, 10.0F, 0,
                                                 0, 0, 1.0F/(float) N, 0);
     
     return projectMat;
@@ -220,11 +228,178 @@
     _previousRadianY = (_ty - centerPoint.y) / 200;
 }
 
+- (Object3DEntity *)parse3DSFileWithPath:(NSURL *)path {
+    NSLog(@"path:%@", path);
+
+    NSData *fileData = [NSData dataWithContentsOfURL:path];
+    if (fileData) {
+        NSLog(@"path:%@", path);
+        Object3DEntity *object3D = [[Object3DEntity alloc] init];
+        
+        NSUInteger totalBytesCount = [fileData length];
+        
+        NSInteger index = 0;
+        
+        NSData *byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
+        
+        index += 2;
+        
+        NSData *chunkLength = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
+        
+        index += 4;
+        
+        NSInteger totalLength = 0;
+        while (index < totalBytesCount) {
+//            if (self.delegate && [self.delegate respondsToSelector:@selector(fileParser:parseProgress:)]) {
+//                [self.delegate fileParser:self parseProgress:totalLength > 0 ? (float)index / (float)totalLength : 0];
+//            }
+            
+            int length;
+            
+            [chunkLength getBytes:&length length:sizeof(length)];
+            
+            if (compareByte(byteData, @"<4d4d>")) {
+                [chunkLength getBytes:&totalLength length:sizeof(totalLength)];
+                // file header
+            } else if (compareByte(byteData, @"<3d3d>")) {
+            } else if (compareByte(byteData, @"<0041>")) {
+            } else if (compareByte(byteData, @"<0040>")) {
+                byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:1];
+                index += 1;
+                
+                char size;
+                
+                [byteData getBytes:&size length:sizeof(size)];
+                while (size != 0) {
+                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:1];
+                    index += 1;
+                    
+//                    if (self.delegate && [self.delegate respondsToSelector:@selector(fileParser:parseProgress:)]) {
+//                        [self.delegate fileParser:self
+//                                    parseProgress:totalLength > 0 ? (float)index / (float)totalLength : 0];
+//                    }
+                    
+                    [byteData getBytes:&size length:sizeof(size)];
+                }
+                
+            } else if (compareByte(byteData, @"<1041>")) {
+                byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
+                
+                index += 2;
+                short size;
+                [byteData getBytes:&size length:sizeof(size)];
+                for (int i = 0; i < size; i++) {
+//                    if (self.delegate && [self.delegate respondsToSelector:@selector(fileParser:parseProgress:)]) {
+//                        [self.delegate fileParser:self
+//                                    parseProgress:totalLength > 0 ? (float)index / (float)totalLength : 0];
+//                    }
+                    
+                    float x, y, z;
+                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
+                    
+                    [byteData getBytes:&x length:sizeof(x)];
+                    
+                    index += 4;
+                    
+                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
+                    
+                    [byteData getBytes:&y length:sizeof(y)];
+                    
+                    index += 4;
+                    
+                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
+                    
+                    [byteData getBytes:&z length:sizeof(z)];
+                    
+                    index += 4;
+                    
+                    [object3D.vectorArray addObject:Vector3DMake(x, y, z)];
+                }
+            } else if (compareByte(byteData, @"<2041>")) {
+                byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
+                
+                index += 2;
+                
+                short size;
+                
+                [byteData getBytes:&size length:sizeof(size)];
+                
+                for (int i = 0; i < size; i++) {
+//                    if (self.delegate && [self.delegate respondsToSelector:@selector(fileParser:parseProgress:)]) {
+//                        [self.delegate fileParser:self
+//                                    parseProgress:totalLength > 0 ? (float)index / (float)totalLength : 0];
+//                    }
+                    
+                    short a, b, c;
+                    
+                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
+                    [byteData getBytes:&a length:sizeof(a)];
+                    
+                    index += 2;
+                    
+                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
+                    [byteData getBytes:&b length:sizeof(b)];
+                    
+                    index += 2;
+                    
+                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
+                    [byteData getBytes:&c length:sizeof(c)];
+                    
+                    index += 4;
+                    
+                    [object3D.triangleArray addObject:TSimple3DMake(a, b, c)];
+                }
+                
+            } else if (compareByte(byteData, @"<4041>")) {
+                index += length - 6;
+            } else {
+                index += length - 6;
+            }
+            
+            byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
+            
+            index += 2;
+            
+            chunkLength = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
+            
+            index += 4;
+        }
+        
+        return object3D;
+    }
+    
+    return nil;
+}
+
 
 - (void)setRepresentedObject:(id)representedObject {
     [super setRepresentedObject:representedObject];
 
     // Update the view, if already loaded.
+}
+
+- (IBAction)fileButtonClick:(id)sender {
+    
+    NSOpenPanel* panel = [NSOpenPanel openPanel];
+    
+    // This method displays the panel and returns immediately.
+    // The completion handler is called when the user selects an
+    // item or cancels the panel.
+    [panel beginWithCompletionHandler:^(NSInteger result){
+        if (result == NSFileHandlingPanelOKButton) {
+            NSURL *_selectedDoc = [[panel URLs] objectAtIndex:0];
+            
+            NSLog(@"_sel:%@", _selectedDoc);
+            
+            Object3DEntity *entity = [self parse3DSFileWithPath:_selectedDoc];
+            
+            if(entity != nil){
+                _box = entity;
+            }
+            
+        }
+        
+    }];
 }
 
 @end

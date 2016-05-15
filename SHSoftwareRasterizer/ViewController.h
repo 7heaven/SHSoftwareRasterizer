@@ -9,8 +9,10 @@
 #import <Cocoa/Cocoa.h>
 
 @interface ViewController : NSViewController
+@property (weak) IBOutlet NSButton *fileButton;
 
 @property (weak) IBOutlet NSTextField *fpsLabel;
+- (IBAction)fileButtonClick:(id)sender;
 
 @end
 
