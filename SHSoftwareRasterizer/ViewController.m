@@ -146,9 +146,9 @@
 }
 
 - (sh::Matrix44 *) getPerspectiveMatrix{
-    sh::Matrix44 *projectMat = new sh::Matrix44(10.0F, 0, 0, 0,
-                                                0, 10.0F, 0, 0,
-                                                0, 0, 10.0F, 0,
+    sh::Matrix44 *projectMat = new sh::Matrix44(15.0F, 0, 0, 0,
+                                                0, 15.0F, 0, 0,
+                                                0, 0, 15.0F, 0,
                                                 0, 0, 1.0F/(float) N, 0);
     
     return projectMat;
@@ -165,8 +165,8 @@
     
     _dragPoint = CGPointMake(_dragPoint.x + (_tx - _dragPoint.x) * 0.01, _dragPoint.y + (_ty - _dragPoint.y) * 0.01);
     
-//    [canvas flushWithColor:(SHColor){0, 0, 0, 0}];
-    [canvas flushWithDirtyRect:SHRectMake(centerPoint.x - 150, centerPoint.y - 150, 300, 300) color:SHColorMake(0x0)];
+    [canvas flushWithColor:(SHColor){0, 0, 0, 0}];
+//    [canvas flushWithDirtyRect:SHRectMake(centerPoint.x - 150, centerPoint.y - 150, 300, 300) color:SHColorMake(0x0)];
     _transform->toIdentity();
     [self rotateX:(_ty - centerPoint.y) / 200 + _previousRadianY y:(_tx - centerPoint.x) / 200 + _previousRadianX];
     
