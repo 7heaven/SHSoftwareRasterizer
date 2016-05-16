@@ -70,7 +70,7 @@
     
     _projection = [self getPerspectiveMatrix];
     
-    float scaleFactor = 3.0F;
+    float scaleFactor = 4.0F;
     _worldMatrix = new sh::Matrix44(scaleFactor,           0,           0, 0,
                                               0, scaleFactor,           0, 0,
                                               0,           0, scaleFactor, 0,
@@ -87,7 +87,7 @@
     [self.fileButton removeFromSuperview];
     [self.view addSubview:self.fileButton];
     
-    objectColor = SHColorMake(0xFFCC9900);
+    objectColor = SHColorMake(0xFFFF0099);
     unsigned char full = 0xFF;
     revertColor = (SHColor){0xFF, static_cast<unsigned char>(full - objectColor.r), static_cast<unsigned char>(full - objectColor.g), static_cast<unsigned char>(full - objectColor.b)};
 }

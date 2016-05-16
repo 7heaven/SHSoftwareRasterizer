@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BasicGeometry.h"
 
 inline NSValue *TSimple3DMake(unsigned int a, unsigned int b, unsigned int c){
     SHSimpleTri tri = (SHSimpleTri){a, b, c};

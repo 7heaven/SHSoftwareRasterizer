@@ -80,7 +80,7 @@ static inline SHRect SHRectMake(int x, int y, int w, int h){
     return (SHRect){x, y, w, h};
 }
 
-static inline SHColor SHColorMake(__uint32_t color){
+static inline SHColor SHColorMake(unsigned int color){
     return (SHColor){static_cast<unsigned char>((color >> 24) & 0xFF),
                      static_cast<unsigned char>((color >> 16) & 0xFF),
                      static_cast<unsigned char>((color >> 8) & 0xFF),

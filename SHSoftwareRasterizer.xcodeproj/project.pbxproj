@@ -17,6 +17,7 @@
 		F66C93E91CE789CF003E9811 /* BoxObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F66C93E81CE789CF003E9811 /* BoxObject.m */; };
 		F66C93EC1CE8D112003E9811 /* Object3DEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = F66C93EB1CE8D112003E9811 /* Object3DEntity.m */; };
 		F66C93EF1CE984B2003E9811 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66C93ED1CE984B2003E9811 /* Texture.cpp */; };
+		F66C93F41CEA20EB003E9811 /* MacDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66C93F31CEA20EB003E9811 /* MacDevice.cpp */; };
 		F67743091CDCF89C00082AAC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F67743081CDCF89C00082AAC /* AppDelegate.m */; };
 		F677430C1CDCF89C00082AAC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F677430B1CDCF89C00082AAC /* main.m */; };
 		F677430F1CDCF89C00082AAC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F677430E1CDCF89C00082AAC /* ViewController.m */; };
@@ -66,6 +67,8 @@
 		F66C93ED1CE984B2003E9811 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
 		F66C93EE1CE984B2003E9811 /* Texture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Texture.hpp; sourceTree = "<group>"; };
 		F66C93F11CE9C893003E9811 /* ILight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ILight.h; sourceTree = "<group>"; };
+		F66C93F21CEA20EB003E9811 /* MacDevice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MacDevice.hpp; sourceTree = "<group>"; };
+		F66C93F31CEA20EB003E9811 /* MacDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MacDevice.cpp; sourceTree = "<group>"; };
 		F67743041CDCF89C00082AAC /* SHSoftwareRasterizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SHSoftwareRasterizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67743071CDCF89C00082AAC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F67743081CDCF89C00082AAC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -176,6 +179,8 @@
 				F66C93B61CE390F8003E9811 /* SHSoftwareCanvas.mm */,
 				F66C93BE1CE494A7003E9811 /* SHHardwareCanvas.h */,
 				F66C93BF1CE494A7003E9811 /* SHHardwareCanvas.m */,
+				F66C93F21CEA20EB003E9811 /* MacDevice.hpp */,
+				F66C93F31CEA20EB003E9811 /* MacDevice.cpp */,
 			);
 			name = osx;
 			sourceTree = "<group>";
@@ -415,6 +420,7 @@
 				F66C93E91CE789CF003E9811 /* BoxObject.m in Sources */,
 				F66C93E61CE75257003E9811 /* Vertex3D.cpp in Sources */,
 				F66C93EF1CE984B2003E9811 /* Texture.cpp in Sources */,
+				F66C93F41CEA20EB003E9811 /* MacDevice.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

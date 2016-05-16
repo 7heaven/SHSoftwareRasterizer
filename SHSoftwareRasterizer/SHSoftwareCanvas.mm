@@ -7,6 +7,7 @@
 //
 
 #import "SHSoftwareCanvas.h"
+#import "MacDevice.hpp"
 
 #define INSTINCT_SIZE CGSizeMake(20, 20)
 
@@ -19,7 +20,7 @@
     
     SHColor _backgroundColor;
     
-    SHSoftwareDevice *_nativePtr;
+    MacDevice *_nativePtr;
 }
 
 - (instancetype) initWithBackgroundColor:(SHColor) color{
@@ -48,7 +49,7 @@
 }
 
 - (void) initProcess{
-    _nativePtr = new SHSoftwareDevice(self);
+    _nativePtr = new MacDevice(self);
     
     [self initImageBackend];
 }
@@ -118,6 +119,10 @@
     return 0;
 }
 
+- (SHRect) getBounds{
+    return SHRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+}
+
 - (void) update{
     _imageBackend = [self createCGImageWithSize:self.bounds.size];
     self.image = [[NSImage alloc] initWithCGImage:_imageBackend size:self.bounds.size];
@@ -174,37 +179,3 @@
 }
 
 @end
-
-/*
- 
- 
- 
- */
-
-SHSoftwareDevice::SHSoftwareDevice(SHSoftwareCanvas *canvas){
-    this->_canvas = canvas;
-}
-
-void SHSoftwareDevice::update(){
-    [this->_canvas update];
-}
-
-void SHSoftwareDevice::setPixel(SHPoint position, SHColor color){
-    [this->_canvas setPixel:position color:color];
-}
-
-void SHSoftwareDevice::setPixels(SHPoint *position, SHColor color){
-    [this->_canvas setPixels:position color:color];
-}
-
-void SHSoftwareDevice::flush(SHRect dirtyRect, SHColor color){
-    [this->_canvas flushWithDirtyRect:dirtyRect color:color];
-}
-
-void SHSoftwareDevice::flush(SHColor color){
-    [this->_canvas flushWithColor:color];
-}
-
-float SHSoftwareDevice::getZDepth(SHPoint pos){
-    return [this->_canvas getZDepth:pos];
-}

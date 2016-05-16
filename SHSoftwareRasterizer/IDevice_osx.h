@@ -18,6 +18,7 @@
 - (void) flushWithColor:(SHColor) color;
 
 - (float) getZDepth:(SHPoint) pos;
+- (SHRect) getBounds;
 
 - (void) update;
 
