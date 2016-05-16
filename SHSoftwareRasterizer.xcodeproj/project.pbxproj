@@ -65,6 +65,7 @@
 		F66C93EB1CE8D112003E9811 /* Object3DEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Object3DEntity.m; sourceTree = "<group>"; };
 		F66C93ED1CE984B2003E9811 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
 		F66C93EE1CE984B2003E9811 /* Texture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Texture.hpp; sourceTree = "<group>"; };
+		F66C93F11CE9C893003E9811 /* ILight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ILight.h; sourceTree = "<group>"; };
 		F67743041CDCF89C00082AAC /* SHSoftwareRasterizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SHSoftwareRasterizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67743071CDCF89C00082AAC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F67743081CDCF89C00082AAC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -122,6 +123,7 @@
 		F66C93B11CE39061003E9811 /* engine */ = {
 			isa = PBXGroup;
 			children = (
+				F66C93F01CE9C880003E9811 /* light */,
 				F66C93E01CE5B60D003E9811 /* draw */,
 				F66C93C21CE49795003E9811 /* device */,
 				F66C93B31CE3908C003E9811 /* math */,
@@ -187,6 +189,14 @@
 				F66C93EE1CE984B2003E9811 /* Texture.hpp */,
 			);
 			name = draw;
+			sourceTree = "<group>";
+		};
+		F66C93F01CE9C880003E9811 /* light */ = {
+			isa = PBXGroup;
+			children = (
+				F66C93F11CE9C893003E9811 /* ILight.h */,
+			);
+			name = light;
 			sourceTree = "<group>";
 		};
 		F67742FB1CDCF89C00082AAC = {

@@ -130,7 +130,7 @@ namespace sh{
         }
     }
     
-    void BasicDraw::drawPersTriangle(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture){
+    void BasicDraw::drawPerspTriangle(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture){
         
         //simple sort by screen y
         for(;;){

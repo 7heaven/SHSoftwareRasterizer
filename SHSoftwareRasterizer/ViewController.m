@@ -42,6 +42,9 @@
     CGFloat _previousRadianY;
     
     SHRect dirtyRect;
+    
+    SHColor objectColor;
+    SHColor revertColor;
 }
 
 - (void)viewDidLoad {
@@ -78,6 +81,10 @@
     
     [self.fileButton removeFromSuperview];
     [self.view addSubview:self.fileButton];
+    
+    objectColor = SHColorMake(0xFFCC9900);
+    unsigned char full = 0xFF;
+    revertColor = (SHColor){0xFF, static_cast<unsigned char>(full - objectColor.r), static_cast<unsigned char>(full - objectColor.g), static_cast<unsigned char>(full - objectColor.b)};
 }
 
 
@@ -222,20 +229,18 @@
         
         if(m > 1) m = 1.0F;
         
+        //简单的伪光照计算
         if(m <= 0.2){
             float ra = (1.0 - m * 5.0F);
-            red = 0x00 + ra * 0xFF;
-            green = 0x99 + ra * 0x66;
-            blue = 0xCC + ra * 0x33;
+            red = objectColor.r + ra * revertColor.r;
+            green = objectColor.g + ra * revertColor.g;
+            blue = objectColor.b + ra * revertColor.b;
         }else{
             float ra = (1.0 - ((m - 0.2) * 1.25));
-            red = ra * 0x00;
-            green = ra * 0x99;
-            blue = ra * 0xCC;
+            red = ra * objectColor.r;
+            green = ra * objectColor.g;
+            blue = ra * objectColor.b;
         }
-        
-        
-        
         
         SHColor color = SHColorMake(0xFF000000 | red << 16 | green << 8 | blue);
         
