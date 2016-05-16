@@ -24,6 +24,7 @@ namespace sh{
         static void drawPerspTriangle(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture);
     private:
         static void drawSubTri(IDevice &device, SHPoint a, SHPoint b, SHPoint c, SHColor color);
+        static void drawSubPerspTri(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture);
         static SHPoint getStep(SHPoint p0, SHPoint p1, float s);
     };
     

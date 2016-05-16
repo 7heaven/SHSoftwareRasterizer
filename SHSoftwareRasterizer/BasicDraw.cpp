@@ -154,6 +154,20 @@ namespace sh{
         
         //return if area is zero
         if((a->screenPos.y == b->screenPos.y == c->screenPos.y) || (a->screenPos.x == b->screenPos.x == c->screenPos.x)) return;
+        
+        if(a->screenPos.y == b->screenPos.y || b->screenPos.y == c->screenPos.y){
+            
+        }else{
+//            float r = (float) (c.x - a.x) / (float) (c.y - a.y);
+//            int x = r * (b.y - a.y);
+//            
+//            SHPoint tmp = SHPointMake(a.x + x, b.y);
+        }
+        
+    }
+    
+    void BasicDraw::drawSubPerspTri(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture){
+        
     }
     
 }
