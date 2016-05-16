@@ -295,7 +295,9 @@ namespace sh{
                 int realU = xIu / xIz * texture.width;
                 int realV = xIv / xIz * texture.height;
                 
-                device.setPixel((SHPoint){xStep, yStep}, texture.getPixel(realU, realV));
+                SHColor c = texture.getPixel(realU, realV);
+                
+                device.setPixel((SHPoint){xStep, yStep}, c);
                 
                 xIz += xIzStep;
                 xIu += xIuStep;

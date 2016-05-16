@@ -14,6 +14,7 @@
 #import "Object3DEntity.h"
 #import <sys/time.h>
 #import "IDevice.h"
+#import "Texture.hpp"
 
 #define N 500.0F
 
@@ -46,6 +47,8 @@
     
     SHColor objectColor;
     SHColor revertColor;
+    
+    sh::Texture *texture;
 }
 
 - (void)viewDidLoad {
@@ -90,6 +93,14 @@
     objectColor = SHColorMake(0xFFFF0099);
     unsigned char full = 0xFF;
     revertColor = (SHColor){0xFF, static_cast<unsigned char>(full - objectColor.r), static_cast<unsigned char>(full - objectColor.g), static_cast<unsigned char>(full - objectColor.b)};
+    
+    SHColor pixels[4];
+    pixels[0] = SHColorMake(0xFF0099CC);
+    pixels[1] = SHColorMake(0xFFCC9900);
+    pixels[2] = SHColorMake(0xFF99CC00);
+    pixels[3] = SHColorMake(0xFFCC0099);
+    
+    texture = new sh::Texture(pixels, 2, 2);
 }
 
 
@@ -269,8 +280,28 @@
         
         SHColor color = SHColorMake(0xFF000000 | red << 16 | green << 8 | blue);
         
+        sh::Vertex3D *va = new sh::Vertex3D();
+        va->pos = SHPoint3DMake(a.x, a.y, a.z);
+        va->screenPos = pa;
+        va->u = 0;
+        va->v = 0;
+        
+        sh::Vertex3D *vb = new sh::Vertex3D();
+        vb->pos = SHPoint3DMake(b.x, b.y, b.z);
+        vb->screenPos = pb;
+        vb->u = 1;
+        vb->v = 0;
+        
+        sh::Vertex3D *vc = new sh::Vertex3D();
+        vc->pos = SHPoint3DMake(c.x, c.y, c.z);
+        vc->screenPos = pc;
+        vc->u = 0;
+        vc->v = 1;
+        
+        
         //扫描线绘制三角形
-        sh::BasicDraw::drawTriangle(*[canvas getNativePtr], pa, pb, pc, color);
+//        sh::BasicDraw::drawTriangle(*[canvas getNativePtr], pa, pb, pc, color);
+        sh::BasicDraw::drawPerspTriangle(*[canvas getNativePtr], va, vb, vc, *texture);
         
     }
 

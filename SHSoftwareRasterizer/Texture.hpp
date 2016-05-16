@@ -25,6 +25,7 @@ namespace sh{
     private:
         SHColor *pixels;
         
+        unsigned int totalSize;
     };
 }
 
