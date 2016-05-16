@@ -20,7 +20,9 @@ namespace sh{
         
         SHPoint3D pos;
         SHPoint3D normal;
-        SHPointF texturePos;
+        
+        float u;
+        float v;
         
         SHPoint screenPos;
         

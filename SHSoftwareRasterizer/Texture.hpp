@@ -19,10 +19,11 @@ namespace sh{
         ~Texture();
         
         SHColor getPixel(unsigned int x, unsigned int y);
-    private:
-        SHColor *pixels;
+        
         unsigned int width;
         unsigned int height;
+    private:
+        SHColor *pixels;
         
     };
 }
