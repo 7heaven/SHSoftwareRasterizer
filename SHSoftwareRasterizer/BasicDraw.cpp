@@ -239,8 +239,8 @@ namespace sh{
             leftIz = left->pos.z;
             rightIz = right->pos.z;
             leftIu = left->u;
-            rightIu = right->v;
-            leftIv = left->u;
+            rightIu = right->u;
+            leftIv = left->v;
             rightIv = right->v;
             
             leftIzStep = (float) (c->pos.z - a->pos.z) / y_length;
@@ -266,20 +266,20 @@ namespace sh{
             leftIz = left->pos.z;
             rightIz = right->pos.z;
             leftIu = left->u;
-            rightIu = right->v;
-            leftIv = left->u;
+            rightIu = right->u;
+            leftIv = left->v;
             rightIv = right->v;
             
-            leftIzStep = (float) (b->pos.z - c->pos.z) / y_length;
-            rightIzStep = (float) (a->pos.z - c->pos.z) / y_length;
-            leftIuStep = (float) (b->u - c->u) / y_length;
-            rightIuStep = (float) (a->u - c->u) / y_length;
-            leftIvStep = (float) (b->v - c->v) / y_length;
-            rightIvStep = (float) (a->v - c->v) / y_length;
+            leftIzStep = (float) (b->pos.z - a->pos.z) / y_length;
+            rightIzStep = (float) (c->pos.z - a->pos.z) / y_length;
+            leftIuStep = (float) (b->u - a->u) / y_length;
+            rightIuStep = (float) (c->u - a->u) / y_length;
+            leftIvStep = (float) (b->v - a->v) / y_length;
+            rightIvStep = (float) (c->v - a->v) / y_length;
         }
         
-        float leftX = left->pos.x;
-        float rightX = right->pos.x;
+        float leftX = left->screenPos.x;
+        float rightX = right->screenPos.x;
         while(yStep <= y1){
             
             float xIz = leftIz;
@@ -295,7 +295,7 @@ namespace sh{
                 int realU = xIu / xIz * texture.width;
                 int realV = xIv / xIz * texture.height;
                 
-                SHColor c = texture.getPixel(realU, realV);
+                SHColor c = texture.getPixel(1, 0);
                 
                 device.setPixel((SHPoint){xStep, yStep}, c);
                 
