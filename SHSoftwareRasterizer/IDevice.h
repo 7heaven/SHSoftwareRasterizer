@@ -21,6 +21,8 @@ namespace sh{
         
         virtual void flush(SHRect dirtyRect, SHColor color) = 0;
         virtual void flush(SHColor color) = 0;
+        
+        virtual float getZDepth(SHPoint pos) = 0;
     };
 }
 

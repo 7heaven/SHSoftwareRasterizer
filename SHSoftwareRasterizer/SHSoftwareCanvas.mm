@@ -114,6 +114,10 @@
     }
 }
 
+- (float) getZDepth:(SHPoint)pos{
+    return 0;
+}
+
 - (void) update{
     _imageBackend = [self createCGImageWithSize:self.bounds.size];
     self.image = [[NSImage alloc] initWithCGImage:_imageBackend size:self.bounds.size];
@@ -199,4 +203,8 @@ void SHSoftwareDevice::flush(SHRect dirtyRect, SHColor color){
 
 void SHSoftwareDevice::flush(SHColor color){
     [this->_canvas flushWithColor:color];
+}
+
+float SHSoftwareDevice::getZDepth(SHPoint pos){
+    return [this->_canvas getZDepth:pos];
 }

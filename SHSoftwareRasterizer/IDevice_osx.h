@@ -17,6 +17,8 @@
 - (void) flushWithDirtyRect:(SHRect) dirtyRect color:(SHColor) color;
 - (void) flushWithColor:(SHColor) color;
 
+- (float) getZDepth:(SHPoint) pos;
+
 - (void) update;
 
 - (sh::IDevice *) getNativePtr;

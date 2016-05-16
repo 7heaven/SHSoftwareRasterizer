@@ -15,12 +15,6 @@
 
 - (instancetype) initWithBackgroundColor:(SHColor) color;
 
-- (void) setPixel:(SHPoint) position color:(SHColor) color;
-- (void) setPixels:(SHPoint[]) positions color:(SHColor) color;
-
-- (void) flushWithDirtyRect:(SHRect) dirtyRect color:(SHColor) color;
-- (void) flushWithColor:(SHColor) color;
-
 - (void) update;
 
 - (sh::IDevice *) getNativePtr;
@@ -38,6 +32,8 @@ public:
     
     void flush(SHRect dirtyRect, SHColor color);
     void flush(SHColor color);
+    
+    float getZDepth(SHPoint pos);
 private:
     SHSoftwareCanvas *_canvas;
 };
