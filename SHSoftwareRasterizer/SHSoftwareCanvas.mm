@@ -94,6 +94,8 @@
 
 - (void) flushWithDirtyRect:(SHRect) dirtyRect color:(SHColor) color{
     
+    if(dirtyRect.x < 0 || dirtyRect.y < 0 || dirtyRect.x + dirtyRect.w > self.frame.size.width || dirtyRect.y + dirtyRect.h > self.frame.size.height) return;
+    
     for(int i = dirtyRect.y; i < dirtyRect.y + dirtyRect.h; i++){
         int start = dirtyRect.x + i * self.frame.size.width;
         for(int j = start; j < start + dirtyRect.w; j++){

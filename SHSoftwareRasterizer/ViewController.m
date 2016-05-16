@@ -27,6 +27,7 @@
     
     sh::Matrix44 *_transform;
     sh::Matrix44 *_projection;
+    sh::Matrix44 *_scaleMatrix;
     
     Object3DEntity *_box;
     
@@ -50,7 +51,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    // Do any additional setup after loading the view.
     canvas = [[SHSoftwareCanvas alloc] init];
     canvas.frame = self.view.bounds;
     
@@ -67,14 +67,19 @@
     [self.view addTrackingArea:area];
     
     _transform = sh::Matrix44::identity();
-//    _projection = [self getPerspectiveMatrixWithFovy:M_PI_2 aspect:self.view.frame.size.width / self.view.frame.size.height zn:1.0F zf:500.0F];
     
     _projection = [self getPerspectiveMatrix];
+    
+    float scaleFactor = 15.0F;
+    _scaleMatrix = new sh::Matrix44(scaleFactor,           0,           0, 0,
+                                              0, scaleFactor,           0, 0,
+                                              0,           0, scaleFactor, 0,
+                                              0,           0,           0, 1);
     
     _box = [[BoxObject alloc] initWithLength:150];
     
     centerPoint = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-    SHRect dirtyRect = SHRectMake(0, 0, 0, 0);
+    dirtyRect = SHRectMake(0, 0, 0, 0);
     
     [self.fpsLabel removeFromSuperview];
     [self.view addSubview:self.fpsLabel];
@@ -96,9 +101,11 @@
     
     *_transform *= *xMatrix;
     *_transform *= *yMatrix;
+    *_transform *= *_scaleMatrix;
     
 }
 
+//获得x轴旋转矩阵
 - (sh::Matrix44 *) xRotateMatrix:(float) radian{
     float cosX = cosf(radian);
     float sinX = sinf(radian);
@@ -111,6 +118,7 @@
     return xMatrix;
 }
 
+//获取y轴旋转矩阵
 - (sh::Matrix44 *) yRotateMatrix:(float) radian{
     float cosY = cosf(radian);
     float sinY = sinf(radian);
@@ -123,6 +131,7 @@
     return yMatrix;
 }
 
+//获取z轴旋转矩阵
 - (sh::Matrix44 *) zRotateMatrix:(float) radian{
     float cosZ = cosf(radian);
     float sinZ = sinf(radian);
@@ -145,6 +154,7 @@
     _inty = location.y;
 }
 
+//github项目miniPC给出的透视投影矩阵
 - (sh::Matrix44 *) getPerspectiveMatrixWithFovy:(float) fovy aspect:(float) aspect zn:(float) zn zf:(float) zf{
     float fax = 1.0F / (float) tan(fovy * 0.5F * (M_PI / 180));
     
@@ -156,6 +166,8 @@
     return projectMat;
 }
 
+
+//获取透视投影矩阵
 - (sh::Matrix44 *) getPerspectiveMatrix{
     sh::Matrix44 *projectMat = new sh::Matrix44(1.0F,    0,              0, 0,
                                                    0, 1.0F,              0, 0,
@@ -177,40 +189,50 @@
     
     _dragPoint = CGPointMake(_dragPoint.x + (_tx - _dragPoint.x) * 0.01, _dragPoint.y + (_ty - _dragPoint.y) * 0.01);
     
-//    [canvas flushWithColor:(SHColor){0, 0, 0, 0}];
     [canvas flushWithDirtyRect:dirtyRect color:SHColorMake(0x0)];
     dirtyRect = SHRectMake(0, 0, 0, 0);
+    
+    //矩阵还原
     _transform->toIdentity();
     
+    //矩阵旋转
     [self rotateX:(_ty - centerPoint.y) / 200 + _previousRadianY y:(_tx - centerPoint.x) / 200 + _previousRadianX];
     
     for(int i = 0; i < _box.triangleArray.count; i++){
+        //获取三角形
         SHSimpleTri tri = getSimpleTri(_box.triangleArray[i]);
         
+        //获取三角形对应的顶点
         SHVector3D a = getVector3D(_box.vectorArray[tri.a]);
         SHVector3D b = getVector3D(_box.vectorArray[tri.b]);
         SHVector3D c = getVector3D(_box.vectorArray[tri.c]);
         
+        //世界坐标变换
         a = *_transform * a;
         b = *_transform * b;
         c = *_transform * c;
         
+        //同上
         a.z += 550;
         b.z += 550;
         c.z += 550;
         
+        //二维透视投影
         SHVector3D a2D = *_projection * a;
         SHVector3D b2D = *_projection * b;
         SHVector3D c2D = *_projection * c;
         
+        //获取二维屏幕坐标
         SHPoint pa = SHPointMake(a2D.x / a2D.w + centerPoint.x, a2D.y / a2D.w + centerPoint.y);
         SHPoint pb = SHPointMake(b2D.x / b2D.w + centerPoint.x, b2D.y / b2D.w + centerPoint.y);
         SHPoint pc = SHPointMake(c2D.x / c2D.w + centerPoint.x, c2D.y / c2D.w + centerPoint.y);
         
+        //检查dirtyRect
         [self checkDirty:pa];
         [self checkDirty:pb];
         [self checkDirty:pc];
         
+        //二维向量叉乘，用此方法判断三角形是顺时针还是逆时针，如果逆时针则跳过
         float s = [self crossProductWith:(SHPoint){pb.x - pa.x, pb.y - pa.y}
                                     p1:(SHPoint){pc.x - pa.x, pc.y - pa.y}];
         
@@ -220,6 +242,7 @@
 //        sh::BasicDraw::drawLine(*[canvas getNativePtr], pb, pc, SHColorMake(0xFFFF0000));
 //        sh::BasicDraw::drawLine(*[canvas getNativePtr], pc, pa, SHColorMake(0xFFFF0000));
         
+        //三维向量取模，用来计算光线值
         float m = [self crossProWithV0:(SHVector3D){b.x - a.x, b.y - a.y, b.z - a.z, 1} v1:(SHVector3D){c.x - a.x, c.y - a.y, c.z - a.z, 1} center:centerPoint];
         
         
@@ -244,6 +267,7 @@
         
         SHColor color = SHColorMake(0xFF000000 | red << 16 | green << 8 | blue);
         
+        //扫描线绘制三角形
         sh::BasicDraw::drawTriangle(*[canvas getNativePtr], pa, pb, pc, color);
         
     }
@@ -295,6 +319,8 @@
     _previousRadianY = (_ty - centerPoint.y) / 200 + _previousRadianY;
 }
 
+
+//解析3DS文件，仅实现了三角面片，顶点坐标的解析
 - (Object3DEntity *)parse3DSFileWithPath:(NSURL *)path {
     NSLog(@"path:%@", path);
 
