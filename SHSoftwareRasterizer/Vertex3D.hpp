@@ -12,18 +12,19 @@
 #include <stdio.h>
 #include "BasicGeometry.h"
 
-class Vertex3D{
-public:
-    Vertex3D(float x, float y, float z, float w);
-    
-    int x();
-    int y();
-    int z();
-    int w();
-private:
-    SHTriangle3D pos;
-    SHTriangle3D normal;
-    SHPointF texturePos;
-};
+namespace sh{
+    class Vertex3D{
+    public:
+        Vertex3D();
+        ~Vertex3D();
+        
+        SHPoint3D pos;
+        SHPoint3D normal;
+        SHPointF texturePos;
+        
+        SHPoint screenPos;
+        
+    };
+}
 
 #endif /* Vertex3D_hpp */

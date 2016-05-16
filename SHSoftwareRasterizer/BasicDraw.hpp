@@ -12,12 +12,19 @@
 #include <stdio.h>
 #include "BasicGeometry.h"
 #include "IDevice.h"
+#include "Vertex3D.hpp"
+#include "Texture.hpp"
 
 namespace sh{
 
     class BasicDraw{
     public:
         static void drawLine(IDevice &device, SHPoint p0, SHPoint p1, SHColor color);
+        static void drawTriangle(IDevice &device, SHPoint a, SHPoint b, SHPoint c, SHColor color);
+        static void drawPersTriangle(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture);
+    private:
+        static void drawSubTri(IDevice &device, SHPoint a, SHPoint b, SHPoint c, SHColor color);
+        static SHPoint getStep(SHPoint p0, SHPoint p1, float s);
     };
     
 }

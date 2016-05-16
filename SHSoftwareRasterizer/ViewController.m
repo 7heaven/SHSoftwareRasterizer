@@ -13,6 +13,7 @@
 #import "BoxObject.h"
 #import "Object3DEntity.h"
 #import <sys/time.h>
+#import "IDevice.h"
 
 #define N 500.0F
 
@@ -149,10 +150,10 @@
 }
 
 - (sh::Matrix44 *) getPerspectiveMatrix{
-    sh::Matrix44 *projectMat = new sh::Matrix44(1.0F, 0, 0, 0,
-                                                0, 1.0F, 0, 0,
-                                                0, 0, 1.0F, 0,
-                                                0, 0, 1.0F/(float) N, 0);
+    sh::Matrix44 *projectMat = new sh::Matrix44(1.0F,    0,              0, 0,
+                                                   0, 1.0F,              0, 0,
+                                                   0,    0,           1.0F, 0,
+                                                   0,    0, 1.0F/(float) N, 0);
     
     return projectMat;
 }
@@ -203,26 +204,40 @@
         [self checkDirty:pb];
         [self checkDirty:pc];
         
-        BOOL shouldPass = [self crossProductWith:(SHPoint){pb.x - pa.x, pb.y - pa.y}
-                                              p1:(SHPoint){pc.x - pa.x, pc.y - pa.y}];
+        float s = [self crossProductWith:(SHPoint){pb.x - pa.x, pb.y - pa.y}
+                                    p1:(SHPoint){pc.x - pa.x, pc.y - pa.y}];
         
-        if(!shouldPass) continue;
+        if(s > 0) continue;
         
-        sh::BasicDraw::drawLine(*[canvas getNativePtr], pa, pb, SHColorMake(0xFF0099CC));
-        sh::BasicDraw::drawLine(*[canvas getNativePtr], pb, pc, SHColorMake(0xFF0099CC));
-        sh::BasicDraw::drawLine(*[canvas getNativePtr], pc, pa, SHColorMake(0xFF0099CC));
+//        sh::BasicDraw::drawLine(*[canvas getNativePtr], pa, pb, SHColorMake(0xFFFF0000));
+//        sh::BasicDraw::drawLine(*[canvas getNativePtr], pb, pc, SHColorMake(0xFFFF0000));
+//        sh::BasicDraw::drawLine(*[canvas getNativePtr], pc, pa, SHColorMake(0xFFFF0000));
+        
+        float m = [self crossProWithV0:(SHVector3D){b.x - a.x, b.y - a.y, b.z - a.z, 1} v1:(SHVector3D){c.x - a.x, c.y - a.y, c.z - a.z, 1} center:centerPoint];
+        
+        if(m > 1) m = 1.0F;
+        
+        float ra = (1.0 - m);
+        unsigned char red = ra * 0x00;
+        unsigned char green = ra * 0x99;
+        unsigned char blue = ra * 0xCC;
+        
+        
+        SHColor color = SHColorMake(0xFF000000 | red << 16 | green << 8 | blue);
+        
+        sh::BasicDraw::drawTriangle(*[canvas getNativePtr], pa, pb, pc, color);
         
     }
 
     [canvas update];
     
-//    timeval aftertime;
-//    gettimeofday(&aftertime, NULL);
-//    long currentTime = (aftertime.tv_sec * 1000) + (aftertime.tv_usec / 1000);
-//    long gap = currentTime - previousTime;
-//    int fps = 1000 / gap;
-//    
-//    [self.fpsLabel setStringValue:[NSString stringWithFormat:@"FPS:%d/S", fps]];
+    timeval aftertime;
+    gettimeofday(&aftertime, NULL);
+    long currentTime = (aftertime.tv_sec * 1000) + (aftertime.tv_usec / 1000);
+    long gap = currentTime - previousTime;
+    int fps = 1000 / (gap + 1);
+    
+    [self.fpsLabel setStringValue:[NSString stringWithFormat:@"%ldms/F", gap]];
     
 }
 
@@ -233,17 +248,32 @@
     if(p.y > dirtyRect.y + dirtyRect.h) dirtyRect.h = p.y - dirtyRect.y + 2;
 }
 
-- (BOOL) crossProductWith:(SHPoint) p0 p1:(SHPoint) p1{
-    int s = p0.x * p1.y - p1.x * p0.y;
+- (float) crossProductWith:(SHPoint) p0 p1:(SHPoint) p1{
+    float s = p0.x * p1.y - p1.x * p0.y;
     
-    return s <= 0;
+    return s;
+}
+
+- (float)crossProWithV0:(SHVector3D)v0 v1:(SHVector3D)v1 center:(CGPoint)cPoint {
+    CGFloat t_x = v0.y * v1.z - v0.z * v1.y;
+    CGFloat t_y = v0.z * v1.x - v0.x * v1.z;
+    CGFloat t_z = v0.x * v1.y - v0.y * v1.x;
+    
+    CGFloat m = sqrt(t_x * t_x + t_y * t_y + t_z * t_z);
+    t_x -= m * (cPoint.x - cPoint.x) / cPoint.x;
+    t_y -= m * (cPoint.y - cPoint.x) / cPoint.x;
+    //向量单位化
+    t_x /= m;
+    t_y /= m;
+    //不开方,以减少运算量
+    return t_x * t_x + t_y * t_y;
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
     CGPoint location = theEvent.locationInWindow;
     
-    _previousRadianX = (_tx - centerPoint.x) / 200;
-    _previousRadianY = (_ty - centerPoint.y) / 200;
+    _previousRadianX = (_tx - centerPoint.x) / 200 + _previousRadianX;
+    _previousRadianY = (_ty - centerPoint.y) / 200 + _previousRadianY;
 }
 
 - (Object3DEntity *)parse3DSFileWithPath:(NSURL *)path {
