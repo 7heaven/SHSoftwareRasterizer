@@ -27,7 +27,7 @@
     
     sh::Matrix44 *_transform;
     sh::Matrix44 *_projection;
-    sh::Matrix44 *_scaleMatrix;
+    sh::Matrix44 *_worldMatrix;
     
     Object3DEntity *_box;
     
@@ -70,8 +70,8 @@
     
     _projection = [self getPerspectiveMatrix];
     
-    float scaleFactor = 15.0F;
-    _scaleMatrix = new sh::Matrix44(scaleFactor,           0,           0, 0,
+    float scaleFactor = 3.0F;
+    _worldMatrix = new sh::Matrix44(scaleFactor,           0,           0, 0,
                                               0, scaleFactor,           0, 0,
                                               0,           0, scaleFactor, 0,
                                               0,           0,           0, 1);
@@ -101,7 +101,7 @@
     
     *_transform *= *xMatrix;
     *_transform *= *yMatrix;
-    *_transform *= *_scaleMatrix;
+    *_transform *= *_worldMatrix;
     
 }
 
@@ -189,8 +189,9 @@
     
     _dragPoint = CGPointMake(_dragPoint.x + (_tx - _dragPoint.x) * 0.01, _dragPoint.y + (_ty - _dragPoint.y) * 0.01);
     
-    [canvas flushWithDirtyRect:dirtyRect color:SHColorMake(0x0)];
-    dirtyRect = SHRectMake(0, 0, 0, 0);
+//    [canvas flushWithDirtyRect:dirtyRect color:SHColorMake(0x0)];
+//    dirtyRect = SHRectMake(0, 0, 0, 0);
+    [canvas flushWithColor:SHColorMake(0x0)];
     
     //矩阵还原
     _transform->toIdentity();
@@ -251,6 +252,7 @@
         unsigned char blue;
         
         if(m > 1) m = 1.0F;
+        if(m < 0) m = 0.0F;
         
         //简单的伪光照计算
         if(m <= 0.2){

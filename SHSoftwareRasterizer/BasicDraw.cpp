@@ -71,6 +71,7 @@ namespace sh{
         //return if area is zero
         if((a.y == b.y == c.y) || (a.x == b.x == c.x)) return;
         
+        //two vertex of the triangle already has the same y value, so we only need to draw sub triangle once
         if(a.y == b.y || b.y == c.y){
             drawSubTri(device, a, b, c, color);
         }else{
