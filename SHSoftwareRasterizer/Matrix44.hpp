@@ -31,8 +31,11 @@ public:
     
     SHVector3D operator*(SHVector3D vector);
     
-    float operator[] (int pos) const;
-    float &operator[] (int pos);
+    const float &operator[](int pos) const;
+    float &operator[](int pos);
+    
+//    operator float();
+//    float& operator=(int pos);
     
 private:
     

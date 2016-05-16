@@ -113,16 +113,24 @@ namespace sh{
         return resultVector;
     }
     
-    float Matrix44::operator[] (int pos) const{
+    const float &Matrix44::operator[](int pos) const{
         return this->mat[pos];
     }
     
     float &Matrix44::operator[](int pos){
         return this->mat[pos];
     }
+    
+//    Matrix44::operator float(){
+//        return this->mat[0];
+//    }
+//    
+//    float &Matrix44::operator=(int pos){
+//        return this->mat[pos];
+//    }
 
     Matrix44::~Matrix44(){
-    
+        
     }
 
 }

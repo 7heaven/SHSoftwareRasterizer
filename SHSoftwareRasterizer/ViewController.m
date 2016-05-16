@@ -39,6 +39,8 @@
     CGPoint centerPoint;
     CGFloat _previousRadianX;
     CGFloat _previousRadianY;
+    
+    SHRect dirtyRect;
 }
 
 - (void)viewDidLoad {
@@ -68,6 +70,7 @@
     _box = [[BoxObject alloc] initWithLength:150];
     
     centerPoint = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    SHRect dirtyRect = SHRectMake(0, 0, 0, 0);
     
     [self.fpsLabel removeFromSuperview];
     [self.view addSubview:self.fpsLabel];
@@ -146,9 +149,9 @@
 }
 
 - (sh::Matrix44 *) getPerspectiveMatrix{
-    sh::Matrix44 *projectMat = new sh::Matrix44(15.0F, 0, 0, 0,
-                                                0, 15.0F, 0, 0,
-                                                0, 0, 15.0F, 0,
+    sh::Matrix44 *projectMat = new sh::Matrix44(1.0F, 0, 0, 0,
+                                                0, 1.0F, 0, 0,
+                                                0, 0, 1.0F, 0,
                                                 0, 0, 1.0F/(float) N, 0);
     
     return projectMat;
@@ -157,6 +160,7 @@
 - (void) mouseDragged:(NSEvent *)theEvent{
     timeval time;
     gettimeofday(&time, NULL);
+    long previousTime = (time.tv_sec * 1000) + (time.tv_usec / 1000);
     
     CGPoint location = theEvent.locationInWindow;
     
@@ -165,9 +169,11 @@
     
     _dragPoint = CGPointMake(_dragPoint.x + (_tx - _dragPoint.x) * 0.01, _dragPoint.y + (_ty - _dragPoint.y) * 0.01);
     
-    [canvas flushWithColor:(SHColor){0, 0, 0, 0}];
-//    [canvas flushWithDirtyRect:SHRectMake(centerPoint.x - 150, centerPoint.y - 150, 300, 300) color:SHColorMake(0x0)];
+//    [canvas flushWithColor:(SHColor){0, 0, 0, 0}];
+    [canvas flushWithDirtyRect:dirtyRect color:SHColorMake(0x0)];
+    dirtyRect = SHRectMake(0, 0, 0, 0);
     _transform->toIdentity();
+    
     [self rotateX:(_ty - centerPoint.y) / 200 + _previousRadianY y:(_tx - centerPoint.x) / 200 + _previousRadianX];
     
     for(int i = 0; i < _box.triangleArray.count; i++){
@@ -193,6 +199,10 @@
         SHPoint pb = SHPointMake(b2D.x / b2D.w + centerPoint.x, b2D.y / b2D.w + centerPoint.y);
         SHPoint pc = SHPointMake(c2D.x / c2D.w + centerPoint.x, c2D.y / c2D.w + centerPoint.y);
         
+        [self checkDirty:pa];
+        [self checkDirty:pb];
+        [self checkDirty:pc];
+        
         BOOL shouldPass = [self crossProductWith:(SHPoint){pb.x - pa.x, pb.y - pa.y}
                                               p1:(SHPoint){pc.x - pa.x, pc.y - pa.y}];
         
@@ -206,13 +216,21 @@
 
     [canvas update];
     
-    timeval aftertime;
-    gettimeofday(&aftertime, NULL);
-    __int32_t gap = aftertime.tv_usec - time.tv_usec;
-    int fps = 1000 / gap;
+//    timeval aftertime;
+//    gettimeofday(&aftertime, NULL);
+//    long currentTime = (aftertime.tv_sec * 1000) + (aftertime.tv_usec / 1000);
+//    long gap = currentTime - previousTime;
+//    int fps = 1000 / gap;
+//    
+//    [self.fpsLabel setStringValue:[NSString stringWithFormat:@"FPS:%d/S", fps]];
     
-    [self.fpsLabel setStringValue:[NSString stringWithFormat:@"FPS:%d/S", gap]];
-    
+}
+
+- (void) checkDirty:(SHPoint) p{
+    if(p.x < dirtyRect.x) dirtyRect.x = p.x - 1;
+    if(p.y < dirtyRect.y) dirtyRect.y = p.y - 1;
+    if(p.x > dirtyRect.x + dirtyRect.w) dirtyRect.w = p.x - dirtyRect.x + 2;
+    if(p.y > dirtyRect.y + dirtyRect.h) dirtyRect.h = p.y - dirtyRect.y + 2;
 }
 
 - (BOOL) crossProductWith:(SHPoint) p0 p1:(SHPoint) p1{
@@ -396,6 +414,8 @@
             if(entity != nil){
                 _box = entity;
             }
+            
+            dirtyRect = SHRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
             
         }
         
