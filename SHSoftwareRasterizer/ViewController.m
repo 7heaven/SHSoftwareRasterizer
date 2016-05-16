@@ -215,12 +215,26 @@
         
         float m = [self crossProWithV0:(SHVector3D){b.x - a.x, b.y - a.y, b.z - a.z, 1} v1:(SHVector3D){c.x - a.x, c.y - a.y, c.z - a.z, 1} center:centerPoint];
         
+        
+        unsigned char red;
+        unsigned char green;
+        unsigned char blue;
+        
         if(m > 1) m = 1.0F;
         
-        float ra = (1.0 - m);
-        unsigned char red = ra * 0x00;
-        unsigned char green = ra * 0x99;
-        unsigned char blue = ra * 0xCC;
+        if(m <= 0.2){
+            float ra = (1.0 - m * 5.0F);
+            red = 0x00 + ra * 0xFF;
+            green = 0x99 + ra * 0x66;
+            blue = 0xCC + ra * 0x33;
+        }else{
+            float ra = (1.0 - ((m - 0.2) * 1.25));
+            red = ra * 0x00;
+            green = ra * 0x99;
+            blue = ra * 0xCC;
+        }
+        
+        
         
         
         SHColor color = SHColorMake(0xFF000000 | red << 16 | green << 8 | blue);
