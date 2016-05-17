@@ -36,6 +36,10 @@ float MacDevice::getZDepth(SHPoint pos){
     return [this->_device getZDepth:pos];
 }
 
+void MacDevice::setZDepth(SHPoint pos, float zDepth){
+    return [this->_device setZDepth:zDepth position:pos];
+}
+
 SHRect MacDevice::getBounds(){
     return [this->_device getBounds];
 }

@@ -190,6 +190,7 @@ namespace sh{
         //把本来呈非线性递增的u,v,z值转换为线性递增的u/z, v/z, 1/z,
         //在扫描线绘制的时候只需要每次增加预先计算出来的递增值，然后再用 u/z除以1/z, v/z除以1/z来得到正确的uv纹理的坐标
         
+        //把所有u转换为u/z 所有v转换为v/z
         a->u = (a->pos.z == 0 ? 0 : a->u / a->pos.z);
         a->v = (a->pos.z == 0 ? 0 : a->v / a->pos.z);
         b->u = (b->pos.z == 0 ? 0 : b->u / b->pos.z);
@@ -197,13 +198,19 @@ namespace sh{
         c->u = (c->pos.z == 0 ? 0 : c->u / c->pos.z);
         c->v = (c->pos.z == 0 ? 0 : c->v / c->pos.z);
         
+        //把所有z转换为1/z
         a->pos.z = (a->pos.z == 0 ? 0 : 1.0F / a->pos.z);
         b->pos.z = (b->pos.z == 0 ? 0 : 1.0F / b->pos.z);
         c->pos.z = (c->pos.z == 0 ? 0 : 1.0F / c->pos.z);
         
         if(a->screenPos.y == b->screenPos.y || b->screenPos.y == c->screenPos.y){
+            //当前状态已经是平顶三角形或者平底三角形 直接进入drawSubPerspTri绘制
             drawSubPerspTri(device, a, b, c, texture, light);
         }else{
+            
+            //把当前三角形拆分为平顶三角形和平底三角形
+            //三角形填充的过程是扫描线的形式，如果不是平顶三角形或者平底三角形则在扫描线进行到位于中间的顶点位置的时候需要做斜率的切换
+            
             float ca_y_length = (float) (c->screenPos.y - a->screenPos.y);
             float ba_y_length = (float) (b->screenPos.y - a->screenPos.y);
             
@@ -226,6 +233,7 @@ namespace sh{
             float iz = rz * ba_y_length;
             vertexTmp->pos.z = a->pos.z + iz;
             
+            //对拆分后的三角面片进行绘制
             drawSubPerspTri(device, a, b, vertexTmp, texture, light);
             drawSubPerspTri(device, vertexTmp, b, c, texture, light);
             
@@ -235,6 +243,7 @@ namespace sh{
     }
     
     void BasicDraw::drawSubPerspTri(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture, ILight &light){
+        //扫描线从y0-y1
         int y0 = a->screenPos.y;
         int y1 = c->screenPos.y;
         
@@ -257,6 +266,8 @@ namespace sh{
         float rightIvStep;
         
         float y_length = (y1 - y0);
+        
+        //计算左边的u/z, v/z, 1/z, x以及右边的u/z, v/z, 1/z, x的y轴递增量
         if(a->screenPos.y == b->screenPos.y){
             if(a->screenPos.x > b->screenPos.x){
                 Vertex3D *tmp = a;
@@ -323,31 +334,42 @@ namespace sh{
             float x_length = (float) (rightX - leftX);
             if(x_length == 0) x_length = 1.0F;
             
+            //计算x轴方向上的u/z, v/z, 1/z递增量
             float xIzStep = (rightIz - leftIz) / x_length;
             float xIuStep = (rightIu - leftIu) / x_length;
             float xIvStep = (rightIv - leftIv) / x_length;
             
             for(int xStep = leftX; xStep <= rightX; xStep++){
                 
+                //除以1/z得到当前扫描线位置的真实uv坐标
                 float u = (xIz == 0 ? 0 : xIu / xIz);
                 float v = (xIz == 0 ? 0 : xIv / xIz);
                 
+                //把uv转换到纹理坐标
                 int realU = u * texture.width;
                 int realV = v * texture.height;
                 
+                //获取纹理坐标对应颜色值
                 SHColor c = texture.getPixel(realU, realV);
                 
+                //光线计算
                 if(&light != NULL){
                     c = light.compute(c);
                 }
                 
-                device.setPixel((SHPoint){xStep, yStep}, c);
+                if(xIz > device.getZDepth(SHPointMake(xStep, yStep))){
+                    //绘制扫描线位置
+                    device.setPixel((SHPoint){xStep, yStep}, c);
+                    device.setZDepth(SHPointMake(xStep, yStep), xIz);
+                }
                 
+                //x轴方向的相关量递增
                 xIz += xIzStep;
                 xIu += xIuStep;
                 xIv += xIvStep;
             }
             
+            //y轴方向的相关量递增
             leftIz += leftIzStep;
             rightIz += rightIzStep;
             leftIu += leftIuStep;

@@ -26,6 +26,7 @@ public:
     void flush(SHColor color);
     
     float getZDepth(SHPoint pos);
+    void setZDepth(SHPoint pos, float zDepth);
     SHRect getBounds();
 private:
     id<IDevice_osx> _device;

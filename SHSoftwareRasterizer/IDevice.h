@@ -23,6 +23,7 @@ namespace sh{
         virtual void flush(SHColor color) = 0;
         
         virtual float getZDepth(SHPoint pos) = 0;
+        virtual void setZDepth(SHPoint pos, float zDepth) = 0;
         
         virtual SHRect getBounds() = 0;
     };

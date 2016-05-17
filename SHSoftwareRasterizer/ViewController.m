@@ -16,6 +16,7 @@
 #import "IDevice.h"
 #import "Texture.hpp"
 #import "FakeLight.hpp"
+#import "SimpleDiffuseLight.hpp"
 
 #define N 500.0F
 
@@ -74,7 +75,7 @@
     
     _projection = [self getPerspectiveMatrix];
     
-    float scaleFactor = 1.5F;
+    float scaleFactor = 2.5F;
     _worldMatrix = new sh::Matrix44(scaleFactor,           0,           0, 0,
                                               0, scaleFactor,           0, 0,
                                               0,           0, scaleFactor, 0,
@@ -114,8 +115,8 @@
     
     SHColor *pixels = (SHColor *) malloc(width * height * sizeof(SHColor));
     
-    for(int y = 0; y < width; y++){
-        for(int x = 0; x < height; x++){
+    for(int y = 0; y < height; y++){
+        for(int x = 0; x < width; x++){
             NSColor *c = [imageRep colorAtX:x y:y];
             
             pixels[y * width + x] = (SHColor){0xFF, static_cast<unsigned char>(c.redComponent * 255), static_cast<unsigned char>(c.greenComponent * 255), static_cast<unsigned char>(c.blueComponent * 255)};
@@ -286,7 +287,7 @@
         if(m > 1) m = 1.0F;
         if(m < 0) m = 0.0F;
         
-        ILight *light = new sh::FakeLight(m);
+        sh::ILight *light = new sh::FakeLight(m);
         
         sh::Vertex3D *va = new sh::Vertex3D();
         va->pos = a;

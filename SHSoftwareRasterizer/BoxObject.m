@@ -30,10 +30,11 @@
                              UVMake(1, 0),
                              UVMake(1, 1),
                              UVMake(0, 1),
-                             UVMake(0, 0),
-                             UVMake(1, 0),
                              UVMake(1, 1),
-                             UVMake(0, 1)
+                             UVMake(0, 1),
+                             UVMake(0, 0),
+                             UVMake(1, 0)
+                             
                              ] mutableCopy];
         
         self.triangleArray = [@[

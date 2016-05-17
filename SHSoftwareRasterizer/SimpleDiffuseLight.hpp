@@ -1,22 +1,21 @@
 //
-//  FakeLight.hpp
+//  SimpleDiffuseLight.hpp
 //  SHSoftwareRasterizer
 //
 //  Created by 7heaven on 16/5/17.
 //  Copyright © 2016年 7heaven. All rights reserved.
 //
 
-#ifndef FakeLight_hpp
-#define FakeLight_hpp
+#ifndef SimpleDiffuseLight_hpp
+#define SimpleDiffuseLight_hpp
 
 #include <stdio.h>
 #include "ILight.h"
-#include "BasicGeometry.h"
 
 namespace sh{
-    class FakeLight : public ILight{
+    class SimpleDiffuseLight: public ILight{
     public:
-        FakeLight(float m);
+        SimpleDiffuseLight(float m);
         SHColor compute(SHColor inputPixelColor);
         SHColor compute(const Vertex3D &a,
                         const Vertex3D &b,
@@ -27,4 +26,4 @@ namespace sh{
     };
 }
 
-#endif /* FakeLight_hpp */
+#endif /* SimpleDiffuseLight_hpp */

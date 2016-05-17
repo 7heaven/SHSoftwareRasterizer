@@ -18,14 +18,15 @@ namespace sh{
         unsigned char green;
         unsigned char blue;
         
-        unsigned char full = 0xFF;
-        SHColor revertColor = (SHColor){0xFF, static_cast<unsigned char>(full - inputPixelColor.r), static_cast<unsigned char>(full - inputPixelColor.g), static_cast<unsigned char>(full - inputPixelColor.b)};
+        unsigned char revertRed = 0xFF - inputPixelColor.r;
+        unsigned char revertGreen = 0xFF - inputPixelColor.g;
+        unsigned char revertBlue = 0xFF - inputPixelColor.b;
         
         if(m <= 0.2){
             float ra = (1.0 - m * 5.0F);
-            red = inputPixelColor.r + ra * revertColor.r;
-            green = inputPixelColor.g + ra * revertColor.g;
-            blue = inputPixelColor.b + ra * revertColor.b;
+            red = inputPixelColor.r + ra * revertRed;
+            green = inputPixelColor.g + ra * revertGreen;
+            blue = inputPixelColor.b + ra * revertBlue;
         }else{
             float ra = (1.0 - ((m - 0.2) * 1.25));
             red = ra * inputPixelColor.r;
@@ -34,5 +35,12 @@ namespace sh{
         }
         
         return SHColorMake(0xFF000000 | red << 16 | green << 8 | blue);
+    }
+    
+    SHColor FakeLight::compute(const Vertex3D &a,
+                               const Vertex3D &b,
+                               const Vertex3D &c,
+                               SHColor inputPixelColor){
+        return SHColorMake(0);
     }
 }

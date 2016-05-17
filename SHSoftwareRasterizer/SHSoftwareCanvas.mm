@@ -21,6 +21,8 @@
     SHColor _backgroundColor;
     
     MacDevice *_nativePtr;
+    
+    float *_zDepth;
 }
 
 - (instancetype) initWithBackgroundColor:(SHColor) color{
@@ -52,6 +54,12 @@
     _nativePtr = new MacDevice(self);
     
     [self initImageBackend];
+    [self initZDepthMap];
+}
+
+- (void) initZDepthMap{
+    _zDepth = (float *) malloc(sizeof(float) * _canvasPixelSize);
+    memset(_zDepth, 0, sizeof(float) * _canvasPixelSize);
 }
 
 - (void) initImageBackend{
@@ -116,7 +124,18 @@
 }
 
 - (float) getZDepth:(SHPoint)pos{
-    return 0;
+    int position = pos.y * self.frame.size.width + pos.x;
+    if(position < 0 || position > _canvasPixelSize) return 0;
+    
+    return _zDepth[position];
+    
+}
+
+- (void) setZDepth:(float) zDepth position:(SHPoint) pos{
+    int position = pos.y * self.frame.size.width + pos.x;
+    if(position < 0 || position > _canvasPixelSize) return;
+    
+    _zDepth[position] = zDepth;
 }
 
 - (SHRect) getBounds{
@@ -126,12 +145,14 @@
 - (void) update{
     _imageBackend = [self createCGImageWithSize:self.bounds.size];
     self.image = [[NSImage alloc] initWithCGImage:_imageBackend size:self.bounds.size];
+    memset(_zDepth, 0, sizeof(float) * _canvasPixelSize);
 }
 
 - (void) setFrame:(NSRect)frame{
     [super setFrame:frame];
     
     [self initImageBackend];
+    [self initZDepthMap];
 }
 
 - (CGImageRef) createCGImageWithSize:(CGSize) size{
@@ -176,6 +197,7 @@
     CFRelease(_imageBackend);
     free(_rawData);
     delete _nativePtr;
+    free(_zDepth);
 }
 
 @end

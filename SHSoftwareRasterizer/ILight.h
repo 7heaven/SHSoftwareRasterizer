@@ -10,10 +10,17 @@
 #define ILight_h
 
 #include "BasicGeometry.h"
+#include "Vertex3D.hpp"
 
-class ILight{
-public:
-    virtual SHColor compute(SHColor inputPixelColor) = 0;
-};
+namespace sh{
+    class ILight{
+    public:
+        virtual SHColor compute(SHColor inputPixelColor) = 0;
+        virtual SHColor compute(const Vertex3D &a,
+                                const Vertex3D &b,
+                                const Vertex3D &c,
+                                SHColor inputPixelColor) = 0;
+    };
+}
 
 #endif /* ILight_h */
