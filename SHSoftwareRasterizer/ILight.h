@@ -9,6 +9,8 @@
 #ifndef ILight_h
 #define ILight_h
 
+#include "BasicGeometry.h"
+
 class ILight{
 public:
     virtual SHColor compute(SHColor inputPixelColor) = 0;

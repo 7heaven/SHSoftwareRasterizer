@@ -137,7 +137,7 @@ namespace sh{
         }
     }
     
-    void BasicDraw::drawPerspTriangle(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture){
+    void BasicDraw::drawPerspTriangle(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture, ILight &light){
         
         //simple sort by screen y
         for(;;){
@@ -173,7 +173,7 @@ namespace sh{
         c->pos.z = (c->pos.z == 0 ? 0 : 1.0F / c->pos.z);
         
         if(a->screenPos.y == b->screenPos.y || b->screenPos.y == c->screenPos.y){
-            drawSubPerspTri(device, a, b, c, texture);
+            drawSubPerspTri(device, a, b, c, texture, light);
         }else{
             float ca_y_length = (float) (c->screenPos.y - a->screenPos.y);
             float ba_y_length = (float) (b->screenPos.y - a->screenPos.y);
@@ -197,15 +197,15 @@ namespace sh{
             float iz = rz * ba_y_length;
             vertexTmp->pos.z = a->pos.z + iz;
             
-            drawSubPerspTri(device, a, b, vertexTmp, texture);
-            drawSubPerspTri(device, vertexTmp, b, c, texture);
+            drawSubPerspTri(device, a, b, vertexTmp, texture, light);
+            drawSubPerspTri(device, vertexTmp, b, c, texture, light);
             
             delete vertexTmp;
         }
         
     }
     
-    void BasicDraw::drawSubPerspTri(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture){
+    void BasicDraw::drawSubPerspTri(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture, ILight &light){
         int y0 = a->screenPos.y;
         int y1 = c->screenPos.y;
         
@@ -310,7 +310,7 @@ namespace sh{
                 
 //                printf("realU:%d, realV:%d, xIu:%f, xIv:%f, xIz:%f\n", realU, realV, xIu, xIv, xIz);
                 
-                SHColor c = texture.getPixel(realU, realV);
+                SHColor c = light.compute(texture.getPixel(realU, realV));
                 
 //                printf("realU:%d, realV:%d", realU, realV);
                 

@@ -14,6 +14,7 @@
 #include "IDevice.h"
 #include "Vertex3D.hpp"
 #include "Texture.hpp"
+#include "ILight.h"
 
 namespace sh{
 
@@ -21,10 +22,10 @@ namespace sh{
     public:
         static void drawLine(IDevice &device, SHPoint p0, SHPoint p1, SHColor color);
         static void drawTriangle(IDevice &device, SHPoint a, SHPoint b, SHPoint c, SHColor color);
-        static void drawPerspTriangle(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture);
+        static void drawPerspTriangle(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture, ILight &light);
     private:
         static void drawSubTri(IDevice &device, SHPoint a, SHPoint b, SHPoint c, SHColor color);
-        static void drawSubPerspTri(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture);
+        static void drawSubPerspTri(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture, ILight &light);
         static SHPoint getStep(SHPoint p0, SHPoint p1, float s);
     };
     

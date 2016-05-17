@@ -15,6 +15,7 @@
 #import <sys/time.h>
 #import "IDevice.h"
 #import "Texture.hpp"
+#import "FakeLight.hpp"
 
 #define N 500.0F
 
@@ -73,7 +74,7 @@
     
     _projection = [self getPerspectiveMatrix];
     
-    float scaleFactor = 1.0F;
+    float scaleFactor = 4.5F;
     _worldMatrix = new sh::Matrix44(scaleFactor,           0,           0, 0,
                                               0, scaleFactor,           0, 0,
                                               0,           0, scaleFactor, 0,
@@ -101,7 +102,7 @@
     pixels[3] = SHColorMake(0xFFCC0099);
     
 //    texture = new sh::Texture(pixels, 2, 2);
-    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map0"]];
+    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map1"]];
 }
 
 - (sh::Texture *) readTextureFromImage:(NSImage *) image{
@@ -282,27 +283,19 @@
         float m = [self crossProWithV0:(SHVector3D){b.x - a.x, b.y - a.y, b.z - a.z, 1} v1:(SHVector3D){c.x - a.x, c.y - a.y, c.z - a.z, 1} center:centerPoint];
         
         
-        unsigned char red;
-        unsigned char green;
-        unsigned char blue;
+//        unsigned char red;
+//        unsigned char green;
+//        unsigned char blue;
         
         if(m > 1) m = 1.0F;
         if(m < 0) m = 0.0F;
         
-        //简单的伪光照计算
-        if(m <= 0.2){
-            float ra = (1.0 - m * 5.0F);
-            red = objectColor.r + ra * revertColor.r;
-            green = objectColor.g + ra * revertColor.g;
-            blue = objectColor.b + ra * revertColor.b;
-        }else{
-            float ra = (1.0 - ((m - 0.2) * 1.25));
-            red = ra * objectColor.r;
-            green = ra * objectColor.g;
-            blue = ra * objectColor.b;
-        }
+        ILight *light = new sh::FakeLight(m);
         
-        SHColor color = SHColorMake(0xFF000000 | red << 16 | green << 8 | blue);
+        //简单的伪光照计算
+        
+        
+//        SHColor color = SHColorMake(0xFF000000 | red << 16 | green << 8 | blue);
         
         sh::Vertex3D *va = new sh::Vertex3D();
         va->pos = a;
@@ -325,7 +318,7 @@
         
         //扫描线绘制三角形
 //        sh::BasicDraw::drawTriangle(*[canvas getNativePtr], pa, pb, pc, color);
-        sh::BasicDraw::drawPerspTriangle(*[canvas getNativePtr], va, vb, vc, *texture);
+        sh::BasicDraw::drawPerspTriangle(*[canvas getNativePtr], va, vb, vc, *texture, *light);
         
     }
 
@@ -379,11 +372,9 @@
 
 //解析3DS文件，仅实现了三角面片，顶点坐标的解析
 - (Object3DEntity *)parse3DSFileWithPath:(NSURL *)path {
-    NSLog(@"path:%@", path);
 
     NSData *fileData = [NSData dataWithContentsOfURL:path];
     if (fileData) {
-        NSLog(@"path:%@", path);
         Object3DEntity *object3D = [[Object3DEntity alloc] init];
         
         NSUInteger totalBytesCount = [fileData length];
@@ -501,7 +492,34 @@
                 }
                 
             } else if (compareByte(byteData, @"<4041>")) {
-                index += length - 6;
+                
+                byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
+                
+                index += 2;
+                short size;
+                [byteData getBytes:&size length:sizeof(size)];
+                for (int i = 0; i < size; i++) {
+                    //                    if (self.delegate && [self.delegate respondsToSelector:@selector(fileParser:parseProgress:)]) {
+                    //                        [self.delegate fileParser:self
+                    //                                    parseProgress:totalLength > 0 ? (float)index / (float)totalLength : 0];
+                    //                    }
+                    
+                    float x, y;
+                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
+                    
+                    [byteData getBytes:&x length:sizeof(x)];
+                    
+                    index += 4;
+                    
+                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
+                    
+                    [byteData getBytes:&y length:sizeof(y)];
+                    
+                    index += 4;
+                    
+                    [object3D.uvMapArray addObject:UVMake(x, y)];
+                }
+//                index += length - 6;
             } else {
                 index += length - 6;
             }
@@ -538,8 +556,6 @@
     [panel beginWithCompletionHandler:^(NSInteger result){
         if (result == NSFileHandlingPanelOKButton) {
             NSURL *_selectedDoc = [[panel URLs] objectAtIndex:0];
-            
-            NSLog(@"_sel:%@", _selectedDoc);
             
             Object3DEntity *entity = [self parse3DSFileWithPath:_selectedDoc];
             
