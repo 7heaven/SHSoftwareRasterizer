@@ -74,7 +74,7 @@
     
     _projection = [self getPerspectiveMatrix];
     
-    float scaleFactor = 4.5F;
+    float scaleFactor = 1.5F;
     _worldMatrix = new sh::Matrix44(scaleFactor,           0,           0, 0,
                                               0, scaleFactor,           0, 0,
                                               0,           0, scaleFactor, 0,
@@ -102,11 +102,12 @@
     pixels[3] = SHColorMake(0xFFCC0099);
     
 //    texture = new sh::Texture(pixels, 2, 2);
-    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map0"]];
+    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map_chess"]];
 }
 
 - (sh::Texture *) readTextureFromImage:(NSImage *) image{
     NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:[image TIFFRepresentation]];
+    imageRep = [imageRep bitmapImageRepByConvertingToColorSpace:[NSColorSpace deviceRGBColorSpace] renderingIntent:NSColorRenderingIntentDefault];
     
     int width = (int) [imageRep pixelsWide];
     int height = (int) [imageRep pixelsHigh];
@@ -282,20 +283,10 @@
         //三维向量取模，用来计算光线值
         float m = [self crossProWithV0:(SHVector3D){b.x - a.x, b.y - a.y, b.z - a.z, 1} v1:(SHVector3D){c.x - a.x, c.y - a.y, c.z - a.z, 1} center:centerPoint];
         
-        
-//        unsigned char red;
-//        unsigned char green;
-//        unsigned char blue;
-        
         if(m > 1) m = 1.0F;
         if(m < 0) m = 0.0F;
         
         ILight *light = new sh::FakeLight(m);
-        
-        //简单的伪光照计算
-        
-        
-//        SHColor color = SHColorMake(0xFF000000 | red << 16 | green << 8 | blue);
         
         sh::Vertex3D *va = new sh::Vertex3D();
         va->pos = a;
@@ -317,7 +308,6 @@
         
         
         //扫描线绘制三角形
-//        sh::BasicDraw::drawTriangle(*[canvas getNativePtr], pa, pb, pc, color);
         sh::BasicDraw::drawPerspTriangle(*[canvas getNativePtr], va, vb, vc, *texture, *light);
         
     }

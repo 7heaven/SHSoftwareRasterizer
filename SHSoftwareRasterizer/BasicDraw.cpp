@@ -47,9 +47,12 @@ namespace sh{
         return (SHPoint){0, 0};
     }
     
+    ////////////////////
+    // 绘制2D纯色三角形
+    ////////////////////
     void BasicDraw::drawTriangle(IDevice &device, SHPoint a, SHPoint b, SHPoint c, SHColor color){
         
-        //simple sort by y
+        //根据y值做简单排序
         for(;;){
             if(a.y <= b.y && b.y <= c.y){
                 break;
@@ -68,23 +71,29 @@ namespace sh{
             }
         }
         
-        //return if area is zero
+        //如果面积为零 返回
         if((a.y == b.y == c.y) || (a.x == b.x == c.x)) return;
         
-        //two vertex of the triangle already has the same y value, so we only need to draw sub triangle once
         if(a.y == b.y || b.y == c.y){
+            //当前状态已经是平顶三角形或者平底三角形 直接进入drawSubTri绘制
             drawSubTri(device, a, b, c, color);
         }else{
+            //把当前三角形拆分为平顶三角形和平底三角形
+            //三角形填充的过程是扫描线的形式，如果不是平顶三角形或者平底三角形则在扫描线进行到位于中间的顶点位置的时候需要做斜率的切换
             float r = (float) (c.x - a.x) / (float) (c.y - a.y);
             int x = r * (b.y - a.y);
             
             SHPoint tmp = SHPointMake(a.x + x, b.y);
             
+            //对两个拆分后的三角形进行填充绘制
             drawSubTri(device, a, b, tmp, color);
             drawSubTri(device, b, tmp, c, color);
         }
     }
     
+    ////////////////////
+    // 绘制拆分后的三角形
+    ////////////////////
     void BasicDraw::drawSubTri(IDevice &device, SHPoint a, SHPoint b, SHPoint c, SHColor color){
         int y0 = a.y;
         int y1 = c.y;
@@ -92,29 +101,40 @@ namespace sh{
         int yStep = y0 < 0 ? 0 : y0;
         float leftXStep, rightXStep;
         SHPoint left, right;
+    
         if(a.y == b.y){
+            //平顶三角形
+            
+            //保证a在左边 b在右边
             if(a.x > b.x){
                 SHPoint tmp = a;
                 a = b;
                 b = tmp;
             }
             
+            //对三角形左右两条边做递增的计算
             left = a;
             right = b;
             
+            //y每+1s时 两边的x递增值
             leftXStep = (float) (c.x - a.x) / (float) (y1 - y0);
             rightXStep = (float) (c.x - b.x) / (float) (y1 - y0);
             
         }else{
+            //平底三角形
+            
+            //保证b在左边， c在右边
             if(b.x > c.x){
                 SHPoint tmp = b;
                 b = c;
                 c = tmp;
             }
             
+            //对三角形左右两条边做递增的计算
             left = a;
             right = a;
             
+            //y每+1s时 两边的x递增值
             leftXStep = (float) (b.x - a.x) / (float) (y1 - y0);
             rightXStep = (float) (c.x - a.x) / (float) (y1 - y0);
         }
@@ -122,8 +142,10 @@ namespace sh{
         float leftX = left.x;
         float rightX = right.x;
         
+        //从上到下的绘制过程
         while(yStep <= y1){
             
+            //扫描线绘制
             for(int xStep = (leftX < 0 ? 0 : leftX); xStep <= (rightX > device.getBounds().w ? device.getBounds().w : rightX); xStep++){
                 device.setPixel((SHPoint){xStep, yStep}, color);
             }
@@ -137,9 +159,12 @@ namespace sh{
         }
     }
     
+    ////////////////////
+    // 绘制带有透视纹理贴图的三角形
+    ////////////////////
     void BasicDraw::drawPerspTriangle(IDevice &device, Vertex3D *a, Vertex3D *b, Vertex3D *c, Texture &texture, ILight &light){
         
-        //simple sort by screen y
+        //根据屏幕y坐标做简单的排序
         for(;;){
             if(a->screenPos.y <= b->screenPos.y && b->screenPos.y <= c->screenPos.y){
                 break;
@@ -158,8 +183,12 @@ namespace sh{
             }
         }
         
-        //return if area is zero
+        //面积零时  返回
         if((a->screenPos.y == b->screenPos.y == c->screenPos.y) || (a->screenPos.x == b->screenPos.x == c->screenPos.x)) return;
+        
+        //基于Chris Hecker的透视纹理贴图算法
+        //把本来呈非线性递增的u,v,z值转换为线性递增的u/z, v/z, 1/z,
+        //在扫描线绘制的时候只需要每次增加预先计算出来的递增值，然后再用 u/z除以1/z, v/z除以1/z来得到正确的uv纹理的坐标
         
         a->u = (a->pos.z == 0 ? 0 : a->u / a->pos.z);
         a->v = (a->pos.z == 0 ? 0 : a->v / a->pos.z);
@@ -298,8 +327,6 @@ namespace sh{
             float xIuStep = (rightIu - leftIu) / x_length;
             float xIvStep = (rightIv - leftIv) / x_length;
             
-//            printf("izStep:%f, iuStep:%f, ivStep:%f", xIzStep, xIuStep, xIvStep);
-            
             for(int xStep = leftX; xStep <= rightX; xStep++){
                 
                 float u = (xIz == 0 ? 0 : xIu / xIz);
@@ -308,11 +335,11 @@ namespace sh{
                 int realU = u * texture.width;
                 int realV = v * texture.height;
                 
-//                printf("realU:%d, realV:%d, xIu:%f, xIv:%f, xIz:%f\n", realU, realV, xIu, xIv, xIz);
+                SHColor c = texture.getPixel(realU, realV);
                 
-                SHColor c = light.compute(texture.getPixel(realU, realV));
-                
-//                printf("realU:%d, realV:%d", realU, realV);
+                if(&light != NULL){
+                    c = light.compute(c);
+                }
                 
                 device.setPixel((SHPoint){xStep, yStep}, c);
                 
