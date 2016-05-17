@@ -10,10 +10,15 @@
 
 namespace sh{
     Vertex3D::Vertex3D()
-    :pos(SHPoint3DMake(0, 0, 0)),
+    :pos(SHVector3DMake(0, 0, 0, 0)),
     normal(SHPoint3DMake(0, 0, 0)),
-    texturePos(SHPointFMake(0, 0)),
+    u(0),
+    v(0),
     screenPos(SHPointMake(0, 0)){
+        
+    }
+    
+    Vertex3D::~Vertex3D(){
         
     }
 }

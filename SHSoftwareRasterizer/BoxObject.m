@@ -25,6 +25,17 @@
                               Vector3DMake(-halfLength, halfLength, halfLength)
                               ] mutableCopy];
         
+        self.uvMapArray = [@[
+                             UVMake(0, 0),
+                             UVMake(1, 0),
+                             UVMake(1, 1),
+                             UVMake(0, 1),
+                             UVMake(0, 0),
+                             UVMake(1, 0),
+                             UVMake(1, 1),
+                             UVMake(0, 1)
+                             ] mutableCopy];
+        
         self.triangleArray = [@[
                                 TSimple3DMake(0, 2, 1),
                                 TSimple3DMake(0, 3, 2),

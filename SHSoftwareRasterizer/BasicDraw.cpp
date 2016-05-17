@@ -89,8 +89,8 @@ namespace sh{
         int y0 = a.y;
         int y1 = c.y;
         
-        int yStep = y0;
-        float leftR, rightR;
+        int yStep = y0 < 0 ? 0 : y0;
+        float leftXStep, rightXStep;
         SHPoint left, right;
         if(a.y == b.y){
             if(a.x > b.x){
@@ -102,8 +102,8 @@ namespace sh{
             left = a;
             right = b;
             
-            leftR = (float) (c.x - a.x) / (float) (y1 - y0);
-            rightR = (float) (c.x - b.x) / (float) (y1 - y0);
+            leftXStep = (float) (c.x - a.x) / (float) (y1 - y0);
+            rightXStep = (float) (c.x - b.x) / (float) (y1 - y0);
             
         }else{
             if(b.x > c.x){
@@ -115,8 +115,8 @@ namespace sh{
             left = a;
             right = a;
             
-            leftR = (float) (b.x - a.x) / (float) (y1 - y0);
-            rightR = (float) (c.x - a.x) / (float) (y1 - y0);
+            leftXStep = (float) (b.x - a.x) / (float) (y1 - y0);
+            rightXStep = (float) (c.x - a.x) / (float) (y1 - y0);
         }
         
         float leftX = left.x;
@@ -124,13 +124,16 @@ namespace sh{
         
         while(yStep <= y1){
             
-            for(int xStep = leftX; xStep <= rightX; xStep++){
+            for(int xStep = (leftX < 0 ? 0 : leftX); xStep <= (rightX > device.getBounds().w ? device.getBounds().w : rightX); xStep++){
                 device.setPixel((SHPoint){xStep, yStep}, color);
             }
             
             yStep++;
-            leftX += leftR;
-            rightX += rightR;
+            
+            if(yStep > device.getBounds().h) break;
+            
+            leftX += leftXStep;
+            rightX += rightXStep;
         }
     }
     
@@ -158,16 +161,16 @@ namespace sh{
         //return if area is zero
         if((a->screenPos.y == b->screenPos.y == c->screenPos.y) || (a->screenPos.x == b->screenPos.x == c->screenPos.x)) return;
         
-        a->pos.z = 1.0F / a->pos.z;
-        b->pos.z = 1.0F / b->pos.z;
-        c->pos.z = 1.0F / c->pos.z;
+        a->u = (a->pos.z == 0 ? 0 : a->u / a->pos.z);
+        a->v = (a->pos.z == 0 ? 0 : a->v / a->pos.z);
+        b->u = (b->pos.z == 0 ? 0 : b->u / b->pos.z);
+        b->v = (b->pos.z == 0 ? 0 : b->v / b->pos.z);
+        c->u = (c->pos.z == 0 ? 0 : c->u / c->pos.z);
+        c->v = (c->pos.z == 0 ? 0 : c->v / c->pos.z);
         
-        a->u = 1.0F / a->u;
-        a->v = 1.0F / a->v;
-        b->u = 1.0F / b->u;
-        b->v = 1.0F / b->v;
-        c->u = 1.0F / c->u;
-        c->v = 1.0F / c->v;
+        a->pos.z = (a->pos.z == 0 ? 0 : 1.0F / a->pos.z);
+        b->pos.z = (b->pos.z == 0 ? 0 : 1.0F / b->pos.z);
+        c->pos.z = (c->pos.z == 0 ? 0 : 1.0F / c->pos.z);
         
         if(a->screenPos.y == b->screenPos.y || b->screenPos.y == c->screenPos.y){
             drawSubPerspTri(device, a, b, c, texture);
@@ -184,18 +187,20 @@ namespace sh{
             
             float ru = (float) (c->u - a->u) / ca_y_length;
             float iu = ru * ba_y_length;
-            vertexTmp->u = iu;
+            vertexTmp->u = a->u + iu;
             
             float rv = (float) (c->v - a->v) / ca_y_length;
             float iv = rv * ba_y_length;
-            vertexTmp->v = iv;
+            vertexTmp->v = a->v + iv;
             
             float rz = (float) (c->pos.z - a->pos.z) / ca_y_length;
             float iz = rz * ba_y_length;
-            vertexTmp->pos.z = iz;
+            vertexTmp->pos.z = a->pos.z + iz;
             
             drawSubPerspTri(device, a, b, vertexTmp, texture);
             drawSubPerspTri(device, vertexTmp, b, c, texture);
+            
+            delete vertexTmp;
         }
         
     }
@@ -205,7 +210,7 @@ namespace sh{
         int y1 = c->screenPos.y;
         
         int yStep = y0;
-        float leftR, rightR;
+        float leftXStep, rightXStep;
         Vertex3D *left;
         Vertex3D *right;
         float leftIz;
@@ -233,8 +238,8 @@ namespace sh{
             left = a;
             right = b;
             
-            leftR = (float) (c->screenPos.x - a->screenPos.x) / y_length;
-            rightR = (float) (c->screenPos.x - b->screenPos.x) / y_length;
+            leftXStep = (float) (c->screenPos.x - a->screenPos.x) / y_length;
+            rightXStep = (float) (c->screenPos.x - b->screenPos.x) / y_length;
             
             leftIz = left->pos.z;
             rightIz = right->pos.z;
@@ -260,8 +265,8 @@ namespace sh{
             left = a;
             right = a;
             
-            leftR = (float) (b->screenPos.x - a->screenPos.x) / y_length;
-            rightR = (float) (c->screenPos.x - a->screenPos.x) / y_length;
+            leftXStep = (float) (b->screenPos.x - a->screenPos.x) / y_length;
+            rightXStep = (float) (c->screenPos.x - a->screenPos.x) / y_length;
             
             leftIz = left->pos.z;
             rightIz = right->pos.z;
@@ -286,16 +291,28 @@ namespace sh{
             float xIu = leftIu;
             float xIv = leftIv;
             
-            float xIzStep = (rightIz - leftIz) / y_length;
-            float xIuStep = (rightIu - leftIu) / y_length;
-            float xIvStep = (rightIv - leftIv) / y_length;
+            float x_length = (float) (rightX - leftX);
+            if(x_length == 0) x_length = 1.0F;
+            
+            float xIzStep = (rightIz - leftIz) / x_length;
+            float xIuStep = (rightIu - leftIu) / x_length;
+            float xIvStep = (rightIv - leftIv) / x_length;
+            
+//            printf("izStep:%f, iuStep:%f, ivStep:%f", xIzStep, xIuStep, xIvStep);
             
             for(int xStep = leftX; xStep <= rightX; xStep++){
                 
-                int realU = xIu / xIz * texture.width;
-                int realV = xIv / xIz * texture.height;
+                float u = (xIz == 0 ? 0 : xIu / xIz);
+                float v = (xIz == 0 ? 0 : xIv / xIz);
                 
-                SHColor c = texture.getPixel(1, 0);
+                int realU = u * texture.width;
+                int realV = v * texture.height;
+                
+//                printf("realU:%d, realV:%d, xIu:%f, xIv:%f, xIz:%f\n", realU, realV, xIu, xIv, xIz);
+                
+                SHColor c = texture.getPixel(realU, realV);
+                
+//                printf("realU:%d, realV:%d", realU, realV);
                 
                 device.setPixel((SHPoint){xStep, yStep}, c);
                 
@@ -311,9 +328,10 @@ namespace sh{
             leftIv += leftIvStep;
             rightIv += rightIvStep;
             
+            leftX += leftXStep;
+            rightX += rightXStep;
+            
             yStep++;
-            leftX += leftR;
-            rightX += rightR;
         }
     }
     

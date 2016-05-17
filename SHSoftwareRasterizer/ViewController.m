@@ -100,9 +100,29 @@
     pixels[2] = SHColorMake(0xFF99CC00);
     pixels[3] = SHColorMake(0xFFCC0099);
     
-    texture = new sh::Texture(pixels, 2, 2);
+//    texture = new sh::Texture(pixels, 2, 2);
+    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map0"]];
 }
 
+- (sh::Texture *) readTextureFromImage:(NSImage *) image{
+    NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:[image TIFFRepresentation]];
+    
+    int width = image.size.width;
+    int height = image.size.height;
+    
+    SHColor *pixels = (SHColor *) malloc(width * height * sizeof(SHColor));
+    
+    for(int y = 0; y < width; y++){
+        for(int x = 0; x < height; x++){
+            NSColor *c = [imageRep colorAtX:x y:y];
+            
+            pixels[y * width + x] = (SHColor){0xFF, static_cast<unsigned char>(c.redComponent * 255), static_cast<unsigned char>(c.greenComponent * 255), static_cast<unsigned char>(c.blueComponent * 255)};
+        }
+    }
+    
+    return new sh::Texture(pixels, width, height);
+    
+}
 
 
 - (void) rotateX:(float) x y:(float) y{
@@ -219,6 +239,10 @@
         SHVector3D b = getVector3D(_box.vectorArray[tri.b]);
         SHVector3D c = getVector3D(_box.vectorArray[tri.c]);
         
+        SHPointF auv = getUV(_box.uvMapArray[tri.a]);
+        SHPointF buv = getUV(_box.uvMapArray[tri.b]);
+        SHPointF cuv = getUV(_box.uvMapArray[tri.c]);
+        
         //世界坐标变换
         a = *_transform * a;
         b = *_transform * b;
@@ -281,22 +305,22 @@
         SHColor color = SHColorMake(0xFF000000 | red << 16 | green << 8 | blue);
         
         sh::Vertex3D *va = new sh::Vertex3D();
-        va->pos = SHPoint3DMake(a.x, a.y, a.z);
+        va->pos = a;
         va->screenPos = pa;
-        va->u = 0;
-        va->v = 0;
+        va->u = auv.x;
+        va->v = auv.y;
         
         sh::Vertex3D *vb = new sh::Vertex3D();
-        vb->pos = SHPoint3DMake(b.x, b.y, b.z);
+        vb->pos = b;
         vb->screenPos = pb;
-        vb->u = 1;
-        vb->v = 0;
+        vb->u = buv.x;
+        vb->v = buv.y;
         
         sh::Vertex3D *vc = new sh::Vertex3D();
-        vc->pos = SHPoint3DMake(c.x, c.y, c.z);
+        vc->pos = c;
         vc->screenPos = pc;
-        vc->u = 0;
-        vc->v = 1;
+        vc->u = cuv.x;
+        vc->v = cuv.y;
         
         
         //扫描线绘制三角形

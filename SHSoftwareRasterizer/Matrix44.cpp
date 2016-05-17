@@ -130,7 +130,6 @@ namespace sh{
 //    }
 
     Matrix44::~Matrix44(){
-        
     }
 
 }
