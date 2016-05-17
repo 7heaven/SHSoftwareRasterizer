@@ -1,3 +1,4 @@
+![license](https://img.shields.io/badge/license-WTFPL-brightgreen.svg)
 # 一个简单的软件光栅渲染器
 
 ***
