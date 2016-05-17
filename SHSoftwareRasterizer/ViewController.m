@@ -309,7 +309,8 @@
         
         
         //扫描线绘制三角形
-        sh::BasicDraw::drawPerspTriangle(*[canvas getNativePtr], va, vb, vc, *texture, *light);
+//        sh::BasicDraw::drawPerspTriangle(*[canvas getNativePtr], va, vb, vc, *texture, *light);
+        sh::BasicDraw::drawTriangle(*[canvas getNativePtr], pa, pb, pc, light->compute(objectColor));
         
     }
 
@@ -510,7 +511,6 @@
                     
                     [object3D.uvMapArray addObject:UVMake(x, y)];
                 }
-//                index += length - 6;
             } else {
                 index += length - 6;
             }
@@ -534,16 +534,12 @@
 - (void)setRepresentedObject:(id)representedObject {
     [super setRepresentedObject:representedObject];
 
-    // Update the view, if already loaded.
 }
 
 - (IBAction)fileButtonClick:(id)sender {
     
     NSOpenPanel* panel = [NSOpenPanel openPanel];
     
-    // This method displays the panel and returns immediately.
-    // The completion handler is called when the user selects an
-    // item or cancels the panel.
     [panel beginWithCompletionHandler:^(NSInteger result){
         if (result == NSFileHandlingPanelOKButton) {
             NSURL *_selectedDoc = [[panel URLs] objectAtIndex:0];
