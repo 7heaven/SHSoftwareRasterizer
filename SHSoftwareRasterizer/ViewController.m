@@ -102,14 +102,14 @@
     pixels[3] = SHColorMake(0xFFCC0099);
     
 //    texture = new sh::Texture(pixels, 2, 2);
-    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map1"]];
+    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map0"]];
 }
 
 - (sh::Texture *) readTextureFromImage:(NSImage *) image{
     NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:[image TIFFRepresentation]];
     
-    int width = image.size.width;
-    int height = image.size.height;
+    int width = (int) [imageRep pixelsWide];
+    int height = (int) [imageRep pixelsHigh];
     
     SHColor *pixels = (SHColor *) malloc(width * height * sizeof(SHColor));
     
