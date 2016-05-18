@@ -76,7 +76,7 @@
     
     _projection = [self getPerspectiveMatrix];
     
-    float scaleFactor = 3.0F;
+    float scaleFactor = 1.0F;
     _worldMatrix = new sh::Matrix44(scaleFactor,           0,           0, 0,
                                               0, scaleFactor,           0, 0,
                                               0,           0, scaleFactor, 0,

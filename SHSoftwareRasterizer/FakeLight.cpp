@@ -19,8 +19,9 @@ namespace sh{
         unsigned char blue;
         
         if(m <= 0.2){
+            //模拟金属质感
             float ra = ((0.2F - m) + 1.0F) * 1.2F;
-            unsigned char add = 0x33 * (1.0F - (m * 5.0F));
+            unsigned char add = 0x55 * (1.0F - (m * 5.0F));
             int preR = (int) (ra * (int) (inputPixelColor.r + add));
             int preG = (int) (ra * (int) (inputPixelColor.g + add));
             int preB = (int) (ra * (int) (inputPixelColor.b + add));
