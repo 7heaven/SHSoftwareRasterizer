@@ -23,7 +23,7 @@
 #define compareByte(a, b) [a.description isEqualToString:b]
 
 @implementation ViewController{
-    SHSoftwareCanvas *canvas;
+    sh::IDevice *_renderDevice;
     NSTimer *timer;
     
     float angle;
@@ -56,8 +56,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    canvas = [[SHSoftwareCanvas alloc] initWithBackgroundColor:SHColorMake(0xFF0099CC)];
+    SHSoftwareCanvas *canvas = [[SHSoftwareCanvas alloc] initWithBackgroundColor:SHColorMake(0xFF0099CC)];
     canvas.frame = self.view.bounds;
+    _renderDevice = [canvas getNativePtr];
     
     [self.view addSubview:canvas];
     
@@ -75,7 +76,7 @@
     
     _projection = [self getPerspectiveMatrix];
     
-    float scaleFactor = 1.0F;
+    float scaleFactor = 3.0F;
     _worldMatrix = new sh::Matrix44(scaleFactor,           0,           0, 0,
                                               0, scaleFactor,           0, 0,
                                               0,           0, scaleFactor, 0,
@@ -225,7 +226,8 @@
     
 //    [canvas flushWithDirtyRect:dirtyRect color:SHColorMake(0x0)];
 //    dirtyRect = SHRectMake(0, 0, 0, 0);
-    [canvas flushWithColor:SHColorMake(0xFF0099CC)];
+//    [canvas flushWithColor:SHColorMake(0xFF0099CC)];
+    _renderDevice->flush(SHColorMake(0xFF0099CC));
     
     //矩阵还原
     _transform->toIdentity();
@@ -311,12 +313,12 @@
         
         
         //扫描线绘制三角形
-        sh::BasicDraw::drawPerspTriangle(*[canvas getNativePtr], va, vb, vc, *texture, *light);
-//        sh::BasicDraw::drawTriangle(*[canvas getNativePtr], pa, pb, pc, light->compute(objectColor));
+        sh::BasicDraw::drawPerspTriangle(*_renderDevice, va, vb, vc, *texture, *light);
+//        sh::BasicDraw::drawTriangle(*_renderDevice, pa, pb, pc, light->compute(objectColor));
         
     }
 
-    [canvas update];
+    _renderDevice->update();
     
     timeval aftertime;
     gettimeofday(&aftertime, NULL);
