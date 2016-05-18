@@ -18,7 +18,7 @@
 #import "FakeLight.hpp"
 #import "SimpleDiffuseLight.hpp"
 
-#define N 500.0F
+#define N 700.0f
 
 #define compareByte(a, b) [a.description isEqualToString:b]
 
@@ -56,7 +56,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    canvas = [[SHSoftwareCanvas alloc] init];
+    canvas = [[SHSoftwareCanvas alloc] initWithBackgroundColor:SHColorMake(0xFF0099CC)];
     canvas.frame = self.view.bounds;
     
     [self.view addSubview:canvas];
@@ -75,7 +75,7 @@
     
     _projection = [self getPerspectiveMatrix];
     
-    float scaleFactor = 2.5F;
+    float scaleFactor = 1.0F;
     _worldMatrix = new sh::Matrix44(scaleFactor,           0,           0, 0,
                                               0, scaleFactor,           0, 0,
                                               0,           0, scaleFactor, 0,
@@ -103,7 +103,7 @@
     pixels[3] = SHColorMake(0xFFCC0099);
     
 //    texture = new sh::Texture(pixels, 2, 2);
-    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map_chess"]];
+    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_spaceship_revert"]];
 }
 
 - (sh::Texture *) readTextureFromImage:(NSImage *) image{
@@ -225,7 +225,7 @@
     
 //    [canvas flushWithDirtyRect:dirtyRect color:SHColorMake(0x0)];
 //    dirtyRect = SHRectMake(0, 0, 0, 0);
-    [canvas flushWithColor:SHColorMake(0x0)];
+    [canvas flushWithColor:SHColorMake(0xFF0099CC)];
     
     //矩阵还原
     _transform->toIdentity();
@@ -242,6 +242,7 @@
         SHVector3D b = getVector3D(_box.vectorArray[tri.b]);
         SHVector3D c = getVector3D(_box.vectorArray[tri.c]);
         
+        //获取三角形顶点的uv坐标
         SHPointF auv = getUV(_box.uvMapArray[tri.a]);
         SHPointF buv = getUV(_box.uvMapArray[tri.b]);
         SHPointF cuv = getUV(_box.uvMapArray[tri.c]);
@@ -287,6 +288,7 @@
         if(m > 1) m = 1.0F;
         if(m < 0) m = 0.0F;
         
+        //根据m来计算的光线，这个类取名容易引起困惑，实际上应该取名Material再引入场景内的灯光来计算，待修改
         sh::ILight *light = new sh::FakeLight(m);
         
         sh::Vertex3D *va = new sh::Vertex3D();
@@ -309,8 +311,8 @@
         
         
         //扫描线绘制三角形
-//        sh::BasicDraw::drawPerspTriangle(*[canvas getNativePtr], va, vb, vc, *texture, *light);
-        sh::BasicDraw::drawTriangle(*[canvas getNativePtr], pa, pb, pc, light->compute(objectColor));
+        sh::BasicDraw::drawPerspTriangle(*[canvas getNativePtr], va, vb, vc, *texture, *light);
+//        sh::BasicDraw::drawTriangle(*[canvas getNativePtr], pa, pb, pc, light->compute(objectColor));
         
     }
 

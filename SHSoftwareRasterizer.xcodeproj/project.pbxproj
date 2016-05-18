@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		F66C93B71CE390F8003E9811 /* SHSoftwareCanvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = F66C93B61CE390F8003E9811 /* SHSoftwareCanvas.mm */; };
 		F66C93BD1CE397F9003E9811 /* Matrix44.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66C93BB1CE397F9003E9811 /* Matrix44.cpp */; };
-		F66C93C01CE494A7003E9811 /* SHHardwareCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = F66C93BF1CE494A7003E9811 /* SHHardwareCanvas.m */; };
+		F66C93C01CE494A7003E9811 /* SHHardwareCanvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = F66C93BF1CE494A7003E9811 /* SHHardwareCanvas.mm */; };
 		F66C93DB1CE5B27A003E9811 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F66C93DA1CE5B27A003E9811 /* Foundation.framework */; };
 		F66C93DD1CE5B283003E9811 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F66C93DC1CE5B283003E9811 /* Cocoa.framework */; };
 		F66C93E31CE5B61C003E9811 /* BasicDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66C93E11CE5B61C003E9811 /* BasicDraw.cpp */; };
@@ -53,7 +53,7 @@
 		F66C93BB1CE397F9003E9811 /* Matrix44.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix44.cpp; sourceTree = "<group>"; };
 		F66C93BC1CE397F9003E9811 /* Matrix44.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Matrix44.hpp; sourceTree = "<group>"; };
 		F66C93BE1CE494A7003E9811 /* SHHardwareCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHHardwareCanvas.h; sourceTree = "<group>"; };
-		F66C93BF1CE494A7003E9811 /* SHHardwareCanvas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHHardwareCanvas.m; sourceTree = "<group>"; };
+		F66C93BF1CE494A7003E9811 /* SHHardwareCanvas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SHHardwareCanvas.mm; sourceTree = "<group>"; };
 		F66C93C31CE497AB003E9811 /* IDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDevice.h; sourceTree = "<group>"; };
 		F66C93D91CE5AFA6003E9811 /* IDevice_osx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDevice_osx.h; sourceTree = "<group>"; };
 		F66C93DA1CE5B27A003E9811 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -132,6 +132,7 @@
 		F66C93B11CE39061003E9811 /* engine */ = {
 			isa = PBXGroup;
 			children = (
+				F66C93FB1CEC1ABD003E9811 /* material */,
 				F66C93F01CE9C880003E9811 /* light */,
 				F66C93E01CE5B60D003E9811 /* draw */,
 				F66C93C21CE49795003E9811 /* device */,
@@ -184,7 +185,7 @@
 				F66C93B51CE390F8003E9811 /* SHSoftwareCanvas.h */,
 				F66C93B61CE390F8003E9811 /* SHSoftwareCanvas.mm */,
 				F66C93BE1CE494A7003E9811 /* SHHardwareCanvas.h */,
-				F66C93BF1CE494A7003E9811 /* SHHardwareCanvas.m */,
+				F66C93BF1CE494A7003E9811 /* SHHardwareCanvas.mm */,
 				F66C93F21CEA20EB003E9811 /* MacDevice.hpp */,
 				F66C93F31CEA20EB003E9811 /* MacDevice.cpp */,
 			);
@@ -212,6 +213,13 @@
 				F66C93F91CEAF313003E9811 /* SimpleDiffuseLight.hpp */,
 			);
 			name = light;
+			sourceTree = "<group>";
+		};
+		F66C93FB1CEC1ABD003E9811 /* material */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = material;
 			sourceTree = "<group>";
 		};
 		F67742FB1CDCF89C00082AAC = {
@@ -419,7 +427,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F66C93C01CE494A7003E9811 /* SHHardwareCanvas.m in Sources */,
+				F66C93C01CE494A7003E9811 /* SHHardwareCanvas.mm in Sources */,
 				F66C93B71CE390F8003E9811 /* SHSoftwareCanvas.mm in Sources */,
 				F66C93EC1CE8D112003E9811 /* Object3DEntity.m in Sources */,
 				F677430F1CDCF89C00082AAC /* ViewController.m in Sources */,

@@ -59,7 +59,7 @@
 
 - (void) initZDepthMap{
     _zDepth = (float *) malloc(sizeof(float) * _canvasPixelSize);
-    memset(_zDepth, 0, sizeof(float) * _canvasPixelSize);
+    memset(_zDepth, 600, sizeof(float) * _canvasPixelSize);
 }
 
 - (void) initImageBackend{
@@ -145,7 +145,7 @@
 - (void) update{
     _imageBackend = [self createCGImageWithSize:self.bounds.size];
     self.image = [[NSImage alloc] initWithCGImage:_imageBackend size:self.bounds.size];
-    memset(_zDepth, 0, sizeof(float) * _canvasPixelSize);
+    memset(_zDepth, 600, sizeof(float) * _canvasPixelSize);
 }
 
 - (void) setFrame:(NSRect)frame{

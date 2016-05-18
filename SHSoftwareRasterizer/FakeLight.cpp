@@ -18,15 +18,20 @@ namespace sh{
         unsigned char green;
         unsigned char blue;
         
-        unsigned char revertRed = 0xFF - inputPixelColor.r;
-        unsigned char revertGreen = 0xFF - inputPixelColor.g;
-        unsigned char revertBlue = 0xFF - inputPixelColor.b;
-        
         if(m <= 0.2){
-            float ra = (1.0 - m * 5.0F);
-            red = inputPixelColor.r + ra * revertRed;
-            green = inputPixelColor.g + ra * revertGreen;
-            blue = inputPixelColor.b + ra * revertBlue;
+            float ra = ((0.2F - m) + 1.0F) * 1.2F;
+            unsigned char add = 0x33 * (1.0F - (m * 5.0F));
+            int preR = (int) (ra * (int) (inputPixelColor.r + add));
+            int preG = (int) (ra * (int) (inputPixelColor.g + add));
+            int preB = (int) (ra * (int) (inputPixelColor.b + add));
+            
+            if(preR > 0xFF) preR = 0xFF;
+            if(preG > 0xFF) preG = 0xFF;
+            if(preB > 0xFF) preB = 0xFF;
+            
+            red = preR;
+            green = preG;
+            blue = preB;
         }else{
             float ra = (1.0 - ((m - 0.2) * 1.25));
             red = ra * inputPixelColor.r;

@@ -10,6 +10,7 @@
 #import "BasicGeometry.h"
 #import "IDevice_osx.h"
 
+
 @interface SHSoftwareCanvas : NSImageView <IDevice_osx>
 
 - (instancetype) initWithBackgroundColor:(SHColor) color;

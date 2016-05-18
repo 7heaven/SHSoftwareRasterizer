@@ -18,10 +18,18 @@ namespace sh {
         unsigned char green;
         unsigned char blue;
         
-        float ra = (1.0 - m);
-        red = ra * inputPixelColor.r;
-        green = ra * inputPixelColor.g;
-        blue = ra * inputPixelColor.b;
+        float ra = (1.0 - m) + 0.4;
+        int preR = (int) (ra * inputPixelColor.r);
+        int preG = (int) (ra * inputPixelColor.g);
+        int preB = (int) (ra * inputPixelColor.b);
+        
+        if(preR > 0xFF) preR = 0xFF;
+        if(preG > 0xFF) preG = 0xFF;
+        if(preB > 0xFF) preB = 0xFF;
+        
+        red = preR;
+        green = preG;
+        blue = preB;
         
         return SHColorMake(0xFF000000 | red << 16 | green << 8 | blue);
     }

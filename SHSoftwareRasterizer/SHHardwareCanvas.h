@@ -7,7 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "IDevice_osx.h"
 
-@interface SHHardwareCanvas : NSOpenGLView
+@interface SHHardwareCanvas : NSOpenGLView <IDevice_osx>
 
 @end

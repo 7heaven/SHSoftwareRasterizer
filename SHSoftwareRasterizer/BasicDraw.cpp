@@ -9,6 +9,8 @@
 #include "BasicDraw.hpp"
 #include <stdlib.h>
 #include "math.h"
+#include <chrono>
+#include <thread>
 
 namespace sh{
     
@@ -186,7 +188,7 @@ namespace sh{
         //面积零时  返回
         if((a->screenPos.y == b->screenPos.y == c->screenPos.y) || (a->screenPos.x == b->screenPos.x == c->screenPos.x)) return;
         
-        //基于Chris Hecker的透视纹理贴图算法
+        //基于Chris Hecker的透视纹理贴图算法, 文章地址:http://chrishecker.com/Miscellaneous_Technical_Articles
         //把本来呈非线性递增的u,v,z值转换为线性递增的u/z, v/z, 1/z,
         //在扫描线绘制的时候只需要每次增加预先计算出来的递增值，然后再用 u/z除以1/z, v/z除以1/z来得到正确的uv纹理的坐标
         
@@ -346,8 +348,8 @@ namespace sh{
                 float v = (xIz == 0 ? 0 : xIv / xIz);
                 
                 //把uv转换到纹理坐标
-                int realU = u * texture.width;
-                int realV = v * texture.height;
+                float realU = u * texture.width;
+                float realV = v * texture.height;
                 
                 //获取纹理坐标对应颜色值
                 SHColor c = texture.getPixel(realU, realV);
@@ -357,10 +359,12 @@ namespace sh{
                     c = light.compute(c);
                 }
                 
-                if(xIz > device.getZDepth(SHPointMake(xStep, yStep))){
+                float z = 1 / xIz;
+                
+                if(z <= device.getZDepth(SHPointMake(xStep, yStep))){
                     //绘制扫描线位置
                     device.setPixel((SHPoint){xStep, yStep}, c);
-                    device.setZDepth(SHPointMake(xStep, yStep), xIz);
+                    device.setZDepth(SHPointMake(xStep, yStep), z);
                 }
                 
                 //x轴方向的相关量递增
