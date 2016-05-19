@@ -76,7 +76,7 @@
     
     _projection = [self getPerspectiveMatrix];
     
-    float scaleFactor = 1.0F;
+    float scaleFactor = 1.7F;
     _worldMatrix = new sh::Matrix44(scaleFactor,           0,           0, 0,
                                               0, scaleFactor,           0, 0,
                                               0,           0, scaleFactor, 0,
@@ -528,6 +528,8 @@
             index += 4;
         }
         
+        fileData = nil;
+        
         return object3D;
     }
     
@@ -543,6 +545,8 @@
 - (IBAction)fileButtonClick:(id)sender {
     
     NSOpenPanel* panel = [NSOpenPanel openPanel];
+    [panel setCanChooseFiles:YES];
+    [panel setAllowedFileTypes:@[@"3ds"]];
     
     [panel beginWithCompletionHandler:^(NSInteger result){
         if (result == NSFileHandlingPanelOKButton) {
@@ -559,6 +563,8 @@
         }
         
     }];
+    
+    panel = nil;
 }
 
 @end

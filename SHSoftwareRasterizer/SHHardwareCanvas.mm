@@ -69,4 +69,24 @@
     _zDepth[position] = zDepth;
 }
 
+- (void) flushWithDirtyRect:(SHRect) dirtyRect color:(SHColor) color{
+    
+}
+
+- (void) flushWithColor:(SHColor) color{
+    
+}
+
+- (void) setPixel:(SHPoint) position color:(SHColor) color{
+    
+}
+
+- (void) setPixels:(SHPoint[]) positions color:(SHColor) color{
+    
+}
+
+- (SHRect) getBounds{
+    return SHRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+}
+
 @end
