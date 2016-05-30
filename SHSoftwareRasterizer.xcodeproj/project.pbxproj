@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F613C37E1CF6F78600CA0E8F /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F613C37C1CF6F78600CA0E8F /* Transform.cpp */; };
 		F66C93B71CE390F8003E9811 /* SHSoftwareCanvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = F66C93B61CE390F8003E9811 /* SHSoftwareCanvas.mm */; };
 		F66C93BD1CE397F9003E9811 /* Matrix44.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66C93BB1CE397F9003E9811 /* Matrix44.cpp */; };
 		F66C93C01CE494A7003E9811 /* SHHardwareCanvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = F66C93BF1CE494A7003E9811 /* SHHardwareCanvas.mm */; };
@@ -47,6 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F613C37C1CF6F78600CA0E8F /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
+		F613C37D1CF6F78600CA0E8F /* Transform.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
 		F66C93B51CE390F8003E9811 /* SHSoftwareCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHSoftwareCanvas.h; sourceTree = "<group>"; };
 		F66C93B61CE390F8003E9811 /* SHSoftwareCanvas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SHSoftwareCanvas.mm; sourceTree = "<group>"; };
 		F66C93BA1CE39590003E9811 /* BasicGeometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicGeometry.h; sourceTree = "<group>"; };
@@ -147,10 +150,10 @@
 			isa = PBXGroup;
 			children = (
 				F66C93BA1CE39590003E9811 /* BasicGeometry.h */,
-				F66C93BB1CE397F9003E9811 /* Matrix44.cpp */,
-				F66C93BC1CE397F9003E9811 /* Matrix44.hpp */,
 				F66C93E41CE75256003E9811 /* Vertex3D.cpp */,
 				F66C93E51CE75257003E9811 /* Vertex3D.hpp */,
+				F613C37C1CF6F78600CA0E8F /* Transform.cpp */,
+				F613C37D1CF6F78600CA0E8F /* Transform.hpp */,
 			);
 			name = geom;
 			sourceTree = "<group>";
@@ -158,6 +161,8 @@
 		F66C93B31CE3908C003E9811 /* math */ = {
 			isa = PBXGroup;
 			children = (
+				F66C93BB1CE397F9003E9811 /* Matrix44.cpp */,
+				F66C93BC1CE397F9003E9811 /* Matrix44.hpp */,
 			);
 			name = math;
 			sourceTree = "<group>";
@@ -429,6 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F613C37E1CF6F78600CA0E8F /* Transform.cpp in Sources */,
 				F66C93C01CE494A7003E9811 /* SHHardwareCanvas.mm in Sources */,
 				F66C93B71CE390F8003E9811 /* SHSoftwareCanvas.mm in Sources */,
 				F66C93EC1CE8D112003E9811 /* Object3DEntity.m in Sources */,

@@ -17,6 +17,7 @@
 #import "Texture.hpp"
 #import "FakeLight.hpp"
 #import "SimpleDiffuseLight.hpp"
+#import "Transform.hpp"
 
 #define N 700.0f
 
@@ -29,8 +30,9 @@
     float angle;
     
     sh::Matrix44 *_transform;
-    sh::Matrix44 *_projection;
-    sh::Matrix44 *_worldMatrix;
+    
+    sh::Transform *_worldTransform;
+    sh::Transform *_projectionTransform;
     
     Object3DEntity *_box;
     
@@ -74,13 +76,10 @@
     
     _transform = sh::Matrix44::identity();
     
-    _projection = [self getPerspectiveMatrix];
+    float scaleFactor = 3.0F;
+    _worldTransform = sh::Transform::scale(SHVector3DMake(scaleFactor, scaleFactor, scaleFactor, 1));
     
-    float scaleFactor = 1.7F;
-    _worldMatrix = new sh::Matrix44(scaleFactor,           0,           0, 0,
-                                              0, scaleFactor,           0, 0,
-                                              0,           0, scaleFactor, 0,
-                                              0,           0,           0, 1);
+    _projectionTransform = sh::Transform::perspective(N);
     
     _box = [[BoxObject alloc] initWithLength:150];
     
@@ -136,7 +135,7 @@
     
     *_transform *= *xMatrix;
     *_transform *= *yMatrix;
-    *_transform *= *_worldMatrix;
+    *_transform *= *_worldTransform->m;
     
 }
 
@@ -189,28 +188,17 @@
     _inty = location.y;
 }
 
-//github项目miniPC给出的透视投影矩阵
-- (sh::Matrix44 *) getPerspectiveMatrixWithFovy:(float) fovy aspect:(float) aspect zn:(float) zn zf:(float) zf{
-    float fax = 1.0F / (float) tan(fovy * 0.5F * (M_PI / 180));
-    
-    sh::Matrix44 *projectMat = new sh::Matrix44((float)(fax),            0,                    0, 0,
-                                                           0, (float)(fax),                    0, 0,
-                                                           0,            0,       zf / (zf - zn), 1,
-                                                           0,            0, -zn * zf / (zf - zn), 0);
-    
-    return projectMat;
-}
-
-
-//获取透视投影矩阵
-- (sh::Matrix44 *) getPerspectiveMatrix{
-    sh::Matrix44 *projectMat = new sh::Matrix44(1.0F,    0,              0, 0,
-                                                   0, 1.0F,              0, 0,
-                                                   0,    0,           1.0F, 0,
-                                                   0,    0, 1.0F/(float) N, 0);
-    
-    return projectMat;
-}
+////github项目miniPC给出的透视投影矩阵
+//- (sh::Matrix44 *) getPerspectiveMatrixWithFovy:(float) fovy aspect:(float) aspect zn:(float) zn zf:(float) zf{
+//    float fax = 1.0F / (float) tan(fovy * 0.5F * (M_PI / 180));
+//    
+//    sh::Matrix44 *projectMat = new sh::Matrix44((float)(fax),            0,                    0, 0,
+//                                                           0, (float)(fax),                    0, 0,
+//                                                           0,            0,       zf / (zf - zn), 1,
+//                                                           0,            0, -zn * zf / (zf - zn), 0);
+//    
+//    return projectMat;
+//}
 
 - (void) mouseDragged:(NSEvent *)theEvent{
     timeval time;
@@ -231,6 +219,8 @@
     
     //矩阵还原
     _transform->toIdentity();
+    
+    (*_transform)[2][3] = 550;
     
     //矩阵旋转
     [self rotateX:(_ty - centerPoint.y) / 200 + _previousRadianY y:(_tx - centerPoint.x) / 200 + _previousRadianX];
@@ -254,15 +244,11 @@
         b = *_transform * b;
         c = *_transform * c;
         
-        //同上
-        a.z += 550;
-        b.z += 550;
-        c.z += 550;
         
         //二维透视投影
-        SHVector3D a2D = *_projection * a;
-        SHVector3D b2D = *_projection * b;
-        SHVector3D c2D = *_projection * c;
+        SHVector3D a2D = *_projectionTransform * a;
+        SHVector3D b2D = *_projectionTransform * b;
+        SHVector3D c2D = *_projectionTransform * c;
         
         //获取二维屏幕坐标
         SHPoint pa = SHPointMake(a2D.x / a2D.w + centerPoint.x, a2D.y / a2D.w + centerPoint.y);
@@ -279,10 +265,6 @@
                                     p1:(SHPoint){pc.x - pa.x, pc.y - pa.y}];
         
         if(s > 0) continue;
-        
-//        sh::BasicDraw::drawLine(*[canvas getNativePtr], pa, pb, SHColorMake(0xFFFF0000));
-//        sh::BasicDraw::drawLine(*[canvas getNativePtr], pb, pc, SHColorMake(0xFFFF0000));
-//        sh::BasicDraw::drawLine(*[canvas getNativePtr], pc, pa, SHColorMake(0xFFFF0000));
         
         //三维向量取模，用来计算光线值
         float m = [self crossProWithV0:(SHVector3D){b.x - a.x, b.y - a.y, b.z - a.z, 1} v1:(SHVector3D){c.x - a.x, c.y - a.y, c.z - a.z, 1} center:centerPoint];
@@ -314,7 +296,6 @@
         
         //扫描线绘制三角形
         sh::BasicDraw::drawPerspTriangle(*_renderDevice, va, vb, vc, *texture, *light);
-//        sh::BasicDraw::drawTriangle(*_renderDevice, pa, pb, pc, light->compute(objectColor));
         
     }
 

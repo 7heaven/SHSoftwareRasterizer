@@ -15,7 +15,23 @@
 namespace sh{
 
 class Matrix44{
+    class Row{
+    public:
+        int row;
+        Matrix44 &m;
+        
+        Row(int row, Matrix44 &m):row(row), m(m){}
+        
+        const float &operator[](const unsigned int pos) const{
+            return m.mat[row * 4 + pos];
+        }
+        
+        float &operator[](const unsigned int pos){
+            return m.mat[row * 4 + pos];
+        }
+    };
 public:
+    
     Matrix44(float m00, float m01, float m02, float m03,
              float m10, float m11, float m12, float m13,
              float m20, float m21, float m22, float m23,
@@ -26,16 +42,14 @@ public:
     static Matrix44 * identity();
     void toIdentity();
     
-    Matrix44 operator*=(Matrix44 &mat);
-    Matrix44 operator+=(Matrix44 &mat);
+    Matrix44 operator*=(Matrix44 &m);
+    Matrix44 operator+=(Matrix44 &m);
     
     SHVector3D operator*(SHVector3D vector);
     
-    const float &operator[](int pos) const;
-    float &operator[](int pos);
-    
-//    operator float();
-//    float& operator=(int pos);
+    Row operator[](const unsigned int pos){
+        return Row(pos, *this);
+    }
     
 private:
     

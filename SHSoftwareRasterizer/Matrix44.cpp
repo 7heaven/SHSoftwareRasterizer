@@ -61,15 +61,15 @@ namespace sh{
         this->mat[15] = 1;
     }
     
-    Matrix44 Matrix44::operator*=(Matrix44 &mat){
+    Matrix44 Matrix44::operator*=(Matrix44 &m){
         auto tmp = new float[16];
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 4; j++){
                 int dest = i * 4 + j;
-                tmp[dest] = this->mat[i * 4] * mat[j] +
-                            this->mat[i * 4 + 1] * mat[j + 4] +
-                            this->mat[i * 4 + 2] * mat[j + 8] +
-                            this->mat[i * 4 + 3] * mat[j + 12];
+                tmp[dest] = this->mat[i * 4] * m.mat[j] +
+                            this->mat[i * 4 + 1] * m.mat[j + 4] +
+                            this->mat[i * 4 + 2] * m.mat[j + 8] +
+                            this->mat[i * 4 + 3] * m.mat[j + 12];
             }
         }
         
@@ -79,9 +79,9 @@ namespace sh{
         return *this;
     }
     
-    Matrix44 Matrix44::operator+=(Matrix44 &mat){
+    Matrix44 Matrix44::operator+=(Matrix44 &m){
         for(int i = 0; i < 16; i++){
-            this->mat[i] = this->mat[i] + mat[i];
+            this->mat[i] = this->mat[i] + m.mat[i];
         }
         
         return *this;
@@ -112,22 +112,6 @@ namespace sh{
         
         return resultVector;
     }
-    
-    const float &Matrix44::operator[](int pos) const{
-        return this->mat[pos];
-    }
-    
-    float &Matrix44::operator[](int pos){
-        return this->mat[pos];
-    }
-    
-//    Matrix44::operator float(){
-//        return this->mat[0];
-//    }
-//    
-//    float &Matrix44::operator=(int pos){
-//        return this->mat[pos];
-//    }
 
     Matrix44::~Matrix44(){
     }
