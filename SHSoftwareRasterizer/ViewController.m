@@ -49,9 +49,6 @@
     
     SHRect dirtyRect;
     
-    SHColor objectColor;
-    SHColor revertColor;
-    
     sh::Texture *texture;
 }
 
@@ -92,17 +89,6 @@
     [self.fileButton removeFromSuperview];
     [self.view addSubview:self.fileButton];
     
-    objectColor = SHColorMake(0xFFFF0099);
-    unsigned char full = 0xFF;
-    revertColor = (SHColor){0xFF, static_cast<unsigned char>(full - objectColor.r), static_cast<unsigned char>(full - objectColor.g), static_cast<unsigned char>(full - objectColor.b)};
-    
-    SHColor pixels[4];
-    pixels[0] = SHColorMake(0xFF0099CC);
-    pixels[1] = SHColorMake(0xFFCC9900);
-    pixels[2] = SHColorMake(0xFF99CC00);
-    pixels[3] = SHColorMake(0xFFCC0099);
-    
-//    texture = new sh::Texture(pixels, 2, 2);
     texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_spaceship_revert"]];
 }
 
@@ -256,9 +242,9 @@
         SHPoint pc = SHPointMake(c2D.x / c2D.w + centerPoint.x, c2D.y / c2D.w + centerPoint.y);
         
         //检查dirtyRect
-        [self checkDirty:pa];
-        [self checkDirty:pb];
-        [self checkDirty:pc];
+//        [self checkDirty:pa];
+//        [self checkDirty:pb];
+//        [self checkDirty:pc];
         
         //二维向量叉乘，用此方法判断三角形是顺时针还是逆时针，如果逆时针则跳过
         float s = [self crossProductWith:(SHPoint){pb.x - pa.x, pb.y - pa.y}
