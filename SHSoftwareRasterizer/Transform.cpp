@@ -58,9 +58,6 @@ namespace sh{
     
     Transform * Transform::perspective(float N){
         Transform *t = new Transform();
-        (*t->m)[0][0] = 1.0F;
-        (*t->m)[1][1] = 1.0F;
-        (*t->m)[2][2] = 1.0F;
         (*t->m)[3][2] = 1.0F / N;
         
         return t;

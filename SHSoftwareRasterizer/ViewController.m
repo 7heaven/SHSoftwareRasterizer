@@ -29,7 +29,7 @@
     
     float angle;
     
-    sh::Matrix44 *_transform;
+    sh::Transform *_transform;
     
     sh::Transform *_worldTransform;
     sh::Transform *_projectionTransform;
@@ -71,7 +71,7 @@
     
     [self.view addTrackingArea:area];
     
-    _transform = sh::Matrix44::identity();
+    _transform = new sh::Transform();
     
     float scaleFactor = 3.0F;
     _worldTransform = sh::Transform::scale(SHVector3DMake(scaleFactor, scaleFactor, scaleFactor, 1));
@@ -119,9 +119,9 @@
     sh::Matrix44 *xMatrix = [self xRotateMatrix:x];
     sh::Matrix44 *yMatrix = [self zRotateMatrix:y];
     
-    *_transform *= *xMatrix;
-    *_transform *= *yMatrix;
-    *_transform *= *_worldTransform->m;
+    *_transform->m *= *xMatrix;
+    *_transform->m *= *yMatrix;
+    *_transform->m *= *_worldTransform->m;
     
 }
 
@@ -204,9 +204,9 @@
     _renderDevice->flush(SHColorMake(0xFF0099CC));
     
     //矩阵还原
-    _transform->toIdentity();
+    _transform->m->toIdentity();
     
-    (*_transform)[2][3] = 550;
+//    (*_transform->m)[2][3] = 550;
     
     //矩阵旋转
     [self rotateX:(_ty - centerPoint.y) / 200 + _previousRadianY y:(_tx - centerPoint.x) / 200 + _previousRadianX];
