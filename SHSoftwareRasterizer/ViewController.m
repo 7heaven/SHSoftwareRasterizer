@@ -116,53 +116,11 @@
 
 - (void) rotateX:(float) x y:(float) y{
     
-//    sh::Matrix44 *xMatrix = [self xRotateMatrix:x];
-//    sh::Matrix44 *yMatrix = [self zRotateMatrix:y];
-    
     sh::Transform *rotate = sh::Transform::rotate(x, y, 0);
     
     *_transform->m *= *rotate->m;
     *_transform->m *= *_worldTransform->m;
     
-}
-
-//获得x轴旋转矩阵
-- (sh::Matrix44 *) xRotateMatrix:(float) radian{
-    float cosX = cosf(radian);
-    float sinX = sinf(radian);
-    
-    sh::Matrix44 *xMatrix = new sh::Matrix44(1,    0,     0, 0,
-                                             0, cosX, -sinX, 0,
-                                             0, sinX,  cosX, 0,
-                                             0,    0,     0, 1);
-    
-    return xMatrix;
-}
-
-//获取y轴旋转矩阵
-- (sh::Matrix44 *) yRotateMatrix:(float) radian{
-    float cosY = cosf(radian);
-    float sinY = sinf(radian);
-    
-    sh::Matrix44 *yMatrix = new sh::Matrix44( cosY, 0, sinY, 0,
-                                                 0, 1,    0, 0,
-                                             -sinY, 0, cosY, 0,
-                                                 0, 0,    0, 1);
-    
-    return yMatrix;
-}
-
-//获取z轴旋转矩阵
-- (sh::Matrix44 *) zRotateMatrix:(float) radian{
-    float cosZ = cosf(radian);
-    float sinZ = sinf(radian);
-    
-    sh::Matrix44 *zMatrix = new sh::Matrix44(cosZ, -sinZ, 0, 0,
-                                             sinZ,  cosZ, 0, 0,
-                                                0,     0, 1, 0,
-                                                0,     0, 0, 1);
-    
-    return zMatrix;
 }
 
 - (void) mouseDown:(NSEvent *)theEvent{
