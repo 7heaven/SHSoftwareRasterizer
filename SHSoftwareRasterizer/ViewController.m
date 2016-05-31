@@ -116,11 +116,12 @@
 
 - (void) rotateX:(float) x y:(float) y{
     
-    sh::Matrix44 *xMatrix = [self xRotateMatrix:x];
-    sh::Matrix44 *yMatrix = [self zRotateMatrix:y];
+//    sh::Matrix44 *xMatrix = [self xRotateMatrix:x];
+//    sh::Matrix44 *yMatrix = [self zRotateMatrix:y];
     
-    *_transform->m *= *xMatrix;
-    *_transform->m *= *yMatrix;
+    sh::Transform *rotate = sh::Transform::rotate(x, y, 0);
+    
+    *_transform->m *= *rotate->m;
     *_transform->m *= *_worldTransform->m;
     
 }
@@ -209,7 +210,7 @@
     (*_transform->m)[2][3] = 400;
     
     //矩阵旋转
-    [self rotateX:(_ty - centerPoint.y) / 200 + _previousRadianY y:(_tx - centerPoint.x) / 200 + _previousRadianX];
+    [self rotateX:(_tx - centerPoint.x) / 200 + _previousRadianX y:(_ty - centerPoint.y) / 200 + _previousRadianY];
     
     for(int i = 0; i < _box.triangleArray.count; i++){
         //获取三角形

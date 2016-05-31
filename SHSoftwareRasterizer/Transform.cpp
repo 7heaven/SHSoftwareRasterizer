@@ -7,6 +7,7 @@
 //
 
 #include "Transform.hpp"
+#include "math.h"
 
 namespace sh{
     Transform::Transform()
@@ -73,12 +74,46 @@ namespace sh{
         return t;
     }
     
-    Transform * Transform::rotate(const SHVector3D &vector, float angle){
-        return nullptr;
+    Transform * Transform::rotate(const SHVector3D &vector){
+        Transform *t = new Transform();
+        float c = cos(vector.w);
+        float s = sin(vector.w);
+        
+        float oneMinusC = 1 - c;
+        
+        (*t->m)[0][0] = c + vector.x * vector.x * oneMinusC;
+        (*t->m)[0][1] = vector.x * vector.y * oneMinusC + vector.z * s;
+        (*t->m)[0][2] = vector.x * vector.z * oneMinusC - vector.y * s;
+        (*t->m)[1][0] = vector.x * vector.y * oneMinusC - vector.z * s;
+        (*t->m)[1][1] = c + vector.y * vector.y * oneMinusC;
+        (*t->m)[1][2] = vector.y * vector.z * oneMinusC + vector.x * s;
+        (*t->m)[2][0] = vector.x * vector.z * oneMinusC + vector.y * s;
+        (*t->m)[2][1] = vector.y * vector.z * oneMinusC - vector.x * s;
+        (*t->m)[2][2] = c + vector.z * vector.z * oneMinusC;
+        
+        return t;
     }
     
     Transform * Transform::rotate(const float angleX, const float angleY, const float angleZ){
-        return nullptr;
+        float cx = cos(angleX);
+        float sx = sin(angleX);
+        float cy = cos(angleY);
+        float sy = sin(angleY);
+        float cz = cos(angleZ);
+        float sz = sin(angleZ);
+        
+        Transform *t = new Transform();
+        (*t->m)[0][0] = cz * cx - sz * cy * sx;
+        (*t->m)[0][1] = -sz * cx - cz * cy * sx;
+        (*t->m)[0][2] = sy * sx;
+        (*t->m)[1][0] = cz * sx + sz * cy * cx;
+        (*t->m)[1][1] = -sz * sx + cz * cy * cx;
+        (*t->m)[1][2] = -sy * cx;
+        (*t->m)[2][0] = sz * sy;
+        (*t->m)[2][1] = cz * sy;
+        (*t->m)[2][2] = cy;
+        
+        return t;
     }
     
     Transform * Transform::lookAt(const SHPoint3D &cameraPos, const SHVector3D &directionVector){
