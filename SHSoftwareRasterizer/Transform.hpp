@@ -20,6 +20,7 @@ namespace sh{
         ~Transform();
         
         SHVector3D operator*(SHVector3D vector);
+        Transform * operator*=(Transform &t);
         
         static Transform * translate(const SHVector3D &vector);
         static Transform * scale(const SHVector3D &vector);

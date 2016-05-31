@@ -45,6 +45,12 @@ namespace sh{
         return resultVector;
     }
     
+    Transform * Transform::operator*=(Transform &t){
+        (*this->m) *= *t.m;
+        
+        return this;
+    }
+    
     Transform * Transform::translate(const SHVector3D &vector){
         Transform *t = new Transform();
         (*t->m)[0][3] = vector.x;

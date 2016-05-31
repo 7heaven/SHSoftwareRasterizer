@@ -118,8 +118,8 @@
     
     sh::Transform *rotate = sh::Transform::rotate(x, y, 0);
     
-    *_transform->m *= *rotate->m;
-    *_transform->m *= *_worldTransform->m;
+    *_transform *= *rotate;
+    *_transform *= *_worldTransform;
     
 }
 
