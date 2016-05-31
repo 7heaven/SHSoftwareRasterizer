@@ -1,0 +1,3 @@
+[submodule "Aiks"]
+	path = Aiks
+	url = https://github.com/KunKua/Aiks.git
