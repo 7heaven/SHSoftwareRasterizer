@@ -19,7 +19,7 @@
 #import "SimpleDiffuseLight.hpp"
 #import "Transform.hpp"
 
-#define N 700.0f
+#define N 750.0f
 
 #define compareByte(a, b) [a.description isEqualToString:b]
 
@@ -73,7 +73,7 @@
     
     _transform = new sh::Transform();
     
-    float scaleFactor = 3.0F;
+    float scaleFactor = 1.0F;
     _worldTransform = sh::Transform::scale(SHVector3DMake(scaleFactor, scaleFactor, scaleFactor, 1));
     
     _projectionTransform = sh::Transform::perspective(N);
@@ -206,7 +206,7 @@
     //矩阵还原
     _transform->m->toIdentity();
     
-//    (*_transform->m)[2][3] = 550;
+    (*_transform->m)[2][3] = 400;
     
     //矩阵旋转
     [self rotateX:(_ty - centerPoint.y) / 200 + _previousRadianY y:(_tx - centerPoint.x) / 200 + _previousRadianX];
