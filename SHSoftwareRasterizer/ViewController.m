@@ -116,7 +116,7 @@
 
 - (void) rotateX:(float) x y:(float) y{
     
-    sh::Transform *rotate = sh::Transform::rotate(x, y, 0);
+    sh::Transform *rotate = sh::Transform::rotate(0, y, x);
     
     *_transform *= *rotate;
     *_transform *= *_worldTransform;
