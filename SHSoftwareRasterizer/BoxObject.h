@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BasicGeometry.h"
 #import "Object3DEntity.h"
 
 

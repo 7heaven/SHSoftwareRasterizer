@@ -7,17 +7,8 @@
 //
 
 #import "ViewController.h"
-#import "SHSoftwareCanvas.h"
-#import "Matrix44.hpp"
-#import "BasicDraw.hpp"
 #import "BoxObject.h"
-#import "Object3DEntity.h"
 #import <sys/time.h>
-#import "IDevice.h"
-#import "Texture.hpp"
-#import "FakeLight.hpp"
-#import "SimpleDiffuseLight.hpp"
-#import "Transform.hpp"
 
 #define N 750.0f
 

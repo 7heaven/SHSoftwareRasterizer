@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "06D1C3660B5C37D367227EB3C616F5567505DA1C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "06D1C3660B5C37D367227EB3C616F5567505DA1C" : 0,
+    "9E75F984C37B48DFAA8C92E6578FA34026ACCEF9" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "845F8A4A-EA2E-42A4-9787-E93D5E1AA3AA",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "06D1C3660B5C37D367227EB3C616F5567505DA1C" : "SHSoftwareRasterizer\/",
+    "9E75F984C37B48DFAA8C92E6578FA34026ACCEF9" : "SHSoftwareRasterizer\/Aiks\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SHSoftwareRasterizer",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SHSoftwareRasterizer.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/7heaven\/SHSoftwareRasterizer",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "06D1C3660B5C37D367227EB3C616F5567505DA1C"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/KunKua\/Aiks.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9E75F984C37B48DFAA8C92E6578FA34026ACCEF9"
+    }
+  ]
+}
