@@ -9,7 +9,6 @@
 #import "ViewController.h"
 #import "BoxObject.h"
 #import <sys/time.h>
-#import "SHSoftwareCanvas.h"
 
 #define N 750.0f
 
