@@ -38,6 +38,8 @@
     CGFloat _previousRadianX;
     CGFloat _previousRadianY;
     
+    CGPoint _currentPointInWindow;
+    
     SHRect dirtyRect;
     
     sh::Texture *texture;
@@ -141,16 +143,30 @@
     gettimeofday(&time, NULL);
     long previousTime = (time.tv_sec * 1000) + (time.tv_usec / 1000);
     
-    CGPoint location = theEvent.locationInWindow;
+    _currentPointInWindow = theEvent.locationInWindow;
+    [self performFrameUpdate];
+    
+    timeval aftertime;
+    gettimeofday(&aftertime, NULL);
+    long currentTime = (aftertime.tv_sec * 1000) + (aftertime.tv_usec / 1000);
+    long gap = currentTime - previousTime;
+    int fps = 1000 / (gap + 1);
+    
+    [self.fpsLabel setStringValue:[NSString stringWithFormat:@"%ldms/F", gap]];
+    
+}
+
+- (void) performFrameUpdate{
+    CGPoint location = _currentPointInWindow;
     
     _tx = location.x - _intx;
     _ty = location.y - _inty;
     
     _dragPoint = CGPointMake(_dragPoint.x + (_tx - _dragPoint.x) * 0.01, _dragPoint.y + (_ty - _dragPoint.y) * 0.01);
     
-//    [canvas flushWithDirtyRect:dirtyRect color:SHColorMake(0x0)];
-//    dirtyRect = SHRectMake(0, 0, 0, 0);
-//    [canvas flushWithColor:SHColorMake(0xFF0099CC)];
+    //    [canvas flushWithDirtyRect:dirtyRect color:SHColorMake(0x0)];
+    //    dirtyRect = SHRectMake(0, 0, 0, 0);
+    //    [canvas flushWithColor:SHColorMake(0xFF0099CC)];
     _renderDevice->flush(SHColorMake(0xFF0099CC));
     
     //矩阵还原
@@ -192,13 +208,13 @@
         SHPoint pc = SHPointMake(c2D.x / c2D.w + centerPoint.x, c2D.y / c2D.w + centerPoint.y);
         
         //检查dirtyRect
-//        [self checkDirty:pa];
-//        [self checkDirty:pb];
-//        [self checkDirty:pc];
+        //        [self checkDirty:pa];
+        //        [self checkDirty:pb];
+        //        [self checkDirty:pc];
         
         //二维向量叉乘，用此方法判断三角形是顺时针还是逆时针，如果逆时针则跳过
         float s = [self crossProductWith:(SHPoint){pb.x - pa.x, pb.y - pa.y}
-                                    p1:(SHPoint){pc.x - pa.x, pc.y - pa.y}];
+                                      p1:(SHPoint){pc.x - pa.x, pc.y - pa.y}];
         
         if(s > 0) continue;
         
@@ -234,17 +250,8 @@
         sh::BasicDraw::drawPerspTriangle(*_renderDevice, va, vb, vc, *texture, *light);
         
     }
-
+    
     _renderDevice->update();
-    
-    timeval aftertime;
-    gettimeofday(&aftertime, NULL);
-    long currentTime = (aftertime.tv_sec * 1000) + (aftertime.tv_usec / 1000);
-    long gap = currentTime - previousTime;
-    int fps = 1000 / (gap + 1);
-    
-    [self.fpsLabel setStringValue:[NSString stringWithFormat:@"%ldms/F", gap]];
-    
 }
 
 - (void) checkDirty:(SHPoint) p{
@@ -476,6 +483,9 @@
             }
             
             dirtyRect = SHRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+            
+            [self performFrameUpdate];
+            _renderDevice->update();
             
         }
         
