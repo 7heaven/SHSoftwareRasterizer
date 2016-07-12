@@ -64,7 +64,7 @@
     
     _transform = new sh::Transform();
     
-    float scaleFactor = 2.0F;
+    float scaleFactor = 35.0F;
     _worldTransform = sh::Transform::scale(SHVector3DMake(scaleFactor, scaleFactor, scaleFactor, 1));
     
     _projectionTransform = sh::Transform::perspective(3.1415926f * 0.12f, self.view.frame.size.width / self.view.frame.size.height, 1.0f, 500.0f);
@@ -234,15 +234,6 @@
             SHPoint pnora = SHPointMake(nora2D.x / nora2D.w + centerPoint.x, nora2D.y / nora2D.w + centerPoint.y);
             SHPoint pnorb = SHPointMake(norb2D.x / norb2D.w + centerPoint.x, norb2D.y / norb2D.w + centerPoint.y);
             SHPoint pnorc = SHPointMake(norc2D.x / norc2D.w + centerPoint.x, norc2D.y / norc2D.w + centerPoint.y);
-            
-//            pnora.x += pa.x;
-//            pnora.y += pa.y;
-//            pnorb.x += pb.x;
-//            pnorb.y += pb.y;
-//            pnorc.x += pc.x;
-//            pnorc.y += pc.y;
-            
-            
             
             //检查dirtyRect
             //        [self checkDirty:pa];

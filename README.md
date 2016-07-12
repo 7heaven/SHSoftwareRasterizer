@@ -27,6 +27,8 @@
 
 ![rendering_2](./arts/rendering_2.gif)
 
+![rendering_4](./arts/rendering_4.gif)
+
 # LICENSE
 
 ***
