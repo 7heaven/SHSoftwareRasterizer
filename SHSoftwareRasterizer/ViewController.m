@@ -12,8 +12,6 @@
 
 #define N 750.0f
 
-#define compareByte(a, b) [a.description isEqualToString:b]
-
 @implementation ViewController{
     sh::IDevice *_renderDevice;
     NSTimer *timer;
@@ -25,7 +23,7 @@
     sh::Transform *_worldTransform;
     sh::Transform *_projectionTransform;
     
-    Object3DEntity *_box;
+    Object3D *object;
     
     int _intx;
     int _inty;
@@ -66,12 +64,11 @@
     
     _transform = new sh::Transform();
     
-    float scaleFactor = 1.0F;
+    float scaleFactor = 55.0F;
     _worldTransform = sh::Transform::scale(SHVector3DMake(scaleFactor, scaleFactor, scaleFactor, 1));
     
-    _projectionTransform = sh::Transform::perspective(N);
-    
-    _box = [[BoxObject alloc] initWithLength:150];
+    _projectionTransform = sh::Transform::perspective(3.1415926f * 0.12f, self.view.frame.size.width / self.view.frame.size.height, 1.0f, 500.0f);
+//    _projectionTransform = sh::Transform::perspective(N);
     
     centerPoint = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     dirtyRect = SHRectMake(0, 0, 0, 0);
@@ -82,7 +79,7 @@
     [self.fileButton removeFromSuperview];
     [self.view addSubview:self.fileButton];
     
-    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_spaceship_revert"]];
+    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map_axe"]];
 }
 
 - (sh::Texture *) readTextureFromImage:(NSImage *) image{
@@ -120,30 +117,26 @@
     CGPoint location = theEvent.locationInWindow;
     
     if (isnan(_dragPoint.x) || isnan(_dragPoint.y)) _dragPoint = CGPointMake(0, 0);
-    if (!_box) _box = [[BoxObject alloc] initWithLength:150];
+//    if (!_box) _box = [[BoxObject alloc] initWithLength:150];
     
     _intx = location.x;
     _inty = location.y;
+    _tx = 0;
+    _ty = 0;
+    
+    [self performFrameUpdate];
 }
-
-////github项目miniPC给出的透视投影矩阵
-//- (sh::Matrix44 *) getPerspectiveMatrixWithFovy:(float) fovy aspect:(float) aspect zn:(float) zn zf:(float) zf{
-//    float fax = 1.0F / (float) tan(fovy * 0.5F * (M_PI / 180));
-//    
-//    sh::Matrix44 *projectMat = new sh::Matrix44((float)(fax),            0,                    0, 0,
-//                                                           0, (float)(fax),                    0, 0,
-//                                                           0,            0,       zf / (zf - zn), 1,
-//                                                           0,            0, -zn * zf / (zf - zn), 0);
-//    
-//    return projectMat;
-//}
 
 - (void) mouseDragged:(NSEvent *)theEvent{
     timeval time;
     gettimeofday(&time, NULL);
     long previousTime = (time.tv_sec * 1000) + (time.tv_usec / 1000);
     
-    _currentPointInWindow = theEvent.locationInWindow;
+    CGPoint location = theEvent.locationInWindow;
+    
+    _tx = location.x - _intx;
+    _ty = location.y - _inty;
+    
     [self performFrameUpdate];
     
     timeval aftertime;
@@ -156,11 +149,16 @@
     
 }
 
-- (void) performFrameUpdate{
-    CGPoint location = _currentPointInWindow;
+- (void) mouseUp:(NSEvent *)theEvent{
+    CGPoint location = theEvent.locationInWindow;
     
-    _tx = location.x - _intx;
-    _ty = location.y - _inty;
+    _previousRadianX = (_tx - centerPoint.x) / 200 + _previousRadianX;
+    _previousRadianY = (_ty - centerPoint.y) / 200 + _previousRadianY;
+}
+
+- (void) performFrameUpdate{
+    
+    if(object == NULL) return;
     
     _dragPoint = CGPointMake(_dragPoint.x + (_tx - _dragPoint.x) * 0.01, _dragPoint.y + (_ty - _dragPoint.y) * 0.01);
     
@@ -177,78 +175,99 @@
     //矩阵旋转
     [self rotateX:(_tx - centerPoint.x) / 200 + _previousRadianX y:(_ty - centerPoint.y) / 200 + _previousRadianY];
     
-    for(int i = 0; i < _box.triangleArray.count; i++){
-        //获取三角形
-        SHSimpleTri tri = getSimpleTri(_box.triangleArray[i]);
+    for(int i = 0; i < object->_mesh_count; i++){
+        NSLog(@"mesh_count:%llu", object->_mesh_count);
+        Mesh3D mesh = object->_meshes[i];
         
-        //获取三角形对应的顶点
-        SHVector3D a = getVector3D(_box.vectorArray[tri.a]);
-        SHVector3D b = getVector3D(_box.vectorArray[tri.b]);
-        SHVector3D c = getVector3D(_box.vectorArray[tri.c]);
-        
-        //获取三角形顶点的uv坐标
-        SHPointF auv = getUV(_box.uvMapArray[tri.a]);
-        SHPointF buv = getUV(_box.uvMapArray[tri.b]);
-        SHPointF cuv = getUV(_box.uvMapArray[tri.c]);
-        
-        //世界坐标变换
-        a = *_transform * a;
-        b = *_transform * b;
-        c = *_transform * c;
-        
-        
-        //二维透视投影
-        SHVector3D a2D = *_projectionTransform * a;
-        SHVector3D b2D = *_projectionTransform * b;
-        SHVector3D c2D = *_projectionTransform * c;
-        
-        //获取二维屏幕坐标
-        SHPoint pa = SHPointMake(a2D.x / a2D.w + centerPoint.x, a2D.y / a2D.w + centerPoint.y);
-        SHPoint pb = SHPointMake(b2D.x / b2D.w + centerPoint.x, b2D.y / b2D.w + centerPoint.y);
-        SHPoint pc = SHPointMake(c2D.x / c2D.w + centerPoint.x, c2D.y / c2D.w + centerPoint.y);
-        
-        //检查dirtyRect
-        //        [self checkDirty:pa];
-        //        [self checkDirty:pb];
-        //        [self checkDirty:pc];
-        
-        //二维向量叉乘，用此方法判断三角形是顺时针还是逆时针，如果逆时针则跳过
-        float s = [self crossProductWith:(SHPoint){pb.x - pa.x, pb.y - pa.y}
-                                      p1:(SHPoint){pc.x - pa.x, pc.y - pa.y}];
-        
-        if(s > 0) continue;
-        
-        //三维向量取模，用来计算光线值
-        float m = [self crossProWithV0:(SHVector3D){b.x - a.x, b.y - a.y, b.z - a.z, 1} v1:(SHVector3D){c.x - a.x, c.y - a.y, c.z - a.z, 1} center:centerPoint];
-        
-        if(m > 1) m = 1.0F;
-        if(m < 0) m = 0.0F;
-        
-        //根据m来计算的光线，这个类取名容易引起困惑，实际上应该取名Material再引入场景内的灯光来计算，待修改
-        sh::ILight *light = new sh::FakeLight(m);
-        
-        sh::Vertex3D *va = new sh::Vertex3D();
-        va->pos = a;
-        va->screenPos = pa;
-        va->u = auv.x;
-        va->v = auv.y;
-        
-        sh::Vertex3D *vb = new sh::Vertex3D();
-        vb->pos = b;
-        vb->screenPos = pb;
-        vb->u = buv.x;
-        vb->v = buv.y;
-        
-        sh::Vertex3D *vc = new sh::Vertex3D();
-        vc->pos = c;
-        vc->screenPos = pc;
-        vc->u = cuv.x;
-        vc->v = cuv.y;
-        
-        
-        //扫描线绘制三角形
-        sh::BasicDraw::drawPerspTriangle(*_renderDevice, va, vb, vc, *texture, *light);
-        
+        NSLog(@"tri_count:%llu", mesh._trianglesSize);
+        for(int j = 0; j < mesh._trianglesSize; j++){
+            //获取三角形
+            SHSimpleTri tri = mesh._triangles[j];
+            
+            //获取三角形对应的顶点
+            SHVector3D a = mesh._vertexes[tri.a];
+            SHVector3D b = mesh._vertexes[tri.b];
+            SHVector3D c = mesh._vertexes[tri.c];
+            
+            //获取三角形顶点的uv坐标
+            SHUVCoorF auv;
+            SHUVCoorF buv;
+            SHUVCoorF cuv;
+            if(mesh._uvmaps != nullptr){
+                auv = mesh._uvmaps[tri.a];
+                buv = mesh._uvmaps[tri.b];
+                cuv = mesh._uvmaps[tri.c];
+            }else{
+                auv = (SHUVCoorF){0, 0};
+                buv = (SHUVCoorF){0, 0};
+                cuv = (SHUVCoorF){0, 0};
+            }
+            
+            
+            
+            //世界坐标变换
+            SHVector3D ta = *_transform * a;
+            SHVector3D tb = *_transform * b;
+            SHVector3D tc = *_transform * c;
+            
+            
+            //二维透视投影
+            SHVector3D a2D = *_projectionTransform * ta;
+            SHVector3D b2D = *_projectionTransform * tb;
+            SHVector3D c2D = *_projectionTransform * tc;
+            
+            //获取二维屏幕坐标
+            SHPoint pa = SHPointMake(a2D.x / a2D.w + centerPoint.x, a2D.y / a2D.w + centerPoint.y);
+            SHPoint pb = SHPointMake(b2D.x / b2D.w + centerPoint.x, b2D.y / b2D.w + centerPoint.y);
+            SHPoint pc = SHPointMake(c2D.x / c2D.w + centerPoint.x, c2D.y / c2D.w + centerPoint.y);
+            
+            //检查dirtyRect
+            //        [self checkDirty:pa];
+            //        [self checkDirty:pb];
+            //        [self checkDirty:pc];
+            
+            //二维向量叉乘，用此方法判断三角形是顺时针还是逆时针，如果逆时针则跳过
+            float s = [self crossProductWith:(SHPoint){pb.x - pa.x, pb.y - pa.y}
+                                          p1:(SHPoint){pc.x - pa.x, pc.y - pa.y}];
+            
+            if(s > 0) continue;
+            
+            //三维向量取模，用来计算光线值
+            float m = [self crossProWithV0:(SHVector3D){tb.x - ta.x, tb.y - ta.y, tb.z - ta.z, 1} v1:(SHVector3D){tc.x - ta.x, tc.y - ta.y, tc.z - ta.z, 1} center:centerPoint];
+            
+            //        if(m > 1) m = 1.0F;
+            //        if(m < 0) m = 0.0F;
+            
+            //根据m来计算的光线，这个类取名容易引起困惑，实际上应该取名Material再引入场景内的灯光来计算，待修改
+            sh::ILight *light = new sh::FakeLight(m);
+            
+            sh::Vertex3D *va = new sh::Vertex3D();
+            va->pos = ta;
+            va->screenPos = pa;
+            va->u = auv.u;
+            va->v = auv.v;
+            
+            sh::Vertex3D *vb = new sh::Vertex3D();
+            vb->pos = tb;
+            vb->screenPos = pb;
+            vb->u = buv.u;
+            vb->v = buv.v;
+            
+            sh::Vertex3D *vc = new sh::Vertex3D();
+            vc->pos = tc;
+            vc->screenPos = pc;
+            vc->u = cuv.u;
+            vc->v = cuv.v;
+            
+            
+            //扫描线绘制三角形
+                        sh::BasicDraw::drawPerspTriangle(*_renderDevice, va, vb, vc, *texture, *light);
+            
+//            sh::BasicDraw::drawLine(*_renderDevice, pa, pb, SHColorMake(0xFFFF0000));
+//            sh::BasicDraw::drawLine(*_renderDevice, pb, pc, SHColorMake(0xFFFF0000));
+//            sh::BasicDraw::drawLine(*_renderDevice, pc, pa, SHColorMake(0xFFFF0000));
+            
+        }
     }
     
     _renderDevice->update();
@@ -273,191 +292,11 @@
     CGFloat t_z = v0.x * v1.y - v0.y * v1.x;
     
     CGFloat m = sqrt(t_x * t_x + t_y * t_y + t_z * t_z);
-    t_x -= m * (cPoint.x - cPoint.x) / cPoint.x;
-    t_y -= m * (cPoint.y - cPoint.x) / cPoint.x;
     //向量单位化
     t_x /= m;
     t_y /= m;
     //不开方,以减少运算量
     return t_x * t_x + t_y * t_y;
-}
-
-- (void)mouseUp:(NSEvent *)theEvent {
-    CGPoint location = theEvent.locationInWindow;
-    
-    _previousRadianX = (_tx - centerPoint.x) / 200 + _previousRadianX;
-    _previousRadianY = (_ty - centerPoint.y) / 200 + _previousRadianY;
-}
-
-
-//解析3DS文件，仅实现了三角面片，顶点坐标的解析
-- (Object3DEntity *)parse3DSFileWithPath:(NSURL *)path {
-
-    NSData *fileData = [NSData dataWithContentsOfURL:path];
-    if (fileData) {
-        Object3DEntity *object3D = [[Object3DEntity alloc] init];
-        
-        NSUInteger totalBytesCount = [fileData length];
-        
-        NSInteger index = 0;
-        
-        NSData *byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
-        
-        index += 2;
-        
-        NSData *chunkLength = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
-        
-        index += 4;
-        
-        NSInteger totalLength = 0;
-        while (index < totalBytesCount) {
-//            if (self.delegate && [self.delegate respondsToSelector:@selector(fileParser:parseProgress:)]) {
-//                [self.delegate fileParser:self parseProgress:totalLength > 0 ? (float)index / (float)totalLength : 0];
-//            }
-            
-            int length;
-            
-            [chunkLength getBytes:&length length:sizeof(length)];
-            
-            if (compareByte(byteData, @"<4d4d>")) {
-                [chunkLength getBytes:&totalLength length:sizeof(totalLength)];
-                // file header
-            } else if (compareByte(byteData, @"<3d3d>")) {
-            } else if (compareByte(byteData, @"<0041>")) {
-            } else if (compareByte(byteData, @"<0040>")) {
-                byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:1];
-                index += 1;
-                
-                char size;
-                
-                [byteData getBytes:&size length:sizeof(size)];
-                while (size != 0) {
-                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:1];
-                    index += 1;
-                    
-//                    if (self.delegate && [self.delegate respondsToSelector:@selector(fileParser:parseProgress:)]) {
-//                        [self.delegate fileParser:self
-//                                    parseProgress:totalLength > 0 ? (float)index / (float)totalLength : 0];
-//                    }
-                    
-                    [byteData getBytes:&size length:sizeof(size)];
-                }
-                
-            } else if (compareByte(byteData, @"<1041>")) {
-                byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
-                
-                index += 2;
-                short size;
-                [byteData getBytes:&size length:sizeof(size)];
-                for (int i = 0; i < size; i++) {
-//                    if (self.delegate && [self.delegate respondsToSelector:@selector(fileParser:parseProgress:)]) {
-//                        [self.delegate fileParser:self
-//                                    parseProgress:totalLength > 0 ? (float)index / (float)totalLength : 0];
-//                    }
-                    
-                    float x, y, z;
-                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
-                    
-                    [byteData getBytes:&x length:sizeof(x)];
-                    
-                    index += 4;
-                    
-                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
-                    
-                    [byteData getBytes:&y length:sizeof(y)];
-                    
-                    index += 4;
-                    
-                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
-                    
-                    [byteData getBytes:&z length:sizeof(z)];
-                    
-                    index += 4;
-                    
-                    [object3D.vectorArray addObject:Vector3DMake(x, y, z)];
-                }
-            } else if (compareByte(byteData, @"<2041>")) {
-                byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
-                
-                index += 2;
-                
-                short size;
-                
-                [byteData getBytes:&size length:sizeof(size)];
-                
-                for (int i = 0; i < size; i++) {
-//                    if (self.delegate && [self.delegate respondsToSelector:@selector(fileParser:parseProgress:)]) {
-//                        [self.delegate fileParser:self
-//                                    parseProgress:totalLength > 0 ? (float)index / (float)totalLength : 0];
-//                    }
-                    
-                    short a, b, c;
-                    
-                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
-                    [byteData getBytes:&a length:sizeof(a)];
-                    
-                    index += 2;
-                    
-                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
-                    [byteData getBytes:&b length:sizeof(b)];
-                    
-                    index += 2;
-                    
-                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
-                    [byteData getBytes:&c length:sizeof(c)];
-                    
-                    index += 4;
-                    
-                    [object3D.triangleArray addObject:TSimple3DMake(a, b, c)];
-                }
-                
-            } else if (compareByte(byteData, @"<4041>")) {
-                
-                byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
-                
-                index += 2;
-                short size;
-                [byteData getBytes:&size length:sizeof(size)];
-                for (int i = 0; i < size; i++) {
-                    //                    if (self.delegate && [self.delegate respondsToSelector:@selector(fileParser:parseProgress:)]) {
-                    //                        [self.delegate fileParser:self
-                    //                                    parseProgress:totalLength > 0 ? (float)index / (float)totalLength : 0];
-                    //                    }
-                    
-                    float x, y;
-                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
-                    
-                    [byteData getBytes:&x length:sizeof(x)];
-                    
-                    index += 4;
-                    
-                    byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
-                    
-                    [byteData getBytes:&y length:sizeof(y)];
-                    
-                    index += 4;
-                    
-                    [object3D.uvMapArray addObject:UVMake(x, y)];
-                }
-            } else {
-                index += length - 6;
-            }
-            
-            byteData = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:2];
-            
-            index += 2;
-            
-            chunkLength = [NSData dataWithBytes:((char *)[fileData bytes] + index)length:4];
-            
-            index += 4;
-        }
-        
-        fileData = nil;
-        
-        return object3D;
-    }
-    
-    return nil;
 }
 
 
@@ -476,14 +315,19 @@
         if (result == NSFileHandlingPanelOKButton) {
             NSURL *_selectedDoc = [[panel URLs] objectAtIndex:0];
             
-            Object3DEntity *entity = [self parse3DSFileWithPath:_selectedDoc];
+            NSString *absFilePath = _selectedDoc.absoluteString;
             
-            if(entity != nil){
-                _box = entity;
+            if([absFilePath hasPrefix:@"file://"]){
+                absFilePath = [absFilePath substringFromIndex:7];
             }
             
-            dirtyRect = SHRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-            
+            sh::D3DSDecoder *decoder = new sh::D3DSDecoder();
+            object = decoder->decode([absFilePath UTF8String]);
+            delete decoder;
+ 
+//            dirtyRect = SHRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+
+            _transform->m->toIdentity();
             [self performFrameUpdate];
             _renderDevice->update();
             
