@@ -64,7 +64,7 @@
     
     _transform = new sh::Transform();
     
-    float scaleFactor = 55.0F;
+    float scaleFactor = 2.0F;
     _worldTransform = sh::Transform::scale(SHVector3DMake(scaleFactor, scaleFactor, scaleFactor, 1));
     
     _projectionTransform = sh::Transform::perspective(3.1415926f * 0.12f, self.view.frame.size.width / self.view.frame.size.height, 1.0f, 500.0f);
@@ -176,10 +176,8 @@
     [self rotateX:(_tx - centerPoint.x) / 200 + _previousRadianX y:(_ty - centerPoint.y) / 200 + _previousRadianY];
     
     for(int i = 0; i < object->_mesh_count; i++){
-        NSLog(@"mesh_count:%llu", object->_mesh_count);
         Mesh3D mesh = object->_meshes[i];
         
-        NSLog(@"tri_count:%llu", mesh._trianglesSize);
         for(int j = 0; j < mesh._trianglesSize; j++){
             //获取三角形
             SHSimpleTri tri = mesh._triangles[j];
@@ -188,6 +186,10 @@
             SHVector3D a = mesh._vertexes[tri.a];
             SHVector3D b = mesh._vertexes[tri.b];
             SHVector3D c = mesh._vertexes[tri.c];
+            
+            SHVector3D nor_a = SHVector3DPlus(mesh._vertexesNormal[tri.a], a);
+            SHVector3D nor_b = SHVector3DPlus(mesh._vertexesNormal[tri.b], b);
+            SHVector3D nor_c = SHVector3DPlus(mesh._vertexesNormal[tri.c], c);
             
             //获取三角形顶点的uv坐标
             SHUVCoorF auv;
@@ -210,16 +212,37 @@
             SHVector3D tb = *_transform * b;
             SHVector3D tc = *_transform * c;
             
+            SHVector3D t_nora = *_transform * nor_a;
+            SHVector3D t_norb = *_transform * nor_b;
+            SHVector3D t_norc = *_transform * nor_c;
+            
             
             //二维透视投影
             SHVector3D a2D = *_projectionTransform * ta;
             SHVector3D b2D = *_projectionTransform * tb;
             SHVector3D c2D = *_projectionTransform * tc;
             
+            SHVector3D nora2D = *_projectionTransform * t_nora;
+            SHVector3D norb2D = *_projectionTransform * t_norb;
+            SHVector3D norc2D = *_projectionTransform * t_norc;
+            
             //获取二维屏幕坐标
             SHPoint pa = SHPointMake(a2D.x / a2D.w + centerPoint.x, a2D.y / a2D.w + centerPoint.y);
             SHPoint pb = SHPointMake(b2D.x / b2D.w + centerPoint.x, b2D.y / b2D.w + centerPoint.y);
             SHPoint pc = SHPointMake(c2D.x / c2D.w + centerPoint.x, c2D.y / c2D.w + centerPoint.y);
+            
+            SHPoint pnora = SHPointMake(nora2D.x / nora2D.w + centerPoint.x, nora2D.y / nora2D.w + centerPoint.y);
+            SHPoint pnorb = SHPointMake(norb2D.x / norb2D.w + centerPoint.x, norb2D.y / norb2D.w + centerPoint.y);
+            SHPoint pnorc = SHPointMake(norc2D.x / norc2D.w + centerPoint.x, norc2D.y / norc2D.w + centerPoint.y);
+            
+//            pnora.x += pa.x;
+//            pnora.y += pa.y;
+//            pnorb.x += pb.x;
+//            pnorb.y += pb.y;
+//            pnorc.x += pc.x;
+//            pnorc.y += pc.y;
+            
+            
             
             //检查dirtyRect
             //        [self checkDirty:pa];
@@ -261,11 +284,11 @@
             
             
             //扫描线绘制三角形
-                        sh::BasicDraw::drawPerspTriangle(*_renderDevice, va, vb, vc, *texture, *light);
+            sh::BasicDraw::drawPerspTriangle(*_renderDevice, va, vb, vc, *texture, *light);
             
-//            sh::BasicDraw::drawLine(*_renderDevice, pa, pb, SHColorMake(0xFFFF0000));
-//            sh::BasicDraw::drawLine(*_renderDevice, pb, pc, SHColorMake(0xFFFF0000));
-//            sh::BasicDraw::drawLine(*_renderDevice, pc, pa, SHColorMake(0xFFFF0000));
+            sh::BasicDraw::drawLine(*_renderDevice, pa, pnora, SHColorMake(0xFFFF0000));
+            sh::BasicDraw::drawLine(*_renderDevice, pb, pnorb, SHColorMake(0xFFFF0000));
+            sh::BasicDraw::drawLine(*_renderDevice, pc, pnorc, SHColorMake(0xFFFF0000));
             
         }
     }
