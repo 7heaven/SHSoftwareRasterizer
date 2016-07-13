@@ -2,6 +2,14 @@
 # 一个简单的软件光栅渲染器
 
 ***
+### 2016-07-13新增
+
+***
+
+### gouraud光照(gif录制效果略差)
+
+![rendering_5](./arts/rendering_5.gif)
+![rendering_6](./arts/rendering_6.gif)
 
 ### 2016-05-18新增
 
