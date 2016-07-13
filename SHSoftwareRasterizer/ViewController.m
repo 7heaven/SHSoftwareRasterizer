@@ -65,7 +65,7 @@
     
     _transform = new sh::Transform();
     
-    float scaleFactor = 3.0F;
+    float scaleFactor = 5.0F;
     _worldTransform = sh::Transform::scale(SHVector3DMake(scaleFactor, scaleFactor, scaleFactor, 1));
     
     _projectionTransform = sh::Transform::perspective(3.1415926f * 0.12f, self.view.frame.size.width / self.view.frame.size.height, 1.0f, 500.0f);
@@ -80,7 +80,7 @@
     [self.fileButton removeFromSuperview];
     [self.view addSubview:self.fileButton];
     
-    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map_axe"]];
+    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map_chess"]];
 }
 
 - (sh::Texture *) readTextureFromImage:(NSImage *) image{
@@ -171,7 +171,7 @@
     //矩阵还原
     _transform->m->toIdentity();
     
-    (*_transform->m)[2][3] = 400;
+    (*_transform->m)[2][3] = 1000;
     
     //矩阵旋转
     [self rotateX:(_tx - centerPoint.x) / 200 + _previousRadianX y:(_ty - centerPoint.y) / 200 + _previousRadianY];
@@ -254,7 +254,7 @@
             //        if(m < 0) m = 0.0F;
             
             //根据m来计算的光线，这个类取名容易引起困惑，实际上应该取名Material再引入场景内的灯光来计算，待修改
-            sh::ILight *light = new sh::FakeLight(m);
+            sh::ILight *light = new sh::SimpleDiffuseLight(m);
             
             sh::Vertex3D *va = new sh::Vertex3D();
             va->pos = ta;

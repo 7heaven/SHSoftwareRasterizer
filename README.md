@@ -10,6 +10,10 @@
 
 ![rendering_5](./arts/rendering_5.gif)
 ![rendering_6](./arts/rendering_6.gif)
+![rendering_7](./arts/rendering_7.png)
+![rendering_8](./arts/rendering_8.png)
+![rendering_9](./arts/rendering_9.png)
+![rendering_10](./arts/rendering_10.png)
 
 ### 2016-05-18新增
 
