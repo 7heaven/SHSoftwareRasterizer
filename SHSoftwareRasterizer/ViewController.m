@@ -80,7 +80,7 @@
     [self.fileButton removeFromSuperview];
     [self.view addSubview:self.fileButton];
     
-    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map_chess"]];
+    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_spaceship_revert"]];
 }
 
 - (sh::Texture *) readTextureFromImage:(NSImage *) image{
@@ -106,6 +106,7 @@
 
 
 - (void) rotateX:(float) x y:(float) y{
+    if(_rotate != nullptr) delete _rotate;
     
     _rotate = sh::Transform::rotate(0, y, x);
     
@@ -256,33 +257,39 @@
             //根据m来计算的光线，这个类取名容易引起困惑，实际上应该取名Material再引入场景内的灯光来计算，待修改
             sh::ILight *light = new sh::SimpleDiffuseLight(m);
             
-            sh::Vertex3D *va = new sh::Vertex3D();
-            va->pos = ta;
-            va->screenPos = pa;
-            va->u = auv.u;
-            va->v = auv.v;
-            va->normal = *_rotate * mesh._vertexesNormal[tri.a];
-            va->normal_m = sqrt(va->normal.x * va->normal.x + va->normal.y * va->normal.y);
+            sh::Vertex3D va = sh::Vertex3D();
+            va.pos = ta;
+            va.screenPos = pa;
+            va.u = auv.u;
+            va.v = auv.v;
+            va.normal = *_rotate * mesh._vertexesNormal[tri.a];
+            va.normal_m = sqrt(va.normal.x * va.normal.x + va.normal.y * va.normal.y);
             
-            sh::Vertex3D *vb = new sh::Vertex3D();
-            vb->pos = tb;
-            vb->screenPos = pb;
-            vb->u = buv.u;
-            vb->v = buv.v;
-            vb->normal = *_rotate * mesh._vertexesNormal[tri.b];
-            vb->normal_m = sqrt(vb->normal.x * vb->normal.x + vb->normal.y * vb->normal.y);
+            sh::Vertex3D vb = sh::Vertex3D();
+            vb.pos = tb;
+            vb.screenPos = pb;
+            vb.u = buv.u;
+            vb.v = buv.v;
+            vb.normal = *_rotate * mesh._vertexesNormal[tri.b];
+            vb.normal_m = sqrt(vb.normal.x * vb.normal.x + vb.normal.y * vb.normal.y);
             
-            sh::Vertex3D *vc = new sh::Vertex3D();
-            vc->pos = tc;
-            vc->screenPos = pc;
-            vc->u = cuv.u;
-            vc->v = cuv.v;
-            vc->normal = *_rotate * mesh._vertexesNormal[tri.c];
-            vc->normal_m = sqrt(vc->normal.x * vc->normal.x + vc->normal.y * vc->normal.y);
+            sh::Vertex3D vc = sh::Vertex3D();
+            vc.pos = tc;
+            vc.screenPos = pc;
+            vc.u = cuv.u;
+            vc.v = cuv.v;
+            vc.normal = *_rotate * mesh._vertexesNormal[tri.c];
+            vc.normal_m = sqrt(vc.normal.x * vc.normal.x + vc.normal.y * vc.normal.y);
             
             
             //扫描线绘制三角形
-            sh::BasicDraw::drawPerspTriangle(*_renderDevice, va, vb, vc, *texture, *light);
+            sh::BasicDraw::drawPerspTriangle(*_renderDevice, &va, &vb, &vc, *texture, *light);
+            
+//            delete va;
+//            delete vb;
+//            delete vc;
+            
+            delete light;
             
 //            sh::BasicDraw::drawLine(*_renderDevice, pa, pnora, SHColorMake(0xFFFF0000));
 //            sh::BasicDraw::drawLine(*_renderDevice, pb, pnorb, SHColorMake(0xFFFF0000));
