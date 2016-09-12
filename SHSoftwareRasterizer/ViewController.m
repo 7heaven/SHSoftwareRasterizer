@@ -65,7 +65,7 @@
     
     _transform = new sh::Transform();
     
-    float scaleFactor = 5.0F;
+    float scaleFactor = 4.0F;
     _worldTransform = sh::Transform::scale(SHVector3DMake(scaleFactor, scaleFactor, scaleFactor, 1));
     
     _projectionTransform = sh::Transform::perspective(3.1415926f * 0.12f, self.view.frame.size.width / self.view.frame.size.height, 1.0f, 500.0f);
@@ -100,7 +100,7 @@
         }
     }
     
-    return new sh::Texture(pixels, width, height);
+    return new sh::MappingTexture(pixels, width, height);
     
 }
 
@@ -289,7 +289,7 @@
 //            delete vb;
 //            delete vc;
             
-            delete light;
+//            delete light;78
             
 //            sh::BasicDraw::drawLine(*_renderDevice, pa, pnora, SHColorMake(0xFFFF0000));
 //            sh::BasicDraw::drawLine(*_renderDevice, pb, pnorb, SHColorMake(0xFFFF0000));
@@ -364,6 +364,17 @@
     }];
     
     panel = nil;
+}
+
+- (IBAction)extraButtonClick:(id)sender {
+    if(texture->getFilterType() == sh::FilterType::None){
+        texture->setFilterType(sh::FilterType::Bilinear);
+    }else{
+        texture->setFilterType(sh::FilterType::None);
+    }
+    
+    
+    [self performFrameUpdate];
 }
 
 @end
