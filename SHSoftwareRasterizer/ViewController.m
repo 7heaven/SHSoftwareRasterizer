@@ -47,11 +47,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    SHSoftwareCanvas *canvas = [[SHSoftwareCanvas alloc] initWithBackgroundColor:SHColorMake(0xFF0099CC)];
-    canvas.frame = self.view.bounds;
+    id<IDevice_osx> canvas = [[SHHardwareCanvas alloc] initWithBackgroundColor:SHColorMake(0xFF0099CC)];
+    ((NSView *)canvas).frame = self.view.bounds;
     _renderDevice = [canvas getNativePtr];
     
-    [self.view addSubview:canvas];
+    [self.view addSubview:(NSView *) canvas];
     
     NSTrackingAreaOptions options = (NSTrackingActiveAlways | NSTrackingInVisibleRect |
                                      NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved);
@@ -65,7 +65,7 @@
     
     _transform = new sh::Transform();
     
-    float scaleFactor = 4.0F;
+    float scaleFactor = 6.0F;
     _worldTransform = sh::Transform::scale(SHVector3DMake(scaleFactor, scaleFactor, scaleFactor, 1));
     
     _projectionTransform = sh::Transform::perspective(3.1415926f * 0.12f, self.view.frame.size.width / self.view.frame.size.height, 1.0f, 500.0f);
@@ -80,7 +80,8 @@
     [self.fileButton removeFromSuperview];
     [self.view addSubview:self.fileButton];
     
-    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_spaceship_revert"]];
+    texture = [self readTextureFromImage:[NSImage imageNamed:@"uv_map_chess"]];
+//    texture = new sh::ColorTexture(SHColorMake(0xFFCC9900));
 }
 
 - (sh::Texture *) readTextureFromImage:(NSImage *) image{
@@ -255,7 +256,7 @@
             //        if(m < 0) m = 0.0F;
             
             //根据m来计算的光线，这个类取名容易引起困惑，实际上应该取名Material再引入场景内的灯光来计算，待修改
-            sh::ILight *light = new sh::SimpleDiffuseLight(m);
+            sh::ILight *light = new sh::FakeLight(m);
             
             sh::Vertex3D va = sh::Vertex3D();
             va.pos = ta;

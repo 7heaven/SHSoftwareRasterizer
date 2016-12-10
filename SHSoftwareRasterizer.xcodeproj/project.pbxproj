@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		AA01964A1CFE9EAC0016CB1D /* libAiks_lib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0196471CFE9C9B0016CB1D /* libAiks_lib.a */; };
+		F62F63711DEBF7B500463AE6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62F63701DEBF7B500463AE6 /* OpenGL.framework */; };
+		F62F63741DEBF7F300463AE6 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62F63731DEBF7F300463AE6 /* GLUT.framework */; };
 		F66C93DB1CE5B27A003E9811 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F66C93DA1CE5B27A003E9811 /* Foundation.framework */; };
 		F66C93DD1CE5B283003E9811 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F66C93DC1CE5B283003E9811 /* Cocoa.framework */; };
 		F66C93E91CE789CF003E9811 /* BoxObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F66C93E81CE789CF003E9811 /* BoxObject.m */; };
@@ -47,6 +49,8 @@
 
 /* Begin PBXFileReference section */
 		AA0196421CFE9C9B0016CB1D /* Aiks_lib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Aiks_lib.xcodeproj; path = Aiks/build/Aiks_lib.xcodeproj; sourceTree = "<group>"; };
+		F62F63701DEBF7B500463AE6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		F62F63731DEBF7F300463AE6 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		F66C93DA1CE5B27A003E9811 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F66C93DC1CE5B283003E9811 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F66C93E71CE789CF003E9811 /* BoxObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoxObject.h; sourceTree = "<group>"; };
@@ -75,6 +79,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F62F63741DEBF7F300463AE6 /* GLUT.framework in Frameworks */,
+				F62F63711DEBF7B500463AE6 /* OpenGL.framework in Frameworks */,
 				AA01964A1CFE9EAC0016CB1D /* libAiks_lib.a in Frameworks */,
 				F66C93DD1CE5B283003E9811 /* Cocoa.framework in Frameworks */,
 				F66C93DB1CE5B27A003E9811 /* Foundation.framework in Frameworks */,
@@ -106,6 +112,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F62F636F1DEBF7B400463AE6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F62F63731DEBF7F300463AE6 /* GLUT.framework */,
+				F62F63701DEBF7B500463AE6 /* OpenGL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F67742FB1CDCF89C00082AAC = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +131,7 @@
 				F677431D1CDCF89C00082AAC /* SHSoftwareRasterizerTests */,
 				F67743281CDCF89C00082AAC /* SHSoftwareRasterizerUITests */,
 				F67743051CDCF89C00082AAC /* Products */,
+				F62F636F1DEBF7B400463AE6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
